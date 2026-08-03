@@ -7,6 +7,7 @@ import Svg, { Path } from 'react-native-svg';
 
 export default function HomeScreen() {
   const [valorInput, setValorInput] = useState('');
+  const [valorInputpassword, setValorInputpassword] = useState('');
 
   return (
     <ThemedView style={styles.container}>
@@ -28,7 +29,7 @@ export default function HomeScreen() {
         <ThemedText type="subtitle">Correo electrónico</ThemedText>
         <TextInput
           style={styles.input}
-          placeholder="       tu correo @email.com"
+          placeholder="Escriba su correo electrónico:"
           placeholderTextColor="#888"
           value={valorInput}
           onChangeText={setValorInput}
@@ -41,12 +42,11 @@ export default function HomeScreen() {
         <ThemedText type="subtitle">Contraseña</ThemedText>
         <TextInput
           style={styles.input}
-          placeholder="       ********"
+          placeholder="Escriba su contraseña:"
           placeholderTextColor="#888"
-          value={valorInput}
-          onChangeText={setValorInput}
-          keyboardType="email-address"
-          autoCapitalize="none"
+          value={valorInputpassword}
+          onChangeText={setValorInputpassword}
+          secureTextEntry
         />
       </View>
       <Link href="/modal" style={styles.link}>
@@ -56,6 +56,7 @@ export default function HomeScreen() {
         <Button
           title="Log in"
           color="#004695"
+          onPress={() => {alert("se ha presionado el boton")}}
         />
       </View>
       <ThemedText type="subtitle" style={styles.text}>¿No tienes cuenta?</ThemedText>
