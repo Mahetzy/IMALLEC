@@ -12,7 +12,7 @@ export default function HomeScreen() {
   return (
     <ThemedView style={styles.container}>
       <View style={StyleSheet.absoluteFill} pointerEvents="none">
-        <Svg height="2700" width="150%" viewBox=" -5 -55 60 1050" preserveAspectRatio="none">
+        <Svg height="2700" width="150%" viewBox=" -4 -50 60 1050" preserveAspectRatio="none">
           <Path
             d="M -1,-100 C 0,350 200,110 -40,510 Z"
             fill="#00162F"
