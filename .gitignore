@@ -41,5 +41,8 @@ app-example
 # generated native folders
 /ios
 /android
+<<<<<<< HEAD
+=======
 
 firebase.js
+
