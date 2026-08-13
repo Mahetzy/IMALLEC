@@ -7,50 +7,61 @@ export const styles = StyleSheet.create({
         paddingHorizontal: 25,
         paddingVertical: 35,
         justifyContent: "center",
-        backgroundColor: "#F5F7FA",
+        backgroundColor: "#013a7a",
+        paddingTop: 30,
     },
 
     logo: {
-        width: 180,
-        height: 120,
+        width: 150,
+        height: 85,
         alignSelf: "center",
         resizeMode: "contain",
-        marginBottom: 10,
+        marginBottom: 50,
+        marginLeft: 235,
     },
 
     title: {
-        fontSize: 28,
+        fontSize: 75,
         fontWeight: "bold",
         textAlign: "center",
-        color: "#1F2937",
+        color: "#ffffff",
         marginBottom: 8,
+        padding:30
     },
 
     subtitle: {
+        paddingTop: 30,
+        fontSize: 20,
+        textAlign: "center",
+        color: "#ffffff",
+        marginBottom: 30,
+        fontWeight: "bold",
+    },
+
+    login: {
+        paddingTop: 10,
         fontSize: 15,
         textAlign: "center",
-        color: "#6B7280",
+        color: "#ffffff",
         marginBottom: 30,
+        fontWeight: "bold",
     },
 
-    label: {
-        fontSize: 14,
-        fontWeight: "600",
-        color: "#374151",
-        marginBottom: 7,
-        marginTop: 5,
-    },
+
 
     input: {
-        height: 50,
+        marginLeft: 20,
+        marginRight: 20,
+        height: 55,
         backgroundColor: "#FFFFFF",
         borderWidth: 1,
         borderColor: "#D1D5DB",
-        borderRadius: 10,
-        paddingHorizontal: 15,
+        borderRadius: 75,
+        paddingHorizontal: 50,
         fontSize: 15,
-        color: "#111827",
+        color: "#0e0d0d",
         marginBottom: 12,
+        marginTop: 20,
     },
 
     inputFocused: {
@@ -58,9 +69,11 @@ export const styles = StyleSheet.create({
     },
 
     button: {
-        height: 52,
-        backgroundColor: "#2563EB",
-        borderRadius: 10,
+        marginLeft: 30,
+        marginRight: 30,
+        height: 70,
+        backgroundColor: "#004695",
+        borderRadius: 75,
         justifyContent: "center",
         alignItems: "center",
         marginTop: 15,
@@ -69,8 +82,8 @@ export const styles = StyleSheet.create({
 
     buttonText: {
         color: "#FFFFFF",
-        fontSize: 16,
-        fontWeight: "bold",
+        fontSize: 25,
+        
     },
 
     footer: {
@@ -79,5 +92,14 @@ export const styles = StyleSheet.create({
         color: "#6B7280",
         fontSize: 13,
     },
+    
+    linkText: {
+    marginTop: 5,
+    paddingVertical: 15,
+    alignSelf: 'center',
+    color: '#fff', 
+    fontWeight: 'bold',
+    fontSize: 25,
+  },
 
 });

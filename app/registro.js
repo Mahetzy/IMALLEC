@@ -1,23 +1,24 @@
-import {Text,View,Image,TextInput,Pressable,Alert} from "react-native";
+import { Text, View, Image, TextInput, Pressable, Alert, StyleSheet, } from "react-native";
 import { useState } from "react";
-import {createUserWithEmailAndPassword} from "firebase/auth";
-import {doc,setDoc} from "firebase/firestore";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { doc, setDoc } from "firebase/firestore";
 import { auth, db } from "../firebase/config";
 import { styles } from "./registro.style";
-
+import Svg, { Path } from 'react-native-svg';
+import { router } from 'expo-router'; 
 
 export const Registro = () => {
 
     const [name, setName] = useState("");
-    const [lastname, setLastname] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [password2, setPassword2] = useState("");
 
 
     const registrarUsuario = async () => {
 
         // Validar campos vacíos
-        if (!name || !lastname || !email || !password) {
+        if (!name || !password2 || !email || !password) {
 
             Alert.alert(
                 "Campos incompletos",
@@ -119,71 +120,61 @@ export const Registro = () => {
     return (
 
         <View style={styles.container}>
+            <View style={StyleSheet.absoluteFill} pointerEvents="none">
+                <Svg height="2700" width="150%" viewBox=" -4 -50 60 1050" preserveAspectRatio="none">
+                    <Path
+                        d="M -1,-100 C 0,350 200,110 -40,510 Z"
+                        fill="#00162F"
+                        opacity="1"
+                    />
+                </Svg>
+            </View>
 
             <Image
-                source={require("../assets/superate.png")}
+                source={require("../assets/IMALLEC.png.png")}
                 style={styles.logo}
             />
+        
+        
+
 
 
             <Text style={styles.title}>
-                Crear una cuenta
+                Sing up
             </Text>
 
-
-            <Text style={styles.subtitle}>
-                Completa tus datos para registrarte
-            </Text>
-
-
-            <Text style={styles.label}>
-                Nombre
-            </Text>
 
             <TextInput
                 style={styles.input}
-                placeholder="Ingrese su nombre"
+                placeholder="User"
                 value={name}
                 onChangeText={setName}
             />
 
 
-            <Text style={styles.label}>
-                Apellido
-            </Text>
 
             <TextInput
                 style={styles.input}
-                placeholder="Ingrese su apellido"
-                value={lastname}
-                onChangeText={setLastname}
-            />
-
-
-            <Text style={styles.label}>
-                Correo electrónico
-            </Text>
-
-            <TextInput
-                style={styles.input}
-                placeholder="ejemplo@correo.com"
-                keyboardType="email-address"
-                autoCapitalize="none"
+                placeholder="Email"
                 value={email}
                 onChangeText={setEmail}
             />
 
 
-            <Text style={styles.label}>
-                Contraseña
-            </Text>
-
             <TextInput
                 style={styles.input}
-                placeholder="Ingrese su contraseña"
+                placeholder="Password"
                 secureTextEntry={true}
                 value={password}
                 onChangeText={setPassword}
+            />
+
+            <TextInput
+                style={styles.input}
+                placeholder="Confirm Password"
+                secureTextEntry={true}
+                value={password2}
+                onChangeText={setPassword2}
             />
 
 
@@ -193,10 +184,22 @@ export const Registro = () => {
             >
 
                 <Text style={styles.buttonText}>
-                    Registrarse
+                    Sing up
                 </Text>
 
             </Pressable>
+
+            <Text style={styles.subtitle}>
+                ¿Do you have an account?
+                </Text>
+
+            <Pressable onPress={() => router.push('/login')}>
+                <Text style={styles.login}>
+                    log in
+                </Text>
+            </Pressable>
+
+        
 
         </View>
     );
