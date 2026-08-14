@@ -10,6 +10,7 @@ import { router } from 'expo-router';
 export const Registro = () => {
 
     const [name, setName] = useState("");
+    const [lastName, setLastName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [password2, setPassword2] = useState("");
@@ -17,8 +18,7 @@ export const Registro = () => {
 
     const registrarUsuario = async () => {
 
-        // Validar campos vacíos
-        if (!name || !password2 || !email || !password) {
+        if (!name || !lastName || !password2 || !email || !password) {
 
             Alert.alert(
                 "Campos incompletos",
@@ -28,8 +28,14 @@ export const Registro = () => {
             return;
         }
 
+        if (password !== password2) {
+            Alert.alert(
+                "Contraseñas distintas",
+                "Las contraseñas deben coincidir."
+            );
+            return;
+        }
 
-        // Validar contraseña
         if (password.length < 6) {
 
             Alert.alert(
@@ -40,10 +46,8 @@ export const Registro = () => {
             return;
         }
 
-
         try {
 
-            // Crear usuario en Firebase Authentication
             const userCredential =
                 await createUserWithEmailAndPassword(
                     auth,
@@ -51,55 +55,48 @@ export const Registro = () => {
                     password
                 );
 
-
             const user = userCredential.user;
 
-
-            // Guardar información en Firestore
             await setDoc(
                 doc(db, "Usuarios", user.uid),
                 {
                     nombre: name,
-                    apellido: lastname,
+                    apellido: lastName,
                     correo: email,
                     uid: user.uid
                 }
             );
-
 
             Alert.alert(
                 "Registro exitoso",
                 "La cuenta se creó correctamente."
             );
 
-
-            // Limpiar formulario
             setName("");
-            setLastname("");
+            setLastName("");
             setEmail("");
             setPassword("");
-
+            setPassword2("");
 
         } catch (error) {
 
-            console.log(error);
+            const code = error?.code ?? "";
 
-
-            if (error.code === "auth/email-already-in-use") {
+            if (code === "auth/email-already-in-use") {
 
                 Alert.alert(
                     "Correo existente",
                     "Este correo ya está registrado."
                 );
 
-            } else if (error.code === "auth/invalid-email") {
+            } else if (code === "auth/invalid-email") {
 
                 Alert.alert(
                     "Correo inválido",
                     "Ingrese un correo electrónico válido."
                 );
 
-            } else if (error.code === "auth/weak-password") {
+            } else if (code === "auth/weak-password") {
 
                 Alert.alert(
                     "Contraseña débil",
@@ -151,7 +148,12 @@ export const Registro = () => {
                 onChangeText={setName}
             />
 
-
+            <TextInput
+                style={styles.input}
+                placeholder="Last name"
+                value={lastName}
+                onChangeText={setLastName}
+            />
 
             <TextInput
                 style={styles.input}
