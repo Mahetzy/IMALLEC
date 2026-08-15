@@ -1,16 +1,16 @@
 import { Text, View, Image, TextInput, Pressable, Alert, StyleSheet, } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 import { useState } from "react";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
 import { auth, db } from "../firebase/config";
-import { styles } from "./registro.style";
+import { styles } from "../Styles/registro.style";
 import Svg, { Path } from 'react-native-svg';
-import { router } from 'expo-router'; 
+import { router } from 'expo-router';
 
-export const Registro = () => {
+export default function Registro() {
 
     const [name, setName] = useState("");
-    const [lastName, setLastName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [password2, setPassword2] = useState("");
@@ -18,7 +18,8 @@ export const Registro = () => {
 
     const registrarUsuario = async () => {
 
-        if (!name || !lastName || !password2 || !email || !password) {
+        // Validar campos vacíos
+        if (!name || !password2 || !email || !password) {
 
             Alert.alert(
                 "Campos incompletos",
@@ -28,14 +29,8 @@ export const Registro = () => {
             return;
         }
 
-        if (password !== password2) {
-            Alert.alert(
-                "Contraseñas distintas",
-                "Las contraseñas deben coincidir."
-            );
-            return;
-        }
 
+        // Validar contraseña
         if (password.length < 6) {
 
             Alert.alert(
@@ -46,8 +41,10 @@ export const Registro = () => {
             return;
         }
 
+
         try {
 
+            // Crear usuario en Firebase Authentication
             const userCredential =
                 await createUserWithEmailAndPassword(
                     auth,
@@ -55,48 +52,54 @@ export const Registro = () => {
                     password
                 );
 
+
             const user = userCredential.user;
 
+
+            // Guardar información en Firestore
             await setDoc(
                 doc(db, "Usuarios", user.uid),
                 {
                     nombre: name,
-                    apellido: lastName,
                     correo: email,
                     uid: user.uid
                 }
             );
+
 
             Alert.alert(
                 "Registro exitoso",
                 "La cuenta se creó correctamente."
             );
 
+
+            // Limpiar formulario
             setName("");
-            setLastName("");
             setEmail("");
             setPassword("");
             setPassword2("");
 
+
         } catch (error) {
 
-            const code = error?.code ?? "";
+            console.log(error);
 
-            if (code === "auth/email-already-in-use") {
+
+            if (error.code === "auth/email-already-in-use") {
 
                 Alert.alert(
                     "Correo existente",
                     "Este correo ya está registrado."
                 );
 
-            } else if (code === "auth/invalid-email") {
+            } else if (error.code === "auth/invalid-email") {
 
                 Alert.alert(
                     "Correo inválido",
                     "Ingrese un correo electrónico válido."
                 );
 
-            } else if (code === "auth/weak-password") {
+            } else if (error.code === "auth/weak-password") {
 
                 Alert.alert(
                     "Contraseña débil",
@@ -107,7 +110,8 @@ export const Registro = () => {
 
                 Alert.alert(
                     "Error",
-                    "No se pudo crear la cuenta."
+                    "No se pudo crear la cuenta.",
+                    console.log(error.code)
                 );
             }
         }
@@ -131,53 +135,86 @@ export const Registro = () => {
                 source={require("../assets/IMALLEC.png.png")}
                 style={styles.logo}
             />
-        
-        
+
+
 
 
 
             <Text style={styles.title}>
-                Sing up
+                Sign up
             </Text>
 
 
-            <TextInput
-                style={styles.input}
-                placeholder="User"
-                value={name}
-                onChangeText={setName}
-            />
+            <View style={styles.inputContainer}>
+                <Ionicons
+                    name="person-outline"
+                    size={25}
+                    color="#A0A0A0"
+                    style={styles.icon}
+                />
 
-            <TextInput
-                style={styles.input}
-                placeholder="Last name"
-                value={lastName}
-                onChangeText={setLastName}
-            />
+                <TextInput
+                    style={styles.input}
+                    placeholder="User"
+                    value={name}
+                    onChangeText={setName}
+                />
 
-            <TextInput
-                style={styles.input}
-                placeholder="Email"
-                value={email}
-                onChangeText={setEmail}
-            />
+            </View>
 
 
-            <TextInput
-                style={styles.input}
-                placeholder="Password"
-                secureTextEntry={true}
-                value={password}
-                onChangeText={setPassword}
-            />
 
-            <TextInput
-                style={styles.input}
-                placeholder="Confirm Password"
-                secureTextEntry={true}
-                value={password2}
-                onChangeText={setPassword2}
-            />
+            <View style={styles.inputContainer}>
+                <Ionicons
+                    name="person"
+                    size={25}
+                    color="#A0A0A0"
+                    style={styles.icon}
+                />
+
+                <TextInput
+                    style={styles.input}
+                    placeholder="Email"
+                    value={email}
+                    onChangeText={setEmail}
+                    autoCapitalize="none"
+                />
+            </View>
+
+
+            <View style={styles.inputContainer}>
+                <Ionicons
+                    name="lock-closed"
+                    size={25}
+                    color="#A0A0A0"
+                    style={styles.icon}
+                />
+
+                <TextInput
+                    style={styles.input}
+                    placeholder="Password"
+                    secureTextEntry={true}
+                    value={password}
+                    onChangeText={setPassword}
+                />
+            </View>
+
+            <View style={styles.inputContainer}>
+                <Ionicons
+                    name="lock-closed"
+                    size={25}
+                    color="#A0A0A0"
+                    style={styles.icon}
+                />
+
+                <TextInput
+                    style={styles.input}
+                    placeholder="Confirm Password"
+                    secureTextEntry={true}
+                    value={password2}
+                    onChangeText={setPassword2}
+                />
+            </View>
 
 
             <Pressable
@@ -193,7 +230,7 @@ export const Registro = () => {
 
             <Text style={styles.subtitle}>
                 ¿Do you have an account?
-                </Text>
+            </Text>
 
             <Pressable onPress={() => router.push('/login')}>
                 <Text style={styles.login}>
@@ -201,7 +238,7 @@ export const Registro = () => {
                 </Text>
             </Pressable>
 
-        
+
 
         </View>
     );

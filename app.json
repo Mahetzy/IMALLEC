@@ -1,8 +1,11 @@
+
+
 {
   "expo": {
     "name": "Superate",
     "slug": "Superate",
     "version": "1.0.0",
+    "scheme": "superate",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",

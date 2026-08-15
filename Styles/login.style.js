@@ -16,7 +16,7 @@ export const styles = StyleSheet.create({
         height: 85,
         alignSelf: "center",
         resizeMode: "contain",
-        marginBottom: 50,
+        marginBottom: 110,
         marginLeft: 235,
     },
 
@@ -38,6 +38,7 @@ export const styles = StyleSheet.create({
         fontWeight: "bold",
     },
 
+
     login: {
         paddingTop: 10,
         fontSize: 15,
@@ -47,9 +48,20 @@ export const styles = StyleSheet.create({
         fontWeight: "bold",
     },
 
+    password: {
+        paddingTop: 25,
+        fontSize: 15,
+        textAlign: "center",
+        color: "#ffffff",
+        marginBottom: -45,
+        fontWeight: "bold",
+    },
 
 
-    input: {
+
+    
+
+    inputContainer: {
         marginLeft: 20,
         marginRight: 20,
         height: 55,
@@ -57,11 +69,25 @@ export const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: "#D1D5DB",
         borderRadius: 75,
-        paddingHorizontal: 50,
-        fontSize: 15,
-        color: "#0e0d0d",
+        flexDirection: "row",
+        alignItems: "center",
         marginBottom: 12,
         marginTop: 20,
+
+    },
+
+    input: {
+        flex: 1,
+        height: 55,
+        paddingHorizontal: 10,
+        fontSize: 15,
+        color: "#0e0d0d",
+        
+    },
+
+    icon: {
+        marginLeft: 18,
+        marginRight: 5,
     },
 
     inputFocused: {
@@ -76,7 +102,7 @@ export const styles = StyleSheet.create({
         borderRadius: 75,
         justifyContent: "center",
         alignItems: "center",
-        marginTop: 15,
+        marginTop: 140,
         elevation: 3,
     },
 

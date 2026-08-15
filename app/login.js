@@ -3,14 +3,19 @@ import { useState } from "react";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
 import { auth, db } from "../firebase/config";
-import { styles } from "./login.style";
+import { styles } from "../Styles/login.style";
 import Svg, { Path } from 'react-native-svg';
-import { router } from 'expo-router'; 
+import { useRouter } from "expo-router";
+import { Ionicons } from "@expo/vector-icons";
 
-export const Login = () => {
+
+
+export default function Login() {
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const router = useRouter();
+
 
     const loginUsuario = async () => {
 
@@ -82,8 +87,8 @@ export const Login = () => {
                 source={require("../assets/IMALLEC.png.png")}
                 style={styles.logo}
             />
-        
-        
+
+
 
 
 
@@ -91,22 +96,45 @@ export const Login = () => {
                 Log in
             </Text>
 
+            <View style={styles.inputContainer}>
+                <Ionicons
+                    name="person"
+                    size={25}
+                    color="#A0A0A0"
+                    style={styles.icon}
+                />
 
-            <TextInput
-                style={styles.input}
-                placeholder="Email"
-                value={email}
-                onChangeText={setEmail}
-            />
+                <TextInput
+                    style={styles.input}
+                    placeholder="Email"
+                    value={email}
+                    onChangeText={setEmail}
+                    autoCapitalize="none"
+                />
+            </View>
 
 
-            <TextInput
-                style={styles.input}
-                placeholder="Password"
-                secureTextEntry={true}
-                value={password}
-                onChangeText={setPassword}
-            />
+            <View style={styles.inputContainer}>
+                <Ionicons
+                    name="lock-closed"
+                    size={25}
+                    color="#A0A0A0"
+                    style={styles.icon}
+                />
+
+                <TextInput
+                    style={styles.input}
+                    placeholder="Password"
+                    secureTextEntry={true}
+                    value={password}
+                    onChangeText={setPassword}
+                />
+            </View>
+            <Pressable onPress={() => router.push('/login')}>
+                <Text style={styles.password}>
+                    ¿did you forget your password?
+                </Text>
+            </Pressable>
 
             <Pressable
                 style={styles.button}
@@ -123,13 +151,11 @@ export const Login = () => {
                 ¿You don't have an account yet?
             </Text>
 
-            <Pressable onPress={() => router.push('/registro.js')}>
-                <Text style={styles.login}>
-                    Sign up
-                </Text>
+            <Pressable onPress={() => router.push('/registro')}>
+                <Text style={styles.login}>Sign up</Text>
             </Pressable>
 
-        
+
 
         </View>
     );
