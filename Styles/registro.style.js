@@ -16,40 +16,39 @@ export const styles = StyleSheet.create({
         height: 85,
         alignSelf: "center",
         resizeMode: "contain",
-        marginBottom: 50,
+        marginBottom: 110,
         marginLeft: 235,
     },
 
     title: {
-        fontSize: 75,
+        fontSize: 57,
         fontWeight: "bold",
         textAlign: "center",
         color: "#ffffff",
-        marginBottom: 8,
-        padding:30
+        marginBottom: 10,
+        padding: 1
     },
-
     subtitle: {
         paddingTop: 30,
         fontSize: 20,
         textAlign: "center",
         color: "#ffffff",
-        marginBottom: 30,
+        marginBottom: 25,
         fontWeight: "bold",
     },
 
     login: {
-        paddingTop: 10,
-        fontSize: 15,
+        paddingTop: 1,
+        fontSize: 14,
         textAlign: "center",
         color: "#ffffff",
-        marginBottom: 30,
+        marginBottom: 120,
         fontWeight: "bold",
     },
 
 
 
-    input: {
+    inputContainer: {
         marginLeft: 20,
         marginRight: 20,
         height: 55,
@@ -57,11 +56,24 @@ export const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: "#D1D5DB",
         borderRadius: 75,
-        paddingHorizontal: 50,
-        fontSize: 15,
-        color: "#0e0d0d",
+        flexDirection: "row",
+        alignItems: "center",
         marginBottom: 12,
         marginTop: 20,
+
+    },
+
+    icon: {
+        marginLeft: 18,
+        marginRight: 5,
+    },
+
+    input: {
+        flex: 1,
+        height: 55,
+        paddingHorizontal: 10,
+        fontSize: 15,
+        color: "#0e0d0d",
     },
 
     inputFocused: {
@@ -83,7 +95,7 @@ export const styles = StyleSheet.create({
     buttonText: {
         color: "#FFFFFF",
         fontSize: 25,
-        
+
     },
 
     footer: {
@@ -92,14 +104,14 @@ export const styles = StyleSheet.create({
         color: "#6B7280",
         fontSize: 13,
     },
-    
+
     linkText: {
-    marginTop: 5,
-    paddingVertical: 15,
-    alignSelf: 'center',
-    color: '#fff', 
-    fontWeight: 'bold',
-    fontSize: 25,
-  },
+        marginTop: 15,
+        paddingVertical: 15,
+        alignSelf: 'center',
+        color: '#fff',
+        fontWeight: 'bold',
+        fontSize: 25,
+    },
 
 });
