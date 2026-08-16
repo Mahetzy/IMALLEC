@@ -41,6 +41,14 @@ export default function Registro() {
             return;
         }
 
+        if(password !== password2) {
+            Alert.alert(
+                "No se pudo registrar el usuario",
+                "Las contraseñas no coinciden."
+            );
+
+            return;
+        }
 
         try {
 
@@ -62,10 +70,11 @@ export default function Registro() {
                 {
                     nombre: name,
                     correo: email,
-                    uid: user.uid
+                    uid: user.uid,
+                    Password: password
                 }
             );
-
+            router.push('/Pantalla_principal');
 
             Alert.alert(
                 "Registro exitoso",
