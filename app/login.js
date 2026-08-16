@@ -39,6 +39,8 @@ export default function Login() {
                 "¡Bienvenido de nuevo!"
             );
 
+            router.push('/Pantalla_principal');
+
         } catch (error) {
             const code = error?.code ?? "";
 
@@ -130,7 +132,7 @@ export default function Login() {
                     onChangeText={setPassword}
                 />
             </View>
-            <Pressable onPress={() => router.push('/login')}>
+            <Pressable onPress={() => router.push('/Forgotpassword')}>
                 <Text style={styles.password}>
                     ¿did you forget your password?
                 </Text>
