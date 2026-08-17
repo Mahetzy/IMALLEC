@@ -29,7 +29,7 @@ export default function forgotPassword() {
                 alert("Invalid email address.");
             } else {
                 console.error("Error sending password reset email:", error);
-                alert("Failed to send password reset email.");
+                alert("Failed to send password reset email. Please, try again later");
             }
         }
     };
