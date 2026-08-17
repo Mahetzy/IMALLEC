@@ -35,7 +35,6 @@ export const styles = StyleSheet.create({
         textAlign: "center",
         color: "#ffffff",
         marginBottom: 25,
-       
     },
 
     login: {
