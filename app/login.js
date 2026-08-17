@@ -21,8 +21,8 @@ export default function Login() {
 
         if (!email || !password) {
             Alert.alert(
-                "Campos incompletos",
-                "Complete todos los campos."
+                "Incomplete fields",
+                "Fill in all the fields."
             );
             return;
         }
@@ -35,8 +35,8 @@ export default function Login() {
             );
 
             Alert.alert(
-                "Inicio de sesión exitoso",
-                "¡Bienvenido de nuevo!"
+                "Successful login",
+                "Welcome back!"
             );
 
             router.push('/Pantalla_principal');
@@ -46,28 +46,28 @@ export default function Login() {
 
             if (code === "auth/user-not-found") {
                 Alert.alert(
-                    "Usuario no encontrado",
-                    "El usuario no existe. Por favor, regístrese primero."
+                    "User not found",
+                    "The user does not exist. Please register first."
                 );
             } else if (code === "auth/wrong-password") {
                 Alert.alert(
-                    "Correo o contraseña incorrectos.",
-                    "Las credenciales proporcionadas no son válidas. Por favor, inténtelo de nuevo."
+                    "Invalid email or password",
+                    "The provided credentials are not valid. Please try again."
                 );
             } else if (code === "auth/invalid-email") {
                 Alert.alert(
-                    "Correo electrónico inválido",
-                    "El correo electrónico ingresado no es válido. Por favor, ingrese un correo electrónico válido."
+                    "Invalid email",
+                    "The provided email address is not valid. Please enter a valid email address.",
                 );
             } else if (code === "auth/invalid-credential") {
                 Alert.alert(
-                    "Correo o contraseña incorrectos.",
-                    "Las credenciales proporcionadas no son válidas. Por favor, inténtelo de nuevo."
+                    "Invalid email or password",
+                    "The provided credentials are not valid. Please try again."
                 );
             } else {
                 Alert.alert(
-                    "Error de inicio de sesión",
-                    "Ocurrió un error al iniciar sesión. Por favor, inténtelo de nuevo más tarde."
+                    "Login error",
+                    "An error occurred while logging in. Please try again later."
                 );
             }
         }
@@ -149,9 +149,14 @@ export default function Login() {
 
             </Pressable>
 
+            <Text style={styles.subtitle}>
+                ¿You don't have an account yet?
+            </Text>
+
             <Pressable onPress={() => router.push('/registro')}>
-                <Text style={styles.login}>¿You don't have an account yet?</Text>
+                <Text style={styles.login}>Sign up</Text>
             </Pressable>
+
 
 
 

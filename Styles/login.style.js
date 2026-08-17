@@ -18,7 +18,7 @@ export const styles = StyleSheet.create({
         height: 85,
         alignSelf: "center",
         resizeMode: "contain",
-        marginBottom: 110,
+        marginBottom: 150,
         marginLeft: 235,
     },
 
@@ -38,7 +38,7 @@ export const styles = StyleSheet.create({
         textAlign: "center",
         color: "#ffffff",
         marginBottom: 30,
-        fontWeight: "bold",
+        
     },
 
 
@@ -47,7 +47,7 @@ export const styles = StyleSheet.create({
         fontSize: 15,
         textAlign: "center",
         color: "#ffffff",
-        marginBottom: 30,
+        marginBottom: 70,
         fontWeight: "bold",
     },
 

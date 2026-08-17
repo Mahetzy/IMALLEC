@@ -22,8 +22,8 @@ export default function Registro() {
         if (!name || !password2 || !email || !password) {
 
             Alert.alert(
-                "Campos incompletos",
-                "Complete todos los campos."
+                "Incomplete fields",
+                "Fill in all the fields."
             );
 
             return;
@@ -34,8 +34,8 @@ export default function Registro() {
         if (password.length < 6) {
 
             Alert.alert(
-                "Contraseña inválida",
-                "La contraseña debe tener al menos 6 caracteres."
+                "Invalid password",
+                "The password must have at least 6 characters."
             );
 
             return;
@@ -43,8 +43,8 @@ export default function Registro() {
 
         if(password !== password2) {
             Alert.alert(
-                "No se pudo registrar el usuario",
-                "Las contraseñas no coinciden."
+                "Password mismatch",
+                "The passwords do not match."
             );
 
             return;
@@ -52,7 +52,7 @@ export default function Registro() {
 
         try {
 
-            // Crear usuario en Firebase Authentication
+            
             const userCredential =
                 await createUserWithEmailAndPassword(
                     auth,
@@ -64,7 +64,7 @@ export default function Registro() {
             const user = userCredential.user;
 
 
-            // Guardar información en Firestore
+            
             await setDoc(
                 doc(db, "Usuarios", user.uid),
                 {
@@ -74,19 +74,23 @@ export default function Registro() {
                     Password: password
                 }
             );
-            router.push('/Pantalla_principal');
-
-            Alert.alert(
-                "Registro exitoso",
-                "La cuenta se creó correctamente."
-            );
-
 
             // Limpiar formulario
             setName("");
             setEmail("");
             setPassword("");
             setPassword2("");
+
+            Alert.alert(
+                "Successful registration",
+                "The account was created successfully.",
+                [
+                    {
+                        text: "OK",
+                        onPress: () => router.push('/Pantalla_principal')
+                    }
+                ]
+            );
 
 
         } catch (error) {
@@ -97,29 +101,29 @@ export default function Registro() {
             if (error.code === "auth/email-already-in-use") {
 
                 Alert.alert(
-                    "Correo existente",
-                    "Este correo ya está registrado."
+                    "Existing email",
+                    "This email is already registered."
                 );
 
             } else if (error.code === "auth/invalid-email") {
 
                 Alert.alert(
-                    "Correo inválido",
-                    "Ingrese un correo electrónico válido."
+                    "Invalid email",
+                    "Please enter a valid email address."
                 );
 
             } else if (error.code === "auth/weak-password") {
 
                 Alert.alert(
-                    "Contraseña débil",
-                    "La contraseña debe tener al menos 6 caracteres."
+                    "Weak password",
+                    "The password must have at least 6 characters."
                 );
 
             } else {
 
                 Alert.alert(
                     "Error",
-                    "No se pudo crear la cuenta.",
+                    "Failed to create account.",
                     console.log(error.code)
                 );
             }
@@ -237,9 +241,13 @@ export default function Registro() {
 
             </Pressable>
 
+            <Text style={styles.subtitle}>
+                ¿Do you have an account?
+            </Text>
+
             <Pressable onPress={() => router.push('/login')}>
-                <Text style={styles.linkText}>
-                    ¿Do you have an account?
+                <Text style={styles.login}>
+                    log in
                 </Text>
             </Pressable>
 
