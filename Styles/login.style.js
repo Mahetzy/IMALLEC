@@ -2,6 +2,8 @@ import { StyleSheet } from "react-native";
 
 export const styles = StyleSheet.create({
 
+    
+
     container: {
         flexGrow: 1,
         paddingHorizontal: 25,
@@ -25,8 +27,9 @@ export const styles = StyleSheet.create({
         fontWeight: "bold",
         textAlign: "center",
         color: "#ffffff",
-        marginBottom: 8,
-        padding:30
+        marginBottom: 30,
+        marginTop: -30,
+        padding:10
     },
 
     subtitle: {
@@ -40,7 +43,7 @@ export const styles = StyleSheet.create({
 
 
     login: {
-        paddingTop: 10,
+        paddingTop: 20,
         fontSize: 15,
         textAlign: "center",
         color: "#ffffff",
@@ -54,7 +57,7 @@ export const styles = StyleSheet.create({
         textAlign: "center",
         color: "#ffffff",
         marginBottom: -45,
-        fontWeight: "bold",
+        fontWeight: "normal",
     },
 
 
@@ -102,7 +105,7 @@ export const styles = StyleSheet.create({
         borderRadius: 75,
         justifyContent: "center",
         alignItems: "center",
-        marginTop: 140,
+        marginTop: 100,
         elevation: 3,
     },
 

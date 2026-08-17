@@ -42,7 +42,7 @@ export default function Login() {
             router.push('/Pantalla_principal');
 
         } catch (error) {
-            const code = error?.code ?? "";
+            const code = error.code;
 
             if (code === "auth/user-not-found") {
                 Alert.alert(
@@ -134,7 +134,7 @@ export default function Login() {
             </View>
             <Pressable onPress={() => router.push('/Forgotpassword')}>
                 <Text style={styles.password}>
-                    ¿did you forget your password?
+                    ¿Did you forget your password?
                 </Text>
             </Pressable>
 
@@ -149,12 +149,8 @@ export default function Login() {
 
             </Pressable>
 
-            <Text style={styles.subtitle}>
-                ¿You don't have an account yet?
-            </Text>
-
             <Pressable onPress={() => router.push('/registro')}>
-                <Text style={styles.login}>Sign up</Text>
+                <Text style={styles.login}>¿You don't have an account yet?</Text>
             </Pressable>
 
 

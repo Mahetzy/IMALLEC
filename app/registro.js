@@ -232,18 +232,14 @@ export default function Registro() {
             >
 
                 <Text style={styles.buttonText}>
-                    Sing up
+                    Sign up
                 </Text>
 
             </Pressable>
 
-            <Text style={styles.subtitle}>
-                ¿Do you have an account?
-            </Text>
-
             <Pressable onPress={() => router.push('/login')}>
-                <Text style={styles.login}>
-                    log in
+                <Text style={styles.linkText}>
+                    ¿Do you have an account?
                 </Text>
             </Pressable>
 

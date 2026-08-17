@@ -4,11 +4,12 @@ export const styles = StyleSheet.create({
 
     container: {
         flexGrow: 1,
-        paddingHorizontal: 25,
-        paddingVertical: 35,
+        paddingHorizontal: 20,
+        paddingVertical: 30,
         justifyContent: "center",
         backgroundColor: "#013a7a",
-        paddingTop: 30,
+        paddingTop: 0,
+        marginTop: -30,
     },
 
     logo: {
@@ -111,7 +112,7 @@ export const styles = StyleSheet.create({
         alignSelf: 'center',
         color: '#fff',
         fontWeight: 'bold',
-        fontSize: 25,
+        fontSize: 20,
     },
 
 });
