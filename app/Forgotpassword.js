@@ -11,12 +11,37 @@ import {
 } from "react-native";
 import Svg, { Defs, RadialGradient, Stop, Rect } from 'react-native-svg';
 import { useRouter } from "expo-router";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { sendPasswordResetEmail, signInWithEmailAndPassword } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
 import { auth, db } from "../firebase/config";
+import { styles } from "../Styles/forgotPassword.style";
 
 
 export default function ForgotPassword() {
+
+    const [email, setEmail] = React.useState("");
+
+    const forgotPassword = async () => {
+        if (!email) {
+            alert("Please enter your email address.");
+            return;
+        }
+        try {
+            await sendPasswordResetEmail(auth, email);
+            alert("Password reset email sent.");
+        } catch (error) {
+            const errorCode = error.code;
+            if (errorCode === "auth/user-not-found") {
+                alert("No user found with this email address.");
+            } else if (errorCode === "auth/invalid-email") {
+                alert("Invalid email address.");
+            } else {
+                console.error("Error sending password reset email:", error);
+                alert("Failed to send password reset email.");
+            }
+        }
+    };
+
     return (
         <SafeAreaView style={styles.container}>
             <View style={StyleSheet.absoluteFill} pointerEvents="none">
@@ -61,158 +86,16 @@ export default function ForgotPassword() {
                             placeholderTextColor="#999"
                             keyboardType="email-address"
                             autoCapitalize="none"
+                            value={email}
+                            onChangeText={setEmail}
                         />
                     </View>
 
-                    <View style={styles.inputContainer}>
-                        <Ionicons
-                            name="lock-closed"
-                            size={17}
-                            color="#A0A0A0"
-                            style={styles.icon}
-                        />
-
-                        <TextInput
-                            style={styles.input}
-                            placeholder="Verification Code"
-                            placeholderTextColor="#999"
-                            keyboardType="number-pad"
-                        />
-                    </View>
-
-                    <TouchableOpacity style={styles.button1}>
-                        <Text style={styles.buttonText}>Request Code</Text>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity style={styles.button2}>
-                        <Text style={styles.buttonText}>Send Code</Text>
+                    <TouchableOpacity style={styles.button1} onPress={forgotPassword}>
+                        <Text style={styles.buttonText}>Send Email</Text>
                     </TouchableOpacity>
                 </View>
             </View>
         </SafeAreaView>
     );
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-
-    },
-
-    background: {
-        flex: 1,
-        width: "100%",
-        height: "100%",
-    },
-
-    header: {
-        height: 70,
-        justifyContent: "center",
-        paddingHorizontal: 22,
-    },
-
-    headerText: {
-        color: "#D8D8D8",
-        fontSize: 12,
-        position: "absolute",
-        left: 22,
-        top: 14,
-    },
-
-    logo: {
-        width: 150,
-        height: 85,
-        alignSelf: "center",
-        resizeMode: "contain",
-        marginBottom: 10,
-        marginLeft: 235,
-        marginTop: -50,
-    },
-
-
-    content: {
-        flex: 1,
-        alignItems: "center",
-        paddingHorizontal: 26,
-        paddingTop: 65,
-    },
-
-
-
-    inputContainer: {
-        width: "100%",
-        height: 52,
-        backgroundColor: "#FFFFFF",
-        borderRadius: 75,
-        flexDirection: "row",
-        alignItems: "center",
-        paddingHorizontal: 13,
-        marginBottom: 20,
-        marginTop: 20,
-    },
-
-    icon: {
-        marginRight: 8,
-    },
-
-    input: {
-        flex: 1,
-        height: "100%",
-        fontSize: 10,
-        color: "#333333",
-
-    },
-
-    button1: {
-        width: "76%",
-        height: 72,
-        borderRadius: 75,
-        backgroundColor: "#0068C9AB",
-        alignItems: "center",
-        justifyContent: "center",
-        marginTop: 75,
-        marginBottom: 14,
-        shadowColor: "#000000",
-        shadowOffset: {
-            width: 3,
-            height: 5,
-        },
-        shadowOpacity: 0.45,
-        shadowRadius: 3,
-        elevation: 5,
-    },
-
-    button2: {
-        width: "76%",
-        height: 72,
-        borderRadius: 75,
-        backgroundColor: "#0068C9AB",
-        alignItems: "center",
-        justifyContent: "center",
-        marginTop: 15,
-        marginBottom: 14,
-        shadowColor: "#000000",
-        shadowOffset: {
-            width: 3,
-            height: 5,
-        },
-        shadowOpacity: 0.45,
-        shadowRadius: 3,
-        elevation: 5,
-    },
-
-    buttonText: {
-        color: "#FFFFFF",
-        fontSize: 23,
-        fontWeight: "500",
-
-    },
-    title: {
-        fontSize: 57,
-        fontWeight: "bold",
-        textAlign: "center",
-        color: "#ffffff",
-        marginBottom: 70,
-        padding: 1
-    },
-});

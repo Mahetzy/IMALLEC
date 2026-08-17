@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Login } from './app/login'; // O la ruta donde tengas tu login
-import { Registro } from './app/registro'; // Tu pantalla de registro
+import { Login } from './app/login';
+import { Registro } from './app/registro';
 
 export default function App() {
   const [currentScreen, setCurrentScreen] = useState('login');
