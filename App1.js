@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
-import { Login } from './app/login';
-import { Registro } from './app/registro';
+import { LogIn } from './app/logIn';
+import { signUp } from './app/signUp';
 
 export default function App() {
-  const [currentScreen, setCurrentScreen] = useState('login');
+  const [currentScreen, setCurrentScreen] = useState('logIn');
 
-  if (currentScreen === 'login') {
-    return <Login onNavigateToRegister={() => setCurrentScreen('registro')} />;
+  if (currentScreen === 'logIn') {
+    return <LogIn onNavigateToRegister={() => setCurrentScreen('signUp')} />;
   } else {
-    return <Registro onNavigateToLogin={() => setCurrentScreen('login')} />;
+    return <signUp onNavigateToLogin={() => setCurrentScreen('logIn')} />;
   }
 }

@@ -3,21 +3,21 @@ import { useState } from "react";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
 import { auth, db } from "../firebase/config";
-import { styles } from "../Styles/login.style";
+import { styles } from "../Styles/logIn.style";
 import Svg, { Path } from 'react-native-svg';
 import { useRouter } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 
 
 
-export default function Login() {
+export default function LogIn() {
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const router = useRouter();
 
 
-    const loginUsuario = async () => {
+    const logInUsuario = async () => {
 
         if (!email || !password) {
             Alert.alert(
@@ -39,7 +39,7 @@ export default function Login() {
                 "Welcome back!"
             );
 
-            router.push('/Pantalla_principal');
+            router.push('/mainScreen')
 
         } catch (error) {
             const code = error.code;
@@ -90,10 +90,6 @@ export default function Login() {
                 style={styles.logo}
             />
 
-
-
-
-
             <Text style={styles.title}>
                 Log in
             </Text>
@@ -132,7 +128,7 @@ export default function Login() {
                     onChangeText={setPassword}
                 />
             </View>
-            <Pressable onPress={() => router.push('/Forgotpassword')}>
+            <Pressable onPress={() => router.push('/forgotPassword')}>
                 <Text style={styles.password}>
                     ¿Did you forget your password?
                 </Text>
@@ -140,7 +136,7 @@ export default function Login() {
 
             <Pressable
                 style={styles.button}
-                onPress={loginUsuario}
+                onPress={logInUsuario}
             >
 
                 <Text style={styles.buttonText}>
@@ -153,7 +149,7 @@ export default function Login() {
                 ¿You don't have an account yet?
             </Text>
 
-            <Pressable onPress={() => router.push('/registro')}>
+            <Pressable onPress={() => router.push('/signUp')}>
                 <Text style={styles.login}>Sign up</Text>
             </Pressable>
 

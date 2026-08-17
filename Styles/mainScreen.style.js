@@ -16,7 +16,7 @@ export const styles = StyleSheet.create({
         height: 85,
         alignSelf: "center",
         resizeMode: "contain",
-        marginBottom: 110,
+        marginBottom: 210,
         marginLeft: 235,
     },
 
@@ -25,7 +25,7 @@ export const styles = StyleSheet.create({
         fontWeight: "bold",
         textAlign: "center",
         color: "#ffffff",
-        marginBottom: 8,
+        marginBottom: 300,
         padding:30
     },
 
