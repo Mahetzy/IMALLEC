@@ -1,14 +1,6 @@
 import { Ionicons } from "@expo/vector-icons";
 import React from "react";
-import {
-    SafeAreaView,
-    StyleSheet,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    View,
-    Image,
-} from "react-native";
+import {SafeAreaView,StyleSheet,Text,TextInput,TouchableOpacity,View,Image,} from "react-native";
 import Svg, { Defs, RadialGradient, Stop, Rect } from 'react-native-svg';
 import { useRouter } from "expo-router";
 import { sendPasswordResetEmail, signInWithEmailAndPassword } from "firebase/auth";
@@ -17,7 +9,7 @@ import { auth, db } from "../firebase/config";
 import { styles } from "../Styles/forgotPassword.style";
 
 
-export default function ForgotPassword() {
+export default function forgotPassword() {
 
     const [email, setEmail] = React.useState("");
 

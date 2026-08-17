@@ -4,11 +4,11 @@ import { useState } from "react";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
 import { auth, db } from "../firebase/config";
-import { styles } from "../Styles/registro.style";
+import { styles } from "../Styles/signUP.style";
 import Svg, { Path } from 'react-native-svg';
 import { router } from 'expo-router';
 
-export default function Registro() {
+export default function signUp() {
 
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
@@ -16,7 +16,7 @@ export default function Registro() {
     const [password2, setPassword2] = useState("");
 
 
-    const registrarUsuario = async () => {
+    const signUpUsuario = async () => {
 
         // Validar campos vacíos
         if (!name || !password2 || !email || !password) {
@@ -87,7 +87,7 @@ export default function Registro() {
                 [
                     {
                         text: "OK",
-                        onPress: () => router.push('/Pantalla_principal')
+                        onPress: () => router.push('/mainScreen'),
                     }
                 ]
             );
@@ -232,7 +232,7 @@ export default function Registro() {
 
             <Pressable
                 style={styles.button}
-                onPress={registrarUsuario}
+                onPress={signUpUsuario}
             >
 
                 <Text style={styles.buttonText}>
@@ -245,7 +245,7 @@ export default function Registro() {
                 ¿Do you have an account?
             </Text>
 
-            <Pressable onPress={() => router.push('/login')}>
+            <Pressable onPress={() => router.push('/logIn')}>
                 <Text style={styles.login}>
                     log in
                 </Text>

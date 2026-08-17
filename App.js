@@ -1,10 +1,10 @@
 import { View } from "react-native";
-import { Registro } from "./app/registro";
-import { Login } from "./app/login";
+import { sigUp } from "./app/signUp";
+import { LogIn } from "./app/logIn";
 
 export default function App() {
   return (
-    <Login />
+    <LogIn />
   );
 }
 
