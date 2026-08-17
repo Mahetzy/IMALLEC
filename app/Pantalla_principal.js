@@ -20,7 +20,7 @@ export default function Login() {
             />
 
             <Text style={styles.title}>
-                AQUI ESTARA LA PANTALLA PRINCIPAL :)
+                HERE WILL BE THE MAIN SCREEN :)
             </Text>
 
         </View>

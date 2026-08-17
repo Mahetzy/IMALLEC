@@ -8,7 +8,7 @@ export const styles = StyleSheet.create({
         paddingVertical: 30,
         justifyContent: "center",
         backgroundColor: "#013a7a",
-        paddingTop: 0,
+        paddingTop: 70,
         marginTop: -30,
     },
 
@@ -35,12 +35,12 @@ export const styles = StyleSheet.create({
         textAlign: "center",
         color: "#ffffff",
         marginBottom: 25,
-        fontWeight: "bold",
+       
     },
 
     login: {
         paddingTop: 1,
-        fontSize: 14,
+        fontSize: 15,
         textAlign: "center",
         color: "#ffffff",
         marginBottom: 120,
