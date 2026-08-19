@@ -13,13 +13,15 @@ export default function forgotPassword() {
 
     const [email, setEmail] = React.useState("");
 
+    const trimmedEmail = email.trim().toLowerCase();
+
     const forgotPassword = async () => {
-        if (!email) {
+        if (!trimmedEmail) {
             alert("Please enter your email address.");
             return;
         }
         try {
-            await sendPasswordResetEmail(auth, email);
+            await sendPasswordResetEmail(auth, trimmedEmail);
             alert("Password reset email sent.");
         } catch (error) {
             const errorCode = error.code;

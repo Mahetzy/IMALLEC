@@ -19,7 +19,11 @@ export default function signUp() {
     const signUpUsuario = async () => {
 
         // Validar campos vacíos
-        if (!name || !password2 || !email || !password) {
+        
+        const trimmedName = name.trim();
+        const trimmedEmail = email.trim().toLowerCase();
+
+        if (!trimmedName || !password2 || !trimmedEmail || !password) {
 
             Alert.alert(
                 "Incomplete fields",
@@ -29,13 +33,29 @@ export default function signUp() {
             return;
         }
 
+        if (!/^[\p{L}\s]+$/u.test(trimmedName)) {
+            Alert.alert(
+                "Invalid name",
+                "The name can only contain letters and spaces."
+            );
+
+            return;
+        }
+
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmedEmail)) {
+            Alert.alert(
+                "Invalid email",
+                "Please enter a valid email address."
+            );
+            return;
+        }
 
         // Validar contraseña
-        if (password.length < 6) {
+        if (password.length < 8 || password.length > 30) {
 
             Alert.alert(
                 "Invalid password",
-                "The password must have at least 6 characters."
+                "The password must have at least 8 characters and no more than 30."
             );
 
             return;
@@ -56,7 +76,7 @@ export default function signUp() {
             const userCredential =
                 await createUserWithEmailAndPassword(
                     auth,
-                    email,
+                    trimmedEmail,
                     password
                 );
 
@@ -68,8 +88,8 @@ export default function signUp() {
             await setDoc(
                 doc(db, "Usuarios", user.uid),
                 {
-                    nombre: name,
-                    correo: email,
+                    nombre: trimmedName,
+                    correo: trimmedEmail,
                     uid: user.uid,
                     Password: password
                 }
@@ -116,7 +136,7 @@ export default function signUp() {
 
                 Alert.alert(
                     "Weak password",
-                    "The password must have at least 6 characters."
+                    "The password must have at least 8 characters and no more than 30."
                 );
 
             } else {

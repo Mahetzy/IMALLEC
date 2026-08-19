@@ -27,10 +27,28 @@ export default function LogIn() {
             return;
         }
 
+        const trimmedEmail = email.trim().toLowerCase();
+
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmedEmail)) {
+            Alert.alert(
+                "Invalid email",
+                "Please enter a valid email address."
+            );
+            return;
+        }
+
+        if (password.length < 8 || password.length > 30) {
+            Alert.alert(
+                "Invalid password",
+                "The password must have at least 8 characters and no more than 30."
+            );
+            return;
+        }
+
         try {
             await signInWithEmailAndPassword(
                 auth,
-                email,
+                trimmedEmail,
                 password
             );
 
