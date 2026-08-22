@@ -36,10 +36,14 @@ export default function LogIn() {
 
             Alert.alert(
                 "Successful login",
-                "Welcome back!"
+                "Welcome back!",
+                [
+                    {
+                        text: "Continue",
+                        onPress: () => router.push('/walletActivation')
+                    }
+                ]
             );
-
-            router.push('/mainScreen')
 
         } catch (error) {
             const code = error.code;
