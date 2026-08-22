@@ -5,7 +5,7 @@ import Svg, { Defs, RadialGradient, Stop, Rect } from 'react-native-svg';
 import { useRouter } from "expo-router";
 import { sendPasswordResetEmail, signInWithEmailAndPassword } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
-import { auth, db } from "../firebase/config";
+import { auth, db } from "../firebase/config.js";
 import { styles } from "../Styles/forgotPassword.style";
 
 
