@@ -4,12 +4,11 @@ export const styles = StyleSheet.create({
 
     container: {
         flexGrow: 1,
-        paddingHorizontal: 20,
-        paddingVertical: 30,
+        paddingHorizontal: 25,
+        paddingVertical: 35,
         justifyContent: "center",
         backgroundColor: "#013a7a",
-        paddingTop: 70,
-        marginTop: -30,
+        paddingTop: 30,
     },
 
     logo: {
@@ -17,37 +16,51 @@ export const styles = StyleSheet.create({
         height: 85,
         alignSelf: "center",
         resizeMode: "contain",
-        marginBottom: 110,
+        marginBottom: 150,
         marginLeft: 235,
     },
 
     title: {
-        fontSize: 57,
+        fontSize: 75,
         fontWeight: "bold",
         textAlign: "center",
         color: "#ffffff",
-        marginBottom: 10,
-        padding: 1
+        marginBottom: 30,
+        marginTop: -30,
+        padding:10
     },
+
     subtitle: {
         paddingTop: 30,
         fontSize: 20,
         textAlign: "center",
         color: "#ffffff",
-        marginBottom: 25,
-       
+        marginBottom: 30,
+        
     },
 
+
     login: {
-        paddingTop: 1,
+        paddingTop: 20,
         fontSize: 15,
         textAlign: "center",
         color: "#ffffff",
-        marginBottom: 120,
+        marginBottom: 70,
         fontWeight: "bold",
     },
 
+    password: {
+        paddingTop: 25,
+        fontSize: 15,
+        textAlign: "center",
+        color: "#ffffff",
+        marginBottom: -45,
+        fontWeight: "normal",
+    },
 
+
+
+    
 
     inputContainer: {
         marginLeft: 20,
@@ -64,17 +77,18 @@ export const styles = StyleSheet.create({
 
     },
 
-    icon: {
-        marginLeft: 18,
-        marginRight: 5,
-    },
-
     input: {
         flex: 1,
         height: 55,
         paddingHorizontal: 10,
         fontSize: 15,
         color: "#0e0d0d",
+        
+    },
+
+    icon: {
+        marginLeft: 18,
+        marginRight: 5,
     },
 
     inputFocused: {
@@ -89,14 +103,14 @@ export const styles = StyleSheet.create({
         borderRadius: 75,
         justifyContent: "center",
         alignItems: "center",
-        marginTop: 15,
+        marginTop: 100,
         elevation: 3,
     },
 
     buttonText: {
         color: "#FFFFFF",
         fontSize: 25,
-
+        
     },
 
     footer: {
@@ -105,14 +119,14 @@ export const styles = StyleSheet.create({
         color: "#6B7280",
         fontSize: 13,
     },
-
+    
     linkText: {
-        marginTop: 15,
-        paddingVertical: 15,
-        alignSelf: 'center',
-        color: '#fff',
-        fontWeight: 'bold',
-        fontSize: 20,
-    },
+    marginTop: 5,
+    paddingVertical: 15,
+    alignSelf: 'center',
+    color: '#fff', 
+    fontWeight: 'bold',
+    fontSize: 25,
+  },
 
 });

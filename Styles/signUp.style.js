@@ -2,15 +2,14 @@ import { StyleSheet } from "react-native";
 
 export const styles = StyleSheet.create({
 
-    
-
     container: {
         flexGrow: 1,
-        paddingHorizontal: 25,
-        paddingVertical: 35,
+        paddingHorizontal: 20,
+        paddingVertical: 30,
         justifyContent: "center",
         backgroundColor: "#013a7a",
-        paddingTop: 30,
+        paddingTop: 70,
+        marginTop: -30,
     },
 
     logo: {
@@ -18,51 +17,36 @@ export const styles = StyleSheet.create({
         height: 85,
         alignSelf: "center",
         resizeMode: "contain",
-        marginBottom: 150,
+        marginBottom: 110,
         marginLeft: 235,
     },
 
     title: {
-        fontSize: 75,
+        fontSize: 57,
         fontWeight: "bold",
         textAlign: "center",
         color: "#ffffff",
-        marginBottom: 30,
-        marginTop: -30,
-        padding:10
+        marginBottom: 10,
+        padding: 1
     },
-
     subtitle: {
         paddingTop: 30,
         fontSize: 20,
         textAlign: "center",
         color: "#ffffff",
-        marginBottom: 30,
-        
+        marginBottom: 25,
     },
 
-
     login: {
-        paddingTop: 20,
+        paddingTop: 1,
         fontSize: 15,
         textAlign: "center",
         color: "#ffffff",
-        marginBottom: 70,
+        marginBottom: 120,
         fontWeight: "bold",
     },
 
-    password: {
-        paddingTop: 25,
-        fontSize: 15,
-        textAlign: "center",
-        color: "#ffffff",
-        marginBottom: -45,
-        fontWeight: "normal",
-    },
 
-
-
-    
 
     inputContainer: {
         marginLeft: 20,
@@ -79,18 +63,17 @@ export const styles = StyleSheet.create({
 
     },
 
+    icon: {
+        marginLeft: 18,
+        marginRight: 5,
+    },
+
     input: {
         flex: 1,
         height: 55,
         paddingHorizontal: 10,
         fontSize: 15,
         color: "#0e0d0d",
-        
-    },
-
-    icon: {
-        marginLeft: 18,
-        marginRight: 5,
     },
 
     inputFocused: {
@@ -105,14 +88,14 @@ export const styles = StyleSheet.create({
         borderRadius: 75,
         justifyContent: "center",
         alignItems: "center",
-        marginTop: 100,
+        marginTop: 15,
         elevation: 3,
     },
 
     buttonText: {
         color: "#FFFFFF",
         fontSize: 25,
-        
+
     },
 
     footer: {
@@ -121,14 +104,14 @@ export const styles = StyleSheet.create({
         color: "#6B7280",
         fontSize: 13,
     },
-    
+
     linkText: {
-    marginTop: 5,
-    paddingVertical: 15,
-    alignSelf: 'center',
-    color: '#fff', 
-    fontWeight: 'bold',
-    fontSize: 25,
-  },
+        marginTop: 15,
+        paddingVertical: 15,
+        alignSelf: 'center',
+        color: '#fff',
+        fontWeight: 'bold',
+        fontSize: 20,
+    },
 
 });
