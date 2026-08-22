@@ -255,4 +255,4 @@ export default function signUp() {
 
         </View>
     );
-};
+};  
