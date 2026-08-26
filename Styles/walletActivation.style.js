@@ -2,6 +2,45 @@ import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
   container: {
+<<<<<<< HEAD
+<<<<<<< HEAD
+    flex: 1,
+    paddingHorizontal: 25,
+    paddingTop: 50,
+    backgroundColor: '#00162F',
+  },
+  logo: {
+    width: 150,
+        height: 85,
+        alignSelf: "center",
+        resizeMode: "contain",
+        marginBottom: 50,
+        marginLeft: 235,
+  },
+  title: {
+    fontSize: 46,
+    color: '#ffffff',
+    fontWeight: '300',
+    marginBottom: 40,
+    lineHeight: 54,
+  },
+  buttonTextSelection: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#004695',
+    borderRadius: 16,
+    paddingVertical: 25,
+    paddingHorizontal: 25,
+    marginBottom: 30,
+    borderColor: '#004695',
+    borderWidth: 1,
+  },
+  selected: {
+    borderColor: '#ffffff',
+    backgroundColor: '#000000',
+=======
+=======
+>>>>>>> 855d30233e985334d23193cd7db1d9e861f739b1
     flexGrow: 1,
     paddingHorizontal: 20,
     paddingVertical: 30,
@@ -32,10 +71,26 @@ export const styles = StyleSheet.create({
     paddingVertical: 15,
     paddingHorizontal: 20,
     marginBottom: 15,
+<<<<<<< HEAD
+>>>>>>> 3229fe01eecf09a7c7a1ddf4569afc0913b6da44
+=======
+>>>>>>> 855d30233e985334d23193cd7db1d9e861f739b1
   },
   icon: {
     marginRight: 15,
   },
+<<<<<<< HEAD
+<<<<<<< HEAD
+  buttonText: {
+    color: '#ffffff',
+    fontSize: 16,
+    fontWeight: '500',
+    flex: 1,
+  },
+});
+=======
+=======
+>>>>>>> 855d30233e985334d23193cd7db1d9e861f739b1
   textContainer: {
     flex: 1,
   },
@@ -77,3 +132,7 @@ export const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
 });
+<<<<<<< HEAD
+>>>>>>> 3229fe01eecf09a7c7a1ddf4569afc0913b6da44
+=======
+>>>>>>> 855d30233e985334d23193cd7db1d9e861f739b1
