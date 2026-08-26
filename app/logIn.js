@@ -39,7 +39,7 @@ export default function LogIn() {
                 "Welcome back!"
             );
 
-            router.push('/link_check');
+            router.push('/mainScreen')
 
         } catch (error) {
             const code = error.code;

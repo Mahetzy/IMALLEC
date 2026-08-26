@@ -4,7 +4,7 @@ import { useState } from "react";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
 import { auth, db } from "../firebase/config";
-import { styles } from "../Styles/signUP.style";
+import { styles } from "../Styles/signUp.style";
 import Svg, { Path } from 'react-native-svg';
 import { router } from 'expo-router';
 
