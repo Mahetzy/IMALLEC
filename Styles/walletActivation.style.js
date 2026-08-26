@@ -2,8 +2,6 @@ import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
   container: {
-<<<<<<< HEAD
-<<<<<<< HEAD
     flex: 1,
     paddingHorizontal: 25,
     paddingTop: 50,
@@ -38,9 +36,6 @@ export const styles = StyleSheet.create({
   selected: {
     borderColor: '#ffffff',
     backgroundColor: '#000000',
-=======
-=======
->>>>>>> 855d30233e985334d23193cd7db1d9e861f739b1
     flexGrow: 1,
     paddingHorizontal: 20,
     paddingVertical: 30,
@@ -71,16 +66,10 @@ export const styles = StyleSheet.create({
     paddingVertical: 15,
     paddingHorizontal: 20,
     marginBottom: 15,
-<<<<<<< HEAD
->>>>>>> 3229fe01eecf09a7c7a1ddf4569afc0913b6da44
-=======
->>>>>>> 855d30233e985334d23193cd7db1d9e861f739b1
   },
   icon: {
     marginRight: 15,
   },
-<<<<<<< HEAD
-<<<<<<< HEAD
   buttonText: {
     color: '#ffffff',
     fontSize: 16,
@@ -88,49 +77,6 @@ export const styles = StyleSheet.create({
     flex: 1,
   },
 });
-=======
-=======
->>>>>>> 855d30233e985334d23193cd7db1d9e861f739b1
-  textContainer: {
-    flex: 1,
-  },
-  cardTitle: {
-    color: '#ffffff',
-    fontSize: 16,
-    fontWeight: '600',
-  },
-  cardSubtitle: {
-    color: '#d0d0d0',
-    fontSize: 12,
-  },
-  radioOuter: {
-    height: 22,
-    width: 22,
-    borderRadius: 11,
-    borderWidth: 2,
-    borderColor: '#ffffff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  radioInner: {
-    height: 12,
-    width: 12,
-    borderRadius: 6,
-    backgroundColor: '#ffffff',
-  },
-  button: {
-    backgroundColor: '#e6e6e6',
-    borderRadius: 25,
-    paddingVertical: 14,
-    alignItems: 'center',
-    marginTop: 20,
-    marginHorizontal: 20,
-  },
-  buttonText: {
-    color: '#013a7a',
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
 });
 <<<<<<< HEAD
 >>>>>>> 3229fe01eecf09a7c7a1ddf4569afc0913b6da44
