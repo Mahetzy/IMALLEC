@@ -27,7 +27,7 @@ export const styles = StyleSheet.create({
         color: "#ffffff",
         marginBottom: 30,
         marginTop: -30,
-        padding:10
+        padding: 10
     },
 
     subtitle: {
@@ -36,7 +36,7 @@ export const styles = StyleSheet.create({
         textAlign: "center",
         color: "#ffffff",
         marginBottom: 30,
-        
+
     },
 
 
@@ -60,7 +60,7 @@ export const styles = StyleSheet.create({
 
 
 
-    
+
 
     inputContainer: {
         marginLeft: 20,
@@ -83,7 +83,7 @@ export const styles = StyleSheet.create({
         paddingHorizontal: 10,
         fontSize: 15,
         color: "#0e0d0d",
-        
+
     },
 
     icon: {
@@ -110,7 +110,7 @@ export const styles = StyleSheet.create({
     buttonText: {
         color: "#FFFFFF",
         fontSize: 25,
-        
+
     },
 
     footer: {
@@ -119,14 +119,14 @@ export const styles = StyleSheet.create({
         color: "#6B7280",
         fontSize: 13,
     },
-    
+
     linkText: {
-    marginTop: 5,
-    paddingVertical: 15,
-    alignSelf: 'center',
-    color: '#fff', 
-    fontWeight: 'bold',
-    fontSize: 25,
-  },
+        marginTop: 5,
+        paddingVertical: 15,
+        alignSelf: 'center',
+        color: '#fff',
+        fontWeight: 'bold',
+        fontSize: 25,
+    },
 
 });

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { LogIn } from './app/logIn';
 import { signUp } from './app/signUp';
+import { Welcome } from './app/welcome';
 
 export default function App() {
   const [currentScreen, setCurrentScreen] = useState('logIn');
