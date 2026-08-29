@@ -77,8 +77,4 @@ export const styles = StyleSheet.create({
     flex: 1,
   },
 });
-});
-<<<<<<< HEAD
->>>>>>> 3229fe01eecf09a7c7a1ddf4569afc0913b6da44
-=======
->>>>>>> 855d30233e985334d23193cd7db1d9e861f739b1
+
