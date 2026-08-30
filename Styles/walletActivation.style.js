@@ -36,12 +36,10 @@ export const styles = StyleSheet.create({
   selected: {
     borderColor: '#ffffff',
     backgroundColor: '#000000',
-    flexGrow: 1,
     paddingHorizontal: 20,
-    paddingVertical: 30,
+    paddingVertical: 25,
     justifyContent: 'center',
-    backgroundColor: '#013a7a',
-    paddingTop: 70,
+    paddingTop: 25,
   },
   title: {
     fontSize: 22,

@@ -1,131 +1,190 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
 
     container: {
-        flexGrow: 1,
-        paddingHorizontal: 25,
-        paddingVertical: 35,
-        justifyContent: "center",
-        backgroundColor: "#013a7a",
-        paddingTop: 30,
-    },
-
-    logo: {
-        width: 150,
-        height: 85,
-        alignSelf: "center",
-        resizeMode: "contain",
-        marginBottom: 210,
-        marginLeft: 235,
-    },
-
-    title: {
-        fontSize: 55,
-        fontWeight: "bold",
-        textAlign: "center",
-        color: "#ffffff",
-        marginBottom: 300,
-        padding:30
-    },
-
-    subtitle: {
-        paddingTop: 30,
-        fontSize: 20,
-        textAlign: "center",
-        color: "#ffffff",
-        marginBottom: 30,
-        fontWeight: "bold",
-    },
-
-
-    login: {
-        paddingTop: 10,
-        fontSize: 15,
-        textAlign: "center",
-        color: "#ffffff",
-        marginBottom: 30,
-        fontWeight: "bold",
-    },
-
-    password: {
-        paddingTop: 25,
-        fontSize: 15,
-        textAlign: "center",
-        color: "#ffffff",
-        marginBottom: -45,
-        fontWeight: "bold",
-    },
-
-
-
-    
-
-    inputContainer: {
-        marginLeft: 20,
-        marginRight: 20,
-        height: 55,
-        backgroundColor: "#FFFFFF",
-        borderWidth: 1,
-        borderColor: "#D1D5DB",
-        borderRadius: 75,
-        flexDirection: "row",
-        alignItems: "center",
-        marginBottom: 12,
-        marginTop: 20,
-
-    },
-
-    input: {
         flex: 1,
-        height: 55,
-        paddingHorizontal: 10,
-        fontSize: 15,
-        color: "#0e0d0d",
-        
+        backgroundColor: '#FFFFFF',
     },
 
-    icon: {
-        marginLeft: 18,
+    map: {
+        width: '100%',
+        height: '100%',
+    },
+
+    topBar: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        height: 55,
+        backgroundColor: '#061B2D',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        paddingHorizontal: 12,
+    },
+
+    menuButton: {
+        width: 40,
+        height: 40,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+
+    logoText: {
+        color: 'white',
+        fontSize: 11,
+        fontWeight: 'bold',
+        letterSpacing: 2,
         marginRight: 5,
     },
 
-    inputFocused: {
-        borderColor: "#2563EB",
+    walletCard: {
+        position: 'absolute',
+        top: 70,
+        left: 10,
+        right: 10,
+        backgroundColor: '#061B2D',
+        borderRadius: 5,
+        paddingVertical: 7,
+        paddingHorizontal: 10,
+        elevation: 5,
     },
 
-    button: {
-        marginLeft: 30,
-        marginRight: 30,
-        height: 70,
-        backgroundColor: "#004695",
-        borderRadius: 75,
-        justifyContent: "center",
-        alignItems: "center",
-        marginTop: 140,
+    walletText: {
+        color: 'white',
+        fontSize: 13,
+        fontWeight: 'bold',
+    },
+
+    greenText: {
+        color: '#37D35B',
+        fontSize: 14,
+    },
+
+    distanceText: {
+        color: 'white',
+        fontSize: 9,
+        marginTop: 2,
+    },
+
+    mapMarker: {
+        position: 'absolute',
+        top: '42%',
+        left: '50%',
+        marginLeft: -18,
+        marginTop: -18,
+        width: 36,
+        height: 36,
+        borderRadius: 20,
+        backgroundColor: 'white',
+        borderWidth: 3,
+        borderColor: '#102A43',
+        justifyContent: 'center',
+        alignItems: 'center',
+        elevation: 5,
+    },
+
+    locationButton: {
+        position: 'absolute',
+        right: 15,
+        bottom: 70,
+        width: 48,
+        height: 48,
+        borderRadius: 25,
+        backgroundColor: '#061B2D',
+        justifyContent: 'center',
+        alignItems: 'center',
+        elevation: 5,
+    },
+
+    addressCard: {
+        position: 'absolute',
+        left: 8,
+        right: 8,
+        bottom: 8,
+        backgroundColor: '#061B2D',
+        borderRadius: 5,
+        padding: 9,
+    },
+
+    addressRow: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginBottom: 3,
+    },
+
+    addressTitle: {
+        color: 'white',
+        fontSize: 11,
+        fontWeight: 'bold',
+        marginLeft: 4,
+    },
+
+    addressText: {
+        color: 'white',
+        fontSize: 8,
+        lineHeight: 11,
+    },
+
+    lockButton: {
+        position: 'absolute',
+        right: 15,
+        bottom: 18,
+        width: 38,
+        height: 38,
+        borderRadius: 20,
+        backgroundColor: '#061B2D',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+
+    menuOverlay: {
+        position: 'absolute',
+        top: 0,
+        right: 0,
+        bottom: 0,
+        width: '72%',
+        backgroundColor: '#F7F7F7',
+        paddingTop: 50,
+        paddingHorizontal: 12,
+        elevation: 10,
+    },
+
+    closeButton: {
+        position: 'absolute',
+        top: 10,
+        left: 10,
+        width: 40,
+        height: 40,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+
+    menuTitle: {
+        color: '#555555',
+        fontSize: 14,
+        marginLeft: 50,
+        marginBottom: 15,
+    },
+
+    menuItem: {
+        height: 48,
+        backgroundColor: '#061B2D',
+        borderRadius: 10,
+        marginBottom: 12,
+        paddingHorizontal: 10,
+        flexDirection: 'row',
+        alignItems: 'center',
         elevation: 3,
     },
 
-    buttonText: {
-        color: "#FFFFFF",
-        fontSize: 25,
-        
+    menuItemText: {
+        color: 'white',
+        fontSize: 11,
+        marginLeft: 10,
+        fontWeight: '500',
     },
-
-    footer: {
-        textAlign: "center",
-        marginTop: 20,
-        color: "#6B7280",
-        fontSize: 13,
-    },
-    
-    linkText: {
-    marginTop: 5,
-    paddingVertical: 15,
-    alignSelf: 'center',
-    color: '#fff', 
-    fontWeight: 'bold',
-    fontSize: 25,
-  },
 
 });
