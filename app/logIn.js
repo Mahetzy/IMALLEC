@@ -1,7 +1,7 @@
 import { Text, View, Image, TextInput, Pressable, Alert, StyleSheet, } from "react-native";
 import { useState } from "react";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { doc, setDoc } from "firebase/firestore";
+import { doc, getDoc } from "firebase/firestore";
 import { auth, db } from "../firebase/config";
 import { styles } from "../Styles/logIn.style";
 import Svg, { Path } from 'react-native-svg';
@@ -28,11 +28,15 @@ export default function LogIn() {
         }
 
         try {
-            await signInWithEmailAndPassword(
+            const userCredential = await signInWithEmailAndPassword(
                 auth,
                 email,
                 password
             );
+            const uid = userCredential.user.uid;
+
+            const userSnap = await getDoc(doc(db, "Usuarios", uid));
+            const userData = userSnap.exists() ? userSnap.data() : null;
 
             Alert.alert(
                 "Successful login",
@@ -40,6 +44,8 @@ export default function LogIn() {
             );
 
             router.push('/linkCheck');
+
+            return ({ authUser: userCredential.user, userData });
 
         } catch (error) {
             const code = error.code;
