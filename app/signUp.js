@@ -87,7 +87,7 @@ export default function signUp() {
                 [
                     {
                         text: "OK",
-                        onPress: () => router.push('/mainScreen'),
+                        onPress: () => router.push('/linkCheck'),
                     }
                 ]
             );

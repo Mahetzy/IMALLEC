@@ -1,9 +1,9 @@
 import React from 'react';
 import { View,Text, TouchableOpacity, StyleSheet } from 'react-native';
-import {createDrawerNavigator, DrawerContentScrollView } from '@react-native/drawer';
+import {createDrawerNavigator, DrawerContentScrollView } from '@react-navigation/drawer';
 import { NavigationContainer } from '@react-navigation/native';
-import { Ionicons } from '@vector-icons/ionicons';
-import { styles } from '../Styles/link_check.style';
+import { Ionicons } from '@expo/vector-icons';
+import { styles } from '../Styles/linkCheck.style';
 
 const LockScreen = () => (
     <View style = {styles.center}><Text>Lock Configuration</Text></View>

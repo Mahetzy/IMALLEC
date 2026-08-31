@@ -58,7 +58,7 @@ export default function Welcome() {
 
             <Text style={{ color: "white", fontSize: 18 }}>
                 Your wallet, always safe!
-            </Text>;
+            </Text>
 
             <Pressable
                 style={{
@@ -68,9 +68,9 @@ export default function Welcome() {
                     borderRadius: 75,
                     margin: 10,
                     width: 300,
-                }}
+                }} onPress={() => router.push('/signUp')}
             >
-                <Text style={{ color: "white", fontSize: 20, fontWeight: "bold", paddingHorizontal: 60 }} onPress={() => router.push('/signUp')}>
+                <Text style={{ color: "white", fontSize: 20, fontWeight: "bold", paddingHorizontal: 60, alignSelf: "center" }}>
                     Sign Up
                 </Text>
             </Pressable>
@@ -84,9 +84,9 @@ export default function Welcome() {
                     borderRadius: 75,
                     margin: 10,
                     width: 300,
-                }}
+                }} onPress={() => router.push('/logIn')}
             >
-                <Text style={{ color: "white", fontSize: 20, fontWeight: "bold", paddingHorizontal: 60 }} onPress={() => router.push('/logIn')}>
+                <Text style={{ color: "white", fontSize: 20, fontWeight: "bold", paddingHorizontal: 60, alignSelf: "center" }}>
                     Log In
                 </Text>
             </Pressable>
