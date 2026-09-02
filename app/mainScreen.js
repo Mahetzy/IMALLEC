@@ -9,6 +9,7 @@ export default function LocationWallet() {
     const [menuVisible, setMenuVisible] = useState(false);
     const router = useRouter();
 
+
     return (
         <View style={styles.container}>
 

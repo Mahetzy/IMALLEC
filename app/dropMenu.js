@@ -1,38 +1,26 @@
 import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
-import { createDrawerNavigator, DrawerContentScrollView } from '@react-navigation/drawer';
-import { NavigationContainer } from '@react-navigation/native';
+import { Drawer } from 'expo-router/drawer';
+import { router } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { styles } from '../Styles/dropMenu.style';
 
-const LockScreen = () => (
-    <View style={styles.center}><Text>Lock Configuration</Text></View>
-);
-const GuideScreen = () => (
-    <View style={styles.center}><Text>Guide and Recommendations</Text></View>
-);
-const ConfigScreen = () => (
-    <View style={styles.center}><Text>Configuration</Text></View>
-);
-const TermsScreen = () => (
-    <View style={styles.center}><Text>Term and Conditions</Text></View>
-);
-
-const CustumDrawerContent = (props) => {
-    const { navigation } = props;
-
+const CustomDrawerContent = (props) => {
     return (
-        <DrawerContentScrollView {...props} style={styles.drawerContainer}>
+        <View style={styles.drawerContainer}>
             <TouchableOpacity
                 style={styles.closeButton}
-                onPress={() => navigation.closeDrawer()}
+                onPress={() => props.navigation.closeDrawer()}
             >
                 <Ionicons name="close" size={28} color="#000" />
             </TouchableOpacity>
 
             <TouchableOpacity
                 style={styles.menuItem}
-                onPress={() => navigation.navigate('Lock Configuration')}
+                onPress={() => {
+                    props.navigation.closeDrawer();
+                    router.push('/lock-config');
+                }}
             >
                 <Ionicons name="lock-closed-outline" size={20} color="#FFF" style={styles.icon} />
                 <Text style={styles.menuText}>Lock configuration</Text>
@@ -40,7 +28,10 @@ const CustumDrawerContent = (props) => {
 
             <TouchableOpacity
                 style={styles.menuItem}
-                onPress={() => navigation.navigate('Guide')}
+                onPress={() => {
+                    props.navigation.closeDrawer();
+                    router.push('/guide');
+                }}
             >
                 <Ionicons name="book-outline" size={20} color="#FFF" style={styles.icon} />
                 <Text style={styles.menuText}>Guide and Recommendations</Text>
@@ -48,7 +39,10 @@ const CustumDrawerContent = (props) => {
 
             <TouchableOpacity
                 style={styles.menuItem}
-                onPress={() => navigation.navigate('Configuration')}
+                onPress={() => {
+                    props.navigation.closeDrawer();
+                    router.push('/configuration');
+                }}
             >
                 <Ionicons name="settings-outline" size={20} color="#FFF" style={styles.icon} />
                 <Text style={styles.menuText}>Configuration</Text>
@@ -56,33 +50,44 @@ const CustumDrawerContent = (props) => {
 
             <TouchableOpacity
                 style={styles.menuItem}
-                onPress={() => navigation.navigate('Terms')}
+                onPress={() => {
+                    props.navigation.closeDrawer();
+                    router.push('/terminosAndConditions');
+                }}
             >
                 <Ionicons name="document-text-outline" size={20} color="#FFF" style={styles.icon} />
                 <Text style={styles.menuText}>Terms and Conditions</Text>
             </TouchableOpacity>
-        </DrawerContentScrollView>
+        </View>
     );
 };
 
-const Drawer = createDrawerNavigator();
-
-export default function App() {
+export default function DropMenuLayout() {
     return (
-        <NavigationContainer independent={true}>
-            <Drawer.Navigator
-                drawerContent={(props) => <CustumDrawerContent {...props} />}
-                screenOptions={{
-                    drawerStyle: { width: '80%', backgroundColor: '#FFF' },
-                    drawerPosition: 'left',
-                    headerShown: true,
-                }}
-            >
-                <Drawer.Screen name="Lock Configuration" component={LockScreen} />
-                <Drawer.Screen name="Guide" component={GuideScreen} />
-                <Drawer.Screen name="Configuration" component={ConfigScreen} />
-                <Drawer.Screen name="Terms" component={TermsScreen} />
-            </Drawer.Navigator>
-        </NavigationContainer>
+        <Drawer
+            drawerContent={(props) => <CustomDrawerContent {...props} />}
+            screenOptions={{
+                drawerStyle: { width: '80%', backgroundColor: '#FFF' },
+                drawerPosition: 'left',
+                headerShown: true,
+            }}
+        >
+            <Drawer.Screen 
+                name="lock-config" 
+                options={{ title: 'Lock Configuration' }} 
+            />
+            <Drawer.Screen 
+                name="guide" 
+                options={{ title: 'Guide and Recommendations' }} 
+            />
+            <Drawer.Screen 
+                name="configuration" 
+                options={{ title: 'Configuration' }} 
+            />
+            <Drawer.Screen 
+                name="terms" 
+                options={{ title: 'Terms and Conditions' }} 
+            />
+        </Drawer>
     );
 }

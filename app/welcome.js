@@ -6,6 +6,7 @@ import { styles } from "../Styles/welcome.style";
 import Svg, { Circle, Path } from 'react-native-svg';
 import { useRouter } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
+import { Drawer } from 'expo-router/drawer';
 
 export default function Welcome() {
     const router = useRouter();
@@ -45,11 +46,6 @@ export default function Welcome() {
                 />
             </Svg>
 
-            {/* Hey Bonilla! Desde aqui son en su mayoria estilos placeholder, los de arriba estan ya mas o menos 
-                hechos; crea e importa los finales desde welcome.style.js y cambialos para reemplazar los placeholders.
-                PD: Los botones de despues de "continue with" buscale las imagenes tambien */}
-
-            {/* Va yo lo hago :)*/}
 
             <Image
                 source={require("../assets/IMALLEC.png.png")}
