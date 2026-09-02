@@ -3,7 +3,6 @@ import { useState } from "react";
 import { doc, setDoc } from "firebase/firestore";
 import { auth, db } from "../firebase/config";
 import { styles } from "../Styles/confirmacionBloqueo.style";
-import Svg, { Circle, Path } from 'react-native-svg';
 import { useRouter } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 
@@ -25,10 +24,10 @@ export default function Welcome() {
                 />
                 <Text style={styles.title}>
                     Are you sure you want to lock the wallet?
-                </Text>;
+                </Text>
                 <Text style={styles.subtitle}>
                     This action will lock your wallet and you won’t be able to use it until you unlock it
-                </Text>;
+                </Text>
 
                 <Pressable
                     style={{
