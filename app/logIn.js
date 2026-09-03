@@ -7,7 +7,7 @@ import { styles } from "../Styles/logIn.style";
 import Svg, { Path } from 'react-native-svg';
 import { useRouter } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
-
+import { saveUser } from "../utils/storage";
 
 
 export default function LogIn() {
@@ -43,9 +43,9 @@ export default function LogIn() {
                 "Welcome back!"
             );
 
-            router.push('/linkCheck');
+            await saveUser(userData);
 
-            return ({ authUser: userCredential.user, userData });
+            router.push('/linkCheck');
 
         } catch (error) {
             const code = error.code;
