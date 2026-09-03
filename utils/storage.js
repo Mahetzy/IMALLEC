@@ -26,28 +26,28 @@ export const removeUser = async () => {
     }
 };
 
-export const saveWallet = async (walletId) => {
+export const saveWallet = async (walletData) => {
     try {
-        await AsyncStorage.setItem("walletId", walletId);
+        await AsyncStorage.setItem("wallet", JSON.stringify(walletData));
     } catch (error) {
-        console.error("Error saving wallet ID to storage:", error);
+        console.error("Error saving wallet to storage:", error);
     }
 };
 
 export const getWallet = async () => {
     try {
-        const walletId = await AsyncStorage.getItem("walletId");
-        return walletId;
+        const wallet = await AsyncStorage.getItem("wallet");
+        return wallet ? JSON.parse(wallet) : null;
     } catch (error) {
-        console.error("Error getting wallet ID from storage:", error);
+        console.error("Error getting wallet from storage:", error);
         return null;
     }
 };
 
 export const removeWallet = async () => {
     try {
-        await AsyncStorage.removeItem("walletId");
+        await AsyncStorage.removeItem("wallet");
     } catch (error) {
-        console.error("Error removing wallet ID from storage:", error);
+        console.error("Error removing wallet from storage:", error);
     }
 };
