@@ -1,6 +1,5 @@
-import React from 'react';
-import GuideRecomendation from './GuideRecomendation';
+import { Redirect } from 'expo-router';
  
-export default function App() {
-    return <GuideRecomendation />;
+export default function Index() {
+  return <Redirect href="/login" />;
 }
