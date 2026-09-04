@@ -143,7 +143,7 @@ export const styles = StyleSheet.create({
     menuOverlay: {
         position: 'absolute',
         top: 0,
-        right: 0,
+        right: 120,
         bottom: 0,
         width: '72%',
         backgroundColor: '#F7F7F7',
@@ -175,6 +175,7 @@ export const styles = StyleSheet.create({
         borderRadius: 10,
         marginBottom: 12,
         paddingHorizontal: 10,
+        marginTop: 5,
         flexDirection: 'row',
         alignItems: 'center',
         elevation: 3,

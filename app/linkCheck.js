@@ -53,7 +53,6 @@ export default function LinkCheck() {
         checkWalletLink();
     }, [user]);
 
-    checkWalletLink();
 
     return (
 
