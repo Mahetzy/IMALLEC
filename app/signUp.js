@@ -14,6 +14,7 @@ export default function signUp() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [password2, setPassword2] = useState("");
+    const [isChecked, setIsChecked] = useState(false);
 
 
     const signUpUsuario = async () => {
@@ -30,6 +31,9 @@ export default function signUp() {
         }
 
 
+
+
+
         // Validar contraseña
         if (password.length < 6) {
 
@@ -41,7 +45,7 @@ export default function signUp() {
             return;
         }
 
-        if(password !== password2) {
+        if (password !== password2) {
             Alert.alert(
                 "Password mismatch",
                 "The passwords do not match."
@@ -50,9 +54,17 @@ export default function signUp() {
             return;
         }
 
+        if (!isChecked) {
+            Alert.alert(
+                "Terms and Conditions",
+                "You must accept the terms and conditions to continue."
+            );
+            return;
+        }
+
         try {
 
-            
+
             const userCredential =
                 await createUserWithEmailAndPassword(
                     auth,
@@ -64,7 +76,7 @@ export default function signUp() {
             const user = userCredential.user;
 
 
-            
+
             await setDoc(
                 doc(db, "Usuarios", user.uid),
                 {
@@ -88,7 +100,7 @@ export default function signUp() {
                 [
                     {
                         text: "OK",
-                        onPress: () => router.push('/logIn'),
+                        onPress: () => router.push('/linkCheck'),
                     }
                 ]
             );
@@ -228,6 +240,20 @@ export default function signUp() {
                     value={password2}
                     onChangeText={setPassword2}
                 />
+            </View>
+            <View style={styles.termsRow}>
+                <Pressable
+                    style={[styles.checkbox, isChecked && styles.checkboxChecked]}
+                    onPress={() => setIsChecked(!isChecked)}
+                >
+                    {isChecked && <Ionicons name="checkmark" size={14} color="#FFF" />}
+                </Pressable>
+
+                <Text style={styles.label}>I accept the </Text>
+
+                <Pressable onPress={() => router.push('/terminosAndConditions')}>
+                    <Text style={styles.linkText}>Terms and Conditions</Text>
+                </Pressable>
             </View>
 
 

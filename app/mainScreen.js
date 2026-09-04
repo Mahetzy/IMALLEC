@@ -118,7 +118,7 @@ export default function LocationWallet() {
 
             {menuVisible && (
                 <View style={styles.menuOverlay}>
-
+                    
                     <TouchableOpacity
                         style={styles.closeButton}
                         onPress={() => setMenuVisible(false)}
@@ -134,25 +134,15 @@ export default function LocationWallet() {
                         Menú
                     </Text>
 
-                    <TouchableOpacity style={styles.menuItem}>
-                        <Ionicons
-                            name="home"
-                            size={22}
-                            color="white"
-                        />
-                        <Text style={styles.menuItemText}>
-                            Home
-                        </Text>
-                    </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.menuItem}>
+                    <TouchableOpacity style={styles.menuItem} onPress={() => router.push('/GuideRecomendation')}>
                         <Ionicons
                             name="book"
                             size={22}
                             color="white"
                         />
                         <Text style={styles.menuItemText}>
-                            Guía y{"\n"}recomendaciones
+                            Guide and Recommendations
                         </Text>
                     </TouchableOpacity>
 
@@ -163,19 +153,20 @@ export default function LocationWallet() {
                             color="white"
                         />
                         <Text style={styles.menuItemText}>
-                            Configuración
+                            Configuration
                         </Text>
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.menuItem}>
+                    <TouchableOpacity style={styles.menuItem} onPress={() => router.push('/terminosAndConditions')}>
                         <Ionicons
                             name="document-text"
                             size={22}
                             color="white"
                         />
                         <Text style={styles.menuItemText}>
-                            Términos y{"\n"}condiciones
+                            Terms and Conditions
                         </Text>
+                        
                     </TouchableOpacity>
 
                 </View>

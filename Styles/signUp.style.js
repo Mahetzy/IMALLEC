@@ -113,5 +113,87 @@ export const styles = StyleSheet.create({
         fontWeight: 'bold',
         fontSize: 20,
     },
+    checkboxContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginBottom: 20,
+    },
+    checkbox: {
+        width: 24,
+        height: 24,
+        borderWidth: 2,
+        borderColor: '#003673',
+        borderRadius: 4,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginRight: 10,
+        backgroundColor: '#FFF',
+        marginLeft: 50,
+    },
+    checkboxChecked: {
+        backgroundColor: '#003673',
+    },
+    termsRow: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        flexWrap: 'wrap',
+        marginVertical: 15,
+    },
+    label: {
+        fontSize: 14,
+        color: '#ffffff',
+    },
+    linkText: {
+        fontSize: 14,
+        color: '#003673',
+        fontWeight: 'bold',
+        textDecorationLine: 'underline',
+    },
+    menu: {
+        width: "78%",
+        height: "100%",
+        backgroundColor: "#FFFFFF",
+        paddingTop: 40,
+        paddingHorizontal: 55,
+    },
 
+    cerrar: {
+        fontSize: 45,
+        color: "#06264A",
+        marginBottom: 45,
+    },
+
+    boton: {
+        height: 78,
+        backgroundColor: "#06264A",
+        borderRadius: 18,
+        marginBottom: 28,
+        flexDirection: "row",
+        alignItems: "center",
+        paddingHorizontal: 20,
+
+        elevation: 5,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 3,
+            height: 4,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+    },
+
+    icono: {
+        width: 45,
+        fontSize: 30,
+        color: "#000000",
+        textAlign: "center",
+        marginRight: 15,
+    },
+
+    texto: {
+        color: "#FFFFFF",
+        fontSize: 19,
+        fontWeight: "500",
+    },
 });
+
