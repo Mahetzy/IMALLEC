@@ -1,12 +1,10 @@
-import { Text, View, Image, TextInput, Pressable, Alert } from "react-native";
+import { Text, View, Image } from "react-native";
 import { useState } from "react";
 import { doc, getDoc } from "firebase/firestore";
-import { auth, db } from "../firebase/config.js";
+import { db } from "../firebase/config.js";
 import { styles } from "../Styles/linkCheck.style.js";
-import Svg, { Path } from 'react-native-svg';
 import { useRouter } from "expo-router";
-import { ActivityIndicator, StyleSheet } from 'react-native';
-import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
+import { ActivityIndicator } from 'react-native';
 import { useEffect } from 'react';
 import { getUser, saveWallet } from "../utils/storage.js";
 
@@ -16,6 +14,7 @@ import { getUser, saveWallet } from "../utils/storage.js";
 export default function LinkCheck() {
     const router = useRouter();
     const [user, setUser] = useState(null);
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         const loadUser = async () => {
@@ -24,6 +23,8 @@ export default function LinkCheck() {
                 setUser(savedUser);
             } catch (error) {
                 console.error("Error loading user:", error);
+            } finally {
+                setIsLoading(false);
             }
         };
 
@@ -32,26 +33,33 @@ export default function LinkCheck() {
 
     useEffect(() => {
         const checkWalletLink = async () => {
+            if (isLoading) {
+                return;
+            }
+
             if (!user) {
+                router.replace('/logIn');
                 return;
             };
 
             if (!user.walletId) {
                 router.replace('/walletVinculation');
+                return;
             };
 
             const walletSnap = await getDoc(doc(db, "Billeteras", user.walletId));
-
+            const walletData = walletSnap.exists() ? walletSnap.data() : null;
+            
             if (walletSnap.exists()) {
-                await saveWallet(user.walletId);
-                router.replace('/home');
+                await saveWallet(walletData);
+                router.replace('/mainScreen');
             } else {
                 router.replace('/walletVinculation');
             }
         };
 
         checkWalletLink();
-    }, [user]);
+    }, [isLoading, user]);
 
 
     return (

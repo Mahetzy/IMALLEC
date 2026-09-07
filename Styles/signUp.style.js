@@ -17,8 +17,8 @@ export const styles = StyleSheet.create({
         height: 85,
         alignSelf: "center",
         resizeMode: "contain",
-        marginBottom: 110,
-        marginLeft: 235,
+        marginBottom: "auto",
+        marginLeft: "75%",
     },
 
     title: {
@@ -49,8 +49,8 @@ export const styles = StyleSheet.create({
 
 
     inputContainer: {
-        marginLeft: 20,
-        marginRight: 20,
+        marginLeft: "8%",
+        marginRight: "8%",
         height: 55,
         backgroundColor: "#FFFFFF",
         borderWidth: 1,
@@ -81,8 +81,8 @@ export const styles = StyleSheet.create({
     },
 
     button: {
-        marginLeft: 30,
-        marginRight: 30,
+         marginLeft: "8%",
+        marginRight: "8%",
         height: 70,
         backgroundColor: "#004695",
         borderRadius: 75,
@@ -194,6 +194,10 @@ export const styles = StyleSheet.create({
         color: "#FFFFFF",
         fontSize: 19,
         fontWeight: "500",
+    },
+    mainContainer: {
+        flex: 1,
+        backgroundColor: '#003366',
     },
 });
 

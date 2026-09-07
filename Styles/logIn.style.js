@@ -13,11 +13,12 @@ export const styles = StyleSheet.create({
 
     logo: {
         width: 150,
-        height: 85,
+        height: 185,
         alignSelf: "center",
         resizeMode: "contain",
-        marginBottom: 150,
-        marginLeft: 235,
+        marginBottom: "30%",
+        marginLeft: "auto",
+        marginTop: "-20%",
     },
 
     title: {
@@ -27,7 +28,7 @@ export const styles = StyleSheet.create({
         color: "#ffffff",
         marginBottom: 30,
         marginTop: -30,
-        padding:10
+        padding: 10
     },
 
     subtitle: {
@@ -36,7 +37,7 @@ export const styles = StyleSheet.create({
         textAlign: "center",
         color: "#ffffff",
         marginBottom: 30,
-        
+
     },
 
 
@@ -60,7 +61,7 @@ export const styles = StyleSheet.create({
 
 
 
-    
+
 
     inputContainer: {
         marginLeft: 20,
@@ -83,7 +84,7 @@ export const styles = StyleSheet.create({
         paddingHorizontal: 10,
         fontSize: 15,
         color: "#0e0d0d",
-        
+
     },
 
     icon: {
@@ -98,6 +99,7 @@ export const styles = StyleSheet.create({
     button: {
         marginLeft: 30,
         marginRight: 30,
+        width: "70%",
         height: 70,
         backgroundColor: "#004695",
         borderRadius: 75,
@@ -110,7 +112,7 @@ export const styles = StyleSheet.create({
     buttonText: {
         color: "#FFFFFF",
         fontSize: 25,
-        
+
     },
 
     footer: {
@@ -119,14 +121,46 @@ export const styles = StyleSheet.create({
         color: "#6B7280",
         fontSize: 13,
     },
-    
+
     linkText: {
-    marginTop: 5,
-    paddingVertical: 15,
-    alignSelf: 'center',
-    color: '#fff', 
-    fontWeight: 'bold',
-    fontSize: 25,
-  },
+        marginTop: 5,
+        paddingVertical: 15,
+        alignSelf: 'center',
+        color: '#fff',
+        fontWeight: 'bold',
+        fontSize: 25,
+    },
+    cardContainer: {
+        alignSelf: 'center',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    largeLogo: {
+        width: 150,
+        height: 150,
+    },
+    largeInputContainer: {
+        width: '100%',
+    },
+    largeButton: {
+        width: '100%',
+    },
+    scrollContainer: {
+        flexGrow: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingVertical: 20,
+    },
+    mainContainer: {
+        flex: 1,
+        backgroundColor: '#003366',
+    },
+    cardWrapper: {
+        alignItems: 'center',
+        alignSelf: 'center',
+    },
+    fullWidth: {
+        width: '100%',
+    },
 
 });

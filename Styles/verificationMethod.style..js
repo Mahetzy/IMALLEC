@@ -12,11 +12,12 @@ export const styles = StyleSheet.create({
     height: "8%",
     alignSelf: "center",
     resizeMode: "contain",
-    marginBottom: 50,
+    marginBottom: 40,
     marginLeft: 235,
+    marginTop: "-5%",
   },
   title: {
-    fontSize: 46,
+    fontSize: 70,
     color: '#ffffff',
     fontWeight: '300',
     marginBottom: 40,
@@ -41,14 +42,7 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingTop: 25,
   },
-  title: {
-    fontSize: 22,
-    textAlign: 'center',
-    color: '#ffffff',
-    marginBottom: 40,
-    letterSpacing: 1,
-    lineHeight: 30,
-  },
+
   boldText: {
     fontWeight: 'bold',
   },
@@ -74,5 +68,13 @@ export const styles = StyleSheet.create({
     fontWeight: '500',
     flex: 1,
   },
+  subtitle: {
+        paddingTop: 10,
+        fontSize: 20,
+        textAlign: "center",
+        color: "#ffffff",
+        marginBottom: 10,
+
+    },
 });
 

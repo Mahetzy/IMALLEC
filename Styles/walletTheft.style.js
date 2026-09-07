@@ -28,7 +28,6 @@ export const styles = StyleSheet.create({
     borderRadius: 14,
     padding: 20,
     marginBottom: 20,
-    marginTop: 50,
   },
 
   infoCardTitle: {
