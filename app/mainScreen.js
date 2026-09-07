@@ -1,19 +1,115 @@
-import React, { useState } from 'react';
 import MapView, { Marker } from 'react-native-maps';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { styles } from '../Styles/mainScreen.style';
 import { useRouter } from "expo-router";
+import { useEffect, useState } from 'react';
+import { getUser } from '../utils/storage';
+import { doc, onSnapshot } from 'firebase/firestore';
+import { db } from '../firebase/config';
+import { useRef } from 'react';
+import * as Location from 'expo-location';
+
+
 
 export default function LocationWallet() {
     const [menuVisible, setMenuVisible] = useState(false);
     const router = useRouter();
+    const [user, setUser] = useState(null);
+    const [coordinates, setCoordinates] = useState(null);
+    const [followWallet, setFollowWallet] = useState(false);
+    const mapRef = useRef(null);
+
+    const [locationPermission, setLocationPermission] = useState(false);
+
+    useEffect(() => {
+        const requestLocationPermission = async () => {
+            const { status } =
+                await Location.requestForegroundPermissionsAsync();
+
+            if (status !== 'granted') {
+                Alert.alert(
+                    'Location permission',
+                    'Location permission is required to show your position.'
+                );
+                return;
+            }
+
+            setLocationPermission(true);
+        };
+
+        requestLocationPermission();
+    }, []);
+
+    useEffect(() => {
+        const loadUser = async () => {
+            try {
+                const savedUser = await getUser();
+                if (!savedUser || savedUser === null) {
+                    router.push('/logIn');
+                    return;
+                }
+                setUser(savedUser);
+            } catch (error) {
+                console.error("Error loading user:", error);
+            }
+        };
+        loadUser();
+    }, []);
+
+    useEffect(() => {
+        if (!user?.walletId) {
+            return;
+        }
+
+        const walletRef = doc(db, "Billeteras", user.walletId);
+
+        const unsubscribe = onSnapshot(walletRef, (walletSnap) => {
+            if (!walletSnap.exists()) {
+                return;
+            }
+
+            const walletData = walletSnap.data();
+            const location = walletData.location;
+
+            if (!Array.isArray(location) || location.length < 2) {
+                return;
+            }
+
+            const latitude = Number(location[0]);
+            const longitude = Number(location[1]);
+
+            if (!Number.isFinite(latitude) || !Number.isFinite(longitude)) {
+                return;
+            }
+
+            setCoordinates({ latitude, longitude });
+        });
+
+        return unsubscribe;
+    }, [user]);
+
+    useEffect(() => {
+        if (!followWallet || !coordinates) {
+            return;
+        }
+
+        mapRef.current?.animateToRegion(
+            {
+                ...coordinates,
+                latitudeDelta: 0.03,
+                longitudeDelta: 0.03,
+            },
+            500
+        );
+    }, [coordinates, followWallet]);
 
 
     return (
         <View style={styles.container}>
 
             <MapView
+                ref={mapRef}
                 style={styles.map}
                 initialRegion={{
                     latitude: 13.6929,
@@ -21,28 +117,18 @@ export default function LocationWallet() {
                     latitudeDelta: 0.03,
                     longitudeDelta: 0.03,
                 }}
+                showsUserLocation={locationPermission}
+                showsMyLocationButton={locationPermission}
+                onPanDrag={() => setFollowWallet(false)}
+
             >
-                <Marker
-                    coordinate={{
-                        latitude: 13.6929,
-                        longitude: -89.2182,
-                    }}
-                    title="Billetera"
-                />
 
-                <Marker
-                    coordinate={{
-                        latitude: 13.6965,
-                        longitude: -89.2155,
-                    }}
-                />
-
-                <Marker
-                    coordinate={{
-                        latitude: 13.6895,
-                        longitude: -89.2210,
-                    }}
-                />
+                {coordinates && (
+                    <Marker
+                        coordinate={coordinates}
+                        title="Wallet Location"
+                    />
+                )}
             </MapView>
 
             <View style={styles.topBar}>
@@ -72,20 +158,24 @@ export default function LocationWallet() {
                 </Text>
             </View>
 
-            <View style={styles.mapMarker}>
-                <Ionicons
-                    name="wallet"
-                    size={25}
-                    color="#102A43"
-                />
-            </View>
+            <TouchableOpacity
+                style={styles.locationButton}
+                onPress={() => {
+                    setFollowWallet(true);
 
-            <TouchableOpacity style={styles.locationButton}>
-                <Ionicons
-                    name="locate"
-                    size={27}
-                    color="white"
-                />
+                    if (coordinates) {
+                        mapRef.current?.animateToRegion(
+                            {
+                                ...coordinates,
+                                latitudeDelta: 0.03,
+                                longitudeDelta: 0.03,
+                            },
+                            500
+                        );
+                    }
+                }}
+            >
+                <Ionicons name="locate" size={27} color="white" />
             </TouchableOpacity>
 
             <View style={styles.addressCard}>
@@ -112,13 +202,13 @@ export default function LocationWallet() {
                     name="lock-closed"
                     size={25}
                     color="white"
-                    onPress={() => router.push('/confirmacionBloqueo')}
+                    onPress={() => router.push('/blockWallet')}
                 />
             </TouchableOpacity>
 
             {menuVisible && (
                 <View style={styles.menuOverlay}>
-                    
+
                     <TouchableOpacity
                         style={styles.closeButton}
                         onPress={() => setMenuVisible(false)}
@@ -157,7 +247,7 @@ export default function LocationWallet() {
                         </Text>
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.menuItem} onPress={() => router.push('/terminosAndConditions')}>
+                    <TouchableOpacity style={styles.menuItem} onPress={() => router.push('/termsAndConditions')}>
                         <Ionicons
                             name="document-text"
                             size={22}
@@ -166,7 +256,7 @@ export default function LocationWallet() {
                         <Text style={styles.menuItemText}>
                             Terms and Conditions
                         </Text>
-                        
+
                     </TouchableOpacity>
 
                 </View>

@@ -1,18 +1,17 @@
-import { useState,useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import {
     View,
     Text,
     TextInput,
-    TouchableOpacity,
     Image,
-    SafeAreaView,
     Pressable
 } from 'react-native';
 import { styles } from '../Styles/walletVinculation.style.js';
 import { useRouter } from "expo-router";
-import { doc, updateDoc } from "firebase/firestore";
+import { doc, updateDoc, getDoc } from "firebase/firestore";
 import { db } from "../firebase/config.js";
-import { getUser, saveWallet } from "../utils/storage.js"
+import { getUser, saveUser, saveWallet } from "../utils/storage.js";
+import { Alert } from 'react-native';
 
 export default function WalletVinculation() {
     const router = useRouter();
@@ -21,17 +20,21 @@ export default function WalletVinculation() {
     const [user, setUser] = useState(null);
 
     useEffect(() => {
-            const loadUser = async () => {
-                try {
-                    const savedUser = await getUser();
-                    setUser(savedUser);
-                } catch (error) {
-                    console.error("Error loading user:", error);
+        const loadUser = async () => {
+            try {
+                const savedUser = await getUser();
+                if (!savedUser || savedUser === null) {
+                    router.push('/logIn');
+                    return;
                 }
-            };
-    
-            loadUser();
-        }, []);
+                setUser(savedUser);
+            } catch (error) {
+                console.error("Error loading user:", error);
+            }
+        };
+
+        loadUser();
+    }, []);
 
     const handleLinkWallet = async () => {
         if (!walletId) {
@@ -42,28 +45,48 @@ export default function WalletVinculation() {
         try {
             const userRef = doc(db, "Usuarios", user.uid);
             const walletRef = doc(db, "Billeteras", walletId);
+            const walletSnap = await getDoc(walletRef);
+            const userSnap = await getDoc(userRef);
 
-            await updateDoc(userRef, { 
+            if (!walletSnap.exists()) {
+                Alert.alert("Error", "Wallet not found");
+                return;
+            }
+
+            const userData = {
+                ...user,
+                walletId,
+            };
+
+            await updateDoc(userRef, {
                 walletId: walletId,
             });
-            await updateDoc(walletRef, { 
+            await updateDoc(walletRef, {
                 userId: user.uid,
                 walletLinked: true,
             });
 
-            const walletSnap = await getDoc(walletRef);
             const walletData = walletSnap.exists() ? walletSnap.data() : null;
             await saveWallet(walletData);
 
-            Alert.alert("Success", "Wallet linked successfully");
+            await saveUser(userData);
+
+            if (walletData !== null) {
+                if (!walletData.verificationMethod || walletData.verificationMethod === null) {
+                    router.push('/walletActivation');
+                } else {
+                    router.push('/mainScreen');
+                }
+                Alert.alert("Success", "Wallet linked successfully");
+            } else {
+                return Alert.alert("Error", "Wallet not found");
+            }
         } catch (error) {
             console.error("Error linking wallet:", error);
         }
-
-        router.push('/walletActivation');
-    }
+    };
     return (
-        <SafeAreaView style={styles.container}>
+        <View style={styles.container}>
             <Image
                 source={require("../assets/IMALLEC.png.png")}
                 style={styles.logo}
@@ -112,6 +135,6 @@ export default function WalletVinculation() {
 
             </View>
 
-        </SafeAreaView>
+        </View>
     );
 }

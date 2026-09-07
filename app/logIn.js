@@ -7,7 +7,7 @@ import { styles } from "../Styles/logIn.style";
 import Svg, { Path } from 'react-native-svg';
 import { useRouter } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
-import { saveUser } from "../utils/storage";
+import { saveUser } from "../utils/storage.js";
 
 
 export default function LogIn() {
@@ -36,11 +36,20 @@ export default function LogIn() {
             const uid = userCredential.user.uid;
 
             const userSnap = await getDoc(doc(db, "Usuarios", uid));
-            const userData = userSnap.exists() ? userSnap.data() : null;
+
+            if (!userSnap.exists()) {
+                Alert.alert(
+                    "Login error",
+                    "Your user profile could not be found."
+                );
+                return;
+            }
+
+            const userData = userSnap.data();
 
             Alert.alert(
                 "Successful login",
-                "Welcome back!"
+                "You have been logged in successfully."
             );
 
             await saveUser(userData);
