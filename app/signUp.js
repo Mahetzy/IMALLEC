@@ -83,7 +83,6 @@ export default function signUp() {
                     nombre: name,
                     correo: email,
                     uid: user.uid,
-                    Password: password,
                     walletId: null
                 }
             );
@@ -100,7 +99,7 @@ export default function signUp() {
                 [
                     {
                         text: "OK",
-                        onPress: () => router.push('/linkCheck'),
+                        onPress: () => router.push('/logIn'),
                     }
                 ]
             );

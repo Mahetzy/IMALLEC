@@ -1,41 +1,63 @@
-import { Text, View, Image, TextInput, Pressable, Alert, StyleSheet, } from "react-native";
+import { Text, View, Image, Pressable, Alert} from "react-native";
 import { useState } from "react";
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { doc, setDoc } from "firebase/firestore";
-import { auth, db } from "../firebase/config";
+import { doc, updateDoc } from "firebase/firestore";
+import { db } from "../firebase/config";
 import { styles } from "../Styles/walletActivation.style";
-import Svg, { Path } from 'react-native-svg';
 import { useRouter } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
+import { getUser } from "../utils/storage.js";
+import { useEffect } from "react";
 
 export default function Security() {
 
     const [selected, setSelected] = useState(null);
     const router = useRouter();
 
-    const save = () => {
+    const [user, setUser] = useState(null);
 
-        if (selected === null) {
-            Alert.alert("Error", "Select a security option");
+    useEffect(() => {
+        const loadUser = async () => {
+            try {
+                const savedUser = await getUser();
+                if (!savedUser || savedUser === null) {
+                    router.push('/logIn');
+                    return;
+                }
+                setUser(savedUser);
+            } catch (error) {
+                console.error("Error loading user:", error);
+            }
+        };
+
+        loadUser();
+    }, []);
+
+    const save = async () => {
+        if (!user?.walletId) {
+            Alert.alert("Error", "User or wallet information is unavailable");
             return;
         }
 
-        if (selected === "pin") {
-            Alert.alert("Security", "You have selected PIN code");
-        }
+        const walletRef = doc(db, "Billeteras", user.walletId);
 
-        else if (selected === "fingerprint") {
-            Alert.alert("Security", "You have selected fingerprint");
-        }
+        try {
+            if (!selected || selected === null) {
+                Alert.alert("Error", "Select a security option");
+                return;
+            } else {
+                await updateDoc(walletRef, {
+                    verificationMethod: selected
+                });
 
-        else if (selected === "pattern") {
-            Alert.alert("Security", "You have selected security pattern");
-        }
+                Alert.alert("Security", "You have selected " + selected.charAt(0).toUpperCase() + selected.slice(1) + " as your security method.");
+            }
 
-        router.push('/mainScreen')
+            router.push('/mainScreen')
+        } catch (error) {
+            console.error("Error updating wallet security:", error);
+            Alert.alert("Error", "Could not save your security preference.");
+        }
     };
-
-
 
     return (
         <View style={styles.container}>
@@ -122,7 +144,7 @@ export default function Security() {
                 }}
                 onPress={save}
             >
-                <Text style={{ color: '#00162F', fontSize: 26,  }}>
+                <Text style={{ color: '#00162F', fontSize: 26, }}>
                     Save
                 </Text>
             </Pressable>
