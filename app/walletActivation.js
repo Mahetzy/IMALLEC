@@ -1,4 +1,4 @@
-import { Text, View, Image, Pressable, Alert} from "react-native";
+import { Text, View, Image, Pressable, Alert, useWindowDimensions } from "react-native";
 import { useState } from "react";
 import { doc, updateDoc } from "firebase/firestore";
 import { db } from "../firebase/config";
@@ -12,7 +12,8 @@ export default function Security() {
 
     const [selected, setSelected] = useState(null);
     const router = useRouter();
-
+    const { width: windowWidth } = useWindowDimensions();
+    const isLargeScreen = windowWidth > 768;
     const [user, setUser] = useState(null);
 
     useEffect(() => {
@@ -64,10 +65,10 @@ export default function Security() {
 
             <Image
                 source={require("../assets/IMALLEC.png.png")}
-                style={styles.logo}
+                style={[styles.logo, { marginLeft: isLargeScreen ? '75%' : '75%' }]}
             />
 
-            <Text style={styles.title}>
+            <Text style={[styles.title, { fontSize: isLargeScreen ? 45 : 25, height: isLargeScreen ? 150 : 100 }]}>
                 ACTIVATE YOUR WALLET SECURITY
             </Text>
 
@@ -75,7 +76,7 @@ export default function Security() {
             <Pressable
                 style={[
                     styles.buttonTextSelection,
-                    selected === "pin" && styles.selected
+                    selected === "pin" && styles.selected, { marginTop: isLargeScreen ? '10%' : '10%', height: isLargeScreen ? 150 : 80, }
                 ]}
                 onPress={() => setSelected("pin")}
             >
@@ -83,7 +84,7 @@ export default function Security() {
                     name="key-outline"
                     size={35}
                     color="#A0A0A0"
-                    style={styles.icon}
+                    style={[styles.icon, { marginTop: isLargeScreen ? '15%' : '15%', height: isLargeScreen ? 140 : 80, }]}
                 />
 
                 <Text style={styles.buttonText}>
@@ -95,7 +96,7 @@ export default function Security() {
             <Pressable
                 style={[
                     styles.buttonTextSelection,
-                    selected === "fingerprint" && styles.selected
+                    selected === "fingerprint" && styles.selected, { height: isLargeScreen ? 150 : 80, }
                 ]}
                 onPress={() => setSelected("fingerprint")}
             >
@@ -103,7 +104,7 @@ export default function Security() {
                     name="finger-print-outline"
                     size={35}
                     color="#A0A0A0"
-                    style={styles.icon}
+                    style={[styles.icon, { marginTop: isLargeScreen ? '15%' : '15%', height: isLargeScreen ? 140 : 80, }]}
                 />
 
                 <Text style={styles.buttonText}>
@@ -115,7 +116,7 @@ export default function Security() {
             <Pressable
                 style={[
                     styles.buttonTextSelection,
-                    selected === "pattern" && styles.selected
+                    selected === "pattern" && styles.selected, { marginBottom: isLargeScreen ? '10%' : '10%', height: isLargeScreen ? 150 : 80, }
                 ]}
                 onPress={() => setSelected("pattern")}
             >
@@ -123,7 +124,7 @@ export default function Security() {
                     name="grid-outline"
                     size={35}
                     color="#A0A0A0"
-                    style={styles.icon}
+                    style={[styles.icon, { marginTop: isLargeScreen ? '15%' : '15%', height: isLargeScreen ? 140 : 80, }]}
                 />
 
                 <Text style={styles.buttonText}>

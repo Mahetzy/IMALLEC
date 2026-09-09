@@ -36,7 +36,7 @@ export const styles = StyleSheet.create({
         marginTop: 100,
     },
     icon: {
-        marginLeft: 85,
+        marginLeft: "25%",
     },
 
 });

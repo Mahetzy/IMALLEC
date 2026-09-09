@@ -236,7 +236,7 @@ export default function LocationWallet() {
                         </Text>
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.menuItem}>
+                    <TouchableOpacity style={styles.menuItem} onPress={() => router.push('/configuraciones')}>
                         <Ionicons
                             name="settings"
                             size={22}

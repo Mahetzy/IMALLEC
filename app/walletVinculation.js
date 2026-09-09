@@ -12,10 +12,13 @@ import { doc, updateDoc, getDoc } from "firebase/firestore";
 import { db } from "../firebase/config.js";
 import { getUser, saveUser, saveWallet } from "../utils/storage.js";
 import { Alert } from 'react-native';
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function WalletVinculation() {
     const router = useRouter();
 
+    const { width: windowWidth } = useWindowDimensions();
+    const isLargeScreen = windowWidth > 768;
     const [walletId, setWalletId] = useState('');
     const [user, setUser] = useState(null);
 
@@ -86,55 +89,63 @@ export default function WalletVinculation() {
         }
     };
     return (
-        <View style={styles.container}>
-            <Image
-                source={require("../assets/IMALLEC.png.png")}
-                style={styles.logo}
-            />
+        <SafeAreaView style={styles.container}>
+            <ScrollView
+                contentContainerStyle={[
+                    styles.scrollContainer,
+                    { flexGrow: 1, justifyContent: 'flex-start' }
+                ]}
+                showsVerticalScrollIndicator={false}
+            >
+                <Image
+                    source={require("../assets/IMALLEC.png.png")}
+                    style={[styles.logo, { width: isLargeScreen ? 175 : 140, height: isLargeScreen ? 175 : 140, marginBottom: isLargeScreen ? -10 : 20, marginTop: isLargeScreen ? -40 : -55 }]}
+                />
 
-            <Text style={styles.title}>
-                Wallet Vinculation
-            </Text>
-
-            <Image
-                source={require('../assets/WalletVinculation.png')}
-                style={styles.image}
-            />
-
-            <Text style={styles.description}>
-                Enter your wallet ID to link it.
-            </Text>
-
-            <View style={styles.form}>
-
-                <Text style={styles.label}>
-                    Wallet ID
+                <Text style={[styles.title, { fontSize: isLargeScreen ? 75 : 40 }]}>
+                    Wallet Vinculation
                 </Text>
 
-                <View style={styles.inputContainer}>
+                <Image
+                    source={require('../assets/WalletVinculation.png')}
+                    style={[styles.image, { width: isLargeScreen ? 575 : 340, height: isLargeScreen ? 675 : 440 }]}
+                />
 
-                    <TextInput
-                        style={styles.input}
-                        placeholder="Enter your linking token"
-                        placeholderTextColor="#999999"
-                        value={walletId}
-                        onChangeText={setWalletId}
-                    />
-                </View>
+                <Text style={[styles.description, { fontSize: isLargeScreen ? 25 : 16 }]}>
+                    Enter your wallet ID to link it.
+                </Text>
 
-                <Pressable
-                    style={styles.button}
-                    onPress={handleLinkWallet}
-                >
+                <View style={styles.form}>
 
-                    <Text style={styles.buttonText}>
-                        Link Wallet
+                    <Text style={styles.label}>
+                        Wallet ID
                     </Text>
 
-                </Pressable>
+                    <View style={styles.inputContainer}>
 
-            </View>
+                        <TextInput
+                            style={styles.input}
+                            placeholder="Enter your linking token"
+                            placeholderTextColor="#999999"
+                            value={walletId}
+                            onChangeText={setWalletId}
+                        />
+                    </View>
 
-        </View>
+                    <Pressable
+                        style={styles.button}
+                        onPress={handleLinkWallet}
+                    >
+
+                        <Text style={styles.buttonText}>
+                            Link Wallet
+                        </Text>
+
+                    </Pressable>
+
+                </View>
+            </ScrollView>
+
+        </SafeAreaView>
     );
 }

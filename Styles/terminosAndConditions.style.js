@@ -106,12 +106,13 @@ const styles = StyleSheet.create({
     pdfContent: {
         paddingVertical: 10,
         alignItems: 'center',
+        justifyContent: 'center',
     },
 
     pdfPage: {
         width: '95%',
         aspectRatio: 0.707,
-        marginBottom: 15,
+        marginBottom: 25,
         backgroundColor: '#ffffff',
     },
 

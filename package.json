@@ -4,21 +4,26 @@
   "main": "expo-router/entry",
   "scripts": {
     "start": "expo start",
-    "android": "expo start --android",
-    "ios": "expo start --ios",
+    "android": "expo run:android",
+    "ios": "expo run:ios",
     "web": "expo start --web"
   },
   "dependencies": {
     "@expo/config-plugins": "~57.0.9",
     "@expo/vector-icons": "^15.0.3",
     "@react-native-async-storage/async-storage": "2.2.0",
+    "@react-native-google-signin/google-signin": "^16.1.5",
     "@react-navigation/drawer": "^7.13.10",
     "@react-navigation/native": "^7.3.18",
+    "expo-auth-session": "~57.0.11",
+    "expo-crypto": "~57.0.2",
+    "expo-dev-client": "~57.0.18",
     "expo": "^57.0.20",
     "expo-linking": "~57.0.9",
     "expo-location": "~57.0.16",
     "expo-router": "~57.0.18",
     "expo-status-bar": "~57.0.1",
+    "expo-web-browser": "~57.0.2",
     "firebase": "^12.17.1",
     "install": "^0.13.0",
     "npx": "^10.2.2",
@@ -31,7 +36,8 @@
     "react-native-safe-area-context": "~5.7.0",
     "react-native-screens": "~4.26.0",
     "react-native-svg": "15.15.4",
-    "react-native-vector-icons": "^10.3.0"
+    "react-native-vector-icons": "^10.3.0",
+    "react-native-webview": "13.16.1"
   },
   "private": true
 }

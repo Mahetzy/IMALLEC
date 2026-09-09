@@ -1,31 +1,29 @@
-import { Text, View, Image, TextInput, Pressable, Alert, StyleSheet, useWindowDimensions } from "react-native";
-import { useState } from "react";
-import { doc, setDoc } from "firebase/firestore";
-import { auth, db } from "../firebase/config";
+import { Text, View, Pressable, useWindowDimensions } from "react-native";
 import { styles } from "../Styles/confirmacionBloqueo.style";
 import { useRouter } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 
 export default function Welcome() {
     const router = useRouter();
-    const { width } = useWindowDimensions();
+    const { width: windowWidth } = useWindowDimensions();
+    const isLargeScreen = windowWidth > 768;
 
 
     const circleRadius = 100;
 
     return (
         <View style={styles.mainContainer}>
-            <View style={styles.walletCard}>
+            <View style={[styles.walletCard, { height: isLargeScreen ? '90%' : '80%' }]}>
                 <Ionicons
                     name="warning-outline"
-                    size={200}
+                    size={isLargeScreen ? 300 : 200 }
                     color="#000000"
-                    style={styles.icon}
+                    style={[styles.icon, { marginLeft: isLargeScreen ? '30%' : '25%' }]}
                 />
-                <Text style={styles.title}>
+                <Text style={[styles.title,{fontSize: isLargeScreen ? 60 : 20 }]}>
                     Are you sure you want to lock the wallet?
                 </Text>
-                <Text style={styles.subtitle}>
+                <Text style={[styles.subtitle, {fontSize: isLargeScreen ? 30 : 15 }]}>
                     This action will lock your wallet and you won’t be able to use it until you unlock it
                 </Text>
 
@@ -36,13 +34,14 @@ export default function Welcome() {
                         paddingHorizontal: 33,
                         borderRadius: 15,
                         margin: 10,
-                        width: 140,
-                        height: 120,
-                        marginTop: 30
+                        width: "38%",
+                        height: "22%",
+                        marginTop: isLargeScreen? 100: 30
+                        
                         
                     }}
                 >
-                    <Text style={{ color: "white", fontSize: 20, fontWeight: "bold", paddingHorizontal: 20 }} onPress={() => router.push('/mainScreen')}>
+                    <Text style={{ color: "white", fontSize: isLargeScreen? 60: 20, fontWeight: "bold", paddingHorizontal: isLargeScreen?  65: 20, }} onPress={() => router.push('/mainScreen')}>
                         No
                     </Text>
                 </Pressable>
@@ -55,13 +54,13 @@ export default function Welcome() {
                         paddingHorizontal: 33,
                         borderRadius: 15,
                         margin: 10,
-                        height: 120,
-                        width: 140,
-                        marginLeft: 220,
-                        marginTop: -130,
+                        width: "38%",
+                        height: "22%",
+                        marginLeft: "60%",
+                        marginTop: isLargeScreen? -220: -130,
                     }}
                 >
-                    <Text style={{ color: "white", fontSize: 20, fontWeight: "bold", paddingHorizontal: 20}} onPress={() => router.push('/mainScreen')}>
+                    <Text style={{ color: "white", fontSize: isLargeScreen? 60: 20, fontWeight: "bold", paddingHorizontal: isLargeScreen?  60: 20, paddingVertical: isLargeScreen?  20: 4, }} onPress={() => router.push('/mainScreen')}>
                         Yes
                     </Text>
                 </Pressable>

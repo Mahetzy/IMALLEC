@@ -17,6 +17,7 @@ export const styles = StyleSheet.create({
         top: 0,
         left: 0,
         right: 0,
+        
         height: 55,
         backgroundColor: '#061B2D',
         flexDirection: 'row',
@@ -143,7 +144,7 @@ export const styles = StyleSheet.create({
     menuOverlay: {
         position: 'absolute',
         top: 0,
-        right: 120,
+        right: "28%",
         bottom: 0,
         width: '72%',
         backgroundColor: '#F7F7F7',

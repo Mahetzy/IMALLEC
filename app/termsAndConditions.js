@@ -1,27 +1,26 @@
-import React, { useState } from 'react';
-
+import { useState } from 'react';
 import {
     View,
     Text,
     TouchableOpacity,
     ScrollView,
     Image,
+    useWindowDimensions,
 } from 'react-native';
-
 import { router } from 'expo-router';
-
 import styles from '../Styles/terminosAndConditions.style';
 
 export default function TermsConditions() {
-
     const [showPDF, setShowPDF] = useState(false);
+    const { width: windowWidth, height: windowHeight } = useWindowDimensions();
+    
+    
+    const imageWidth = windowWidth - 0;
+    const imageHeight = windowHeight - 300; 
 
     return (
         <View style={styles.container}>
-
-
             <View style={styles.header}>
-
                 <TouchableOpacity
                     style={styles.backButton}
                     onPress={() => {
@@ -38,24 +37,15 @@ export default function TermsConditions() {
                 <Text style={styles.title}>
                     Terms and Conditions
                 </Text>
-
             </View>
 
-
-
             {!showPDF ? (
-
                 <View style={styles.pdfBox}>
-
                     <View style={styles.pdfIcon}>
-                        <Text style={styles.pdfIconText}>
-                            PDF
-                        </Text>
+                        <Text style={styles.pdfIconText}>PDF</Text>
                     </View>
 
-                    <Text style={styles.pdfTitle}>
-                        IMALLEC
-                    </Text>
+                    <Text style={styles.pdfTitle}>IMALLEC</Text>
 
                     <Text style={styles.pdfSubtitle}>
                         Terms and Conditions
@@ -74,40 +64,32 @@ export default function TermsConditions() {
                             Open PDF
                         </Text>
                     </TouchableOpacity>
-
                 </View>
-
             ) : (
-
-
                 <ScrollView
-                    styl e={styles.pdfViewer}
+                    style={styles.pdfViewer}
                     contentContainerStyle={styles.pdfContent}
                     showsVerticalScrollIndicator={true}
                 >
-
                     <Image
                         source={require('../assets/terms_page_1.png')}
-                        style={styles.pdfPage}
+                        style={[styles.pdfPage, { width: imageWidth, height: imageHeight }]}
                         resizeMode="contain"
                     />
 
                     <Image
                         source={require('../assets/terms_page_2.png')}
-                        style={styles.pdfPage}
+                        style={[styles.pdfPage, { width: imageWidth, height: imageHeight }]}
                         resizeMode="contain"
                     />
 
                     <Image
                         source={require('../assets/terms_page_3.png')}
-                        style={styles.pdfPage}
+                        style={[styles.pdfPage, { width: imageWidth, height: imageHeight }]}
                         resizeMode="contain"
                     />
-
                 </ScrollView>
-
             )}
-
         </View>
     );
 }

@@ -17,11 +17,10 @@ export const styles = StyleSheet.create({
     },
 
     image: {
-        width: 290,
-        height: 390,
+        width: "100%",
+        height: "100%",
         resizeMode: 'contain',
         alignSelf: 'center',
-        marginTop: 18,
     },
 
     description: {
@@ -41,15 +40,17 @@ export const styles = StyleSheet.create({
         fontSize: 14,
         fontWeight: '500',
         marginBottom: 7,
+        marginLeft: 15,
     },
 
     inputContainer: {
-        width: '100%',
-        height: 45,
+        width: '95%',
+        height: 50,
         backgroundColor: '#FFFFFF',
         borderRadius: 14,
         justifyContent: 'center',
         paddingHorizontal: 12,
+        marginLeft: 15,
     },
 
     input: {
@@ -60,13 +61,14 @@ export const styles = StyleSheet.create({
     },
 
     button: {
-        width: '100%',
+        width: '95%',
         height: 75,
         backgroundColor: '#004695',
         borderRadius: 15,
         justifyContent: 'center',
         alignItems: 'center',
         marginTop: 32,
+        marginLeft: 15,
     },
 
     buttonText: {
@@ -80,8 +82,13 @@ export const styles = StyleSheet.create({
         alignSelf: "center",
         resizeMode: "contain",
         marginBottom: 50,
-        marginLeft: 235,
+        marginLeft: "65%",
         marginTop: 20,
+    },
+    scrollContainer: {
+        flexGrow: 1,
+        paddingVertical: 20,
+        paddingBottom: 250, 
     },
 
 });

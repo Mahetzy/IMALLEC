@@ -30,7 +30,7 @@ export const styles = StyleSheet.create({
     },
 
     optionsContainer: {
-        gap: 30,
+        gap: 60,
     },
 
     optionCard: {
@@ -40,11 +40,12 @@ export const styles = StyleSheet.create({
         borderRadius: 22,
         padding: 20,
         minHeight: 170,
+        height: "35%",
     },
 
     iconContainer: {
-        width: 90,
-        height: 90,
+        width: "30%",
+        height: "50%",
         borderRadius: 18,
         backgroundColor: '#F1F4F8',
         justifyContent: 'center',
@@ -60,7 +61,9 @@ export const styles = StyleSheet.create({
         fontSize: 30,
         fontWeight: 'bold',
         color: '#0B2340',
-        marginBottom: 8,
+        marginBottom: "1%",
+        justifyContent: 'center',
+        alignItems: 'center',
     },
 
     optionSubtitle: {

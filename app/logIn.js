@@ -1,4 +1,4 @@
-import { Text, View, Image, TextInput, Pressable, Alert, StyleSheet, } from "react-native";
+import { Text, View, Image, TextInput, Pressable, Alert, StyleSheet, useWindowDimensions, ScrollView } from "react-native";
 import { useState } from "react";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
@@ -8,13 +8,15 @@ import Svg, { Path } from 'react-native-svg';
 import { useRouter } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import { saveUser } from "../utils/storage.js";
-
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function LogIn() {
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const router = useRouter();
+    const { width: windowWidth } = useWindowDimensions();
+    const isLargeScreen = windowWidth > 768;
 
 
     const logInUsuario = async () => {
@@ -88,89 +90,80 @@ export default function LogIn() {
         }
     };
 
+
     return (
-        <View style={styles.container}>
+        <SafeAreaView style={styles.mainContainer}>
             <View style={StyleSheet.absoluteFill} pointerEvents="none">
-                <Svg height="2700" width="150%" viewBox=" -4 -50 60 1050" preserveAspectRatio="none">
-                    <Path
-                        d="M -1,-100 C 0,350 200,110 -40,510 Z"
-                        fill="#00162F"
-                        opacity="1"
-                    />
+                <Svg height="2700" width="150%" viewBox="-4 -50 60 900" preserveAspectRatio="none">
+                    <Path d="M -1,-100 C 0,350 200,110 -40,510 Z" fill="#00162F" opacity="1" />
                 </Svg>
             </View>
-
-            <Image
-                source={require("../assets/IMALLEC.png.png")}
-                style={styles.logo}
-            />
-
-            <Text style={styles.title}>
-                Log in
-            </Text>
-
-            <View style={styles.inputContainer}>
-                <Ionicons
-                    name="person"
-                    size={25}
-                    color="#A0A0A0"
-                    style={styles.icon}
-                />
-
-                <TextInput
-                    style={styles.input}
-                    placeholder="Email"
-                    value={email}
-                    onChangeText={setEmail}
-                    autoCapitalize="none"
-                />
-            </View>
-
-
-            <View style={styles.inputContainer}>
-                <Ionicons
-                    name="lock-closed"
-                    size={25}
-                    color="#A0A0A0"
-                    style={styles.icon}
-                />
-
-                <TextInput
-                    style={styles.input}
-                    placeholder="Password"
-                    secureTextEntry={true}
-                    value={password}
-                    onChangeText={setPassword}
-                />
-            </View>
-            <Pressable onPress={() => router.push('/forgotPassword')}>
-                <Text style={styles.password}>
-                    ¿Did you forget your password?
-                </Text>
-            </Pressable>
-
-            <Pressable
-                style={styles.button}
-                onPress={logInUsuario}
+            <ScrollView
+                contentContainerStyle={[
+                    styles.scrollContainer,
+                    { justifyContent: isLargeScreen ? 'center' : 'space-between' }
+                ]}
+                showsVerticalScrollIndicator={false}
             >
+                <View style={[
+                    styles.cardContainer,
+                    { width: isLargeScreen ? '80%' : '90%' }
+                ]}>
+                    <Image
+                        source={require("../assets/IMALLEC.png.png")}
+                        style={[styles.logo, { height: isLargeScreen ? 250 : 165 }]}
+                        resizeMode="contain"
+                    />
 
-                <Text style={styles.buttonText}>
-                    Log in
-                </Text>
+                    <Text style={[styles.title, { fontSize: isLargeScreen ? 130 : 75 }]}>
+                        Log in
+                    </Text>
 
-            </Pressable>
+                    <View style={[styles.inputContainer, { height: isLargeScreen ? 75 : 55, marginBottom: isLargeScreen ? 45 : 15 }]}>
+                        <Ionicons name="person" size={22} color="#A0A0A0" style={styles.icon} />
+                        <TextInput
+                            style={styles.input}
+                            placeholder="Email"
+                            placeholderTextColor="#9CA3AF"
+                            value={email}
+                            onChangeText={setEmail}
+                            autoCapitalize="none"
+                        />
+                    </View>
 
-            <Text style={styles.subtitle}>
-                ¿You don't have an account yet?
-            </Text>
+                    <View style={[styles.inputContainer, { height: isLargeScreen ? 75 : 55, marginBottom: isLargeScreen ? 45 : 15 }]}>
+                        <Ionicons name="lock-closed" size={22} color="#A0A0A0" style={styles.icon} />
+                        <TextInput
+                            style={styles.input}
+                            placeholder="Password"
+                            placeholderTextColor="#9CA3AF"
+                            secureTextEntry={true}
+                            value={password}
+                            onChangeText={setPassword}
+                        />
+                    </View>
 
-            <Pressable onPress={() => router.push('/signUp')}>
-                <Text style={styles.login}>Sign up</Text>
-            </Pressable>
+                    <Pressable onPress={() => router.push('/forgotPassword')}>
+                        <Text style={[styles.password, { fontSize: isLargeScreen ? 25 : 16 }]}>
+                            ¿Did you forget your password?
+                        </Text>
+                    </Pressable>
 
+                    <Pressable style={styles.button} onPress={logInUsuario}>
+                        <Text style={styles.buttonText}>Log in</Text>
+                    </Pressable>
 
+                    <Text style={[styles.subtitle, { fontSize: isLargeScreen ? 25 : 16 }]}>
+                        ¿You don't have an account yet?
+                    </Text>
 
-
-        </View>
+                    <Pressable onPress={() => router.push('/signUp')}>
+                        <Text style={[styles.login, { fontSize: isLargeScreen ? 25 : 16 }]}>
+                            Sign up
+                        </Text>
+                    </Pressable>
+                </View>
+            </ScrollView>
+        </SafeAreaView>
     );
-};
+}
