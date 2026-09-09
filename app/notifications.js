@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Text, View, Switch, ScrollView, Image, useWindowDimensions, SafeAreaViewBase } from 'react-native';
+import { Text, View, Switch, ScrollView, Image, useWindowDimensions } from 'react-native';
 import { styles } from '../Styles/notificactions.style';
 
 export default function App() {
