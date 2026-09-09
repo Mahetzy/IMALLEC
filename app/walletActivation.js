@@ -60,7 +60,6 @@ export default function Security() {
         }
     };
 
-
     return (
         <View style={styles.container}>
 

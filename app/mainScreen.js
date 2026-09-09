@@ -247,7 +247,7 @@ export default function LocationWallet() {
                         </Text>
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.menuItem} onPress={() => router.push('/terminosAndConditions')}>
+                    <TouchableOpacity style={styles.menuItem} onPress={() => router.push('/termsAndConditions')}>
                         <Ionicons
                             name="document-text"
                             size={22}

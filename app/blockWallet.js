@@ -1,7 +1,4 @@
-import { Text, View, Image, TextInput, Pressable, Alert, StyleSheet, useWindowDimensions } from "react-native";
-import { useState } from "react";
-import { doc, setDoc } from "firebase/firestore";
-import { auth, db } from "../firebase/config";
+import { Text, View, Pressable, useWindowDimensions } from "react-native";
 import { styles } from "../Styles/confirmacionBloqueo.style";
 import { useRouter } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";

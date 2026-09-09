@@ -1,10 +1,6 @@
-import { Text, View, Image, TextInput, Pressable, Alert, StyleSheet,useWindowDimensions } from "react-native";
+import { Text, View, Image, Pressable, Alert, useWindowDimensions } from "react-native";
 import { useState } from "react";
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { doc, setDoc } from "firebase/firestore";
-import { auth, db } from "../firebase/config";
 import { styles } from "../Styles/verificationMethod.style.";
-import Svg, { Path } from 'react-native-svg';
 import { useRouter } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 

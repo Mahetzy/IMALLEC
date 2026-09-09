@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Text, View, Switch, ScrollView, Image, useWindowDimensions, SafeAreaViewBase } from 'react-native';
 import { styles } from '../Styles/notificactions.style';
 

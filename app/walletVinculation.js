@@ -1,12 +1,10 @@
-import { useState, useEffect,  } from 'react';
+import { useState, useEffect } from 'react';
 import {
     View,
     Text,
     TextInput,
     Image,
-    Pressable,
-    useWindowDimensions, 
-    ScrollView
+    Pressable
 } from 'react-native';
 import { styles } from '../Styles/walletVinculation.style.js';
 import { useRouter } from "expo-router";
