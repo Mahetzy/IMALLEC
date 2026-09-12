@@ -14,6 +14,7 @@ export default function Security() {
     const router = useRouter();
     const { width: windowWidth } = useWindowDimensions();
     const isLargeScreen = windowWidth > 768;
+    const isMediunScreen = windowWidth > 600 && windowWidth < 768;
     const [user, setUser] = useState(null);
 
     useEffect(() => {
@@ -53,7 +54,7 @@ export default function Security() {
                 Alert.alert("Security", "You have selected " + selected.charAt(0).toUpperCase() + selected.slice(1) + " as your security method.");
             }
 
-            router.push('/mainScreen')
+            router.push('/configuraciones')
         } catch (error) {
             console.error("Error updating wallet security:", error);
             Alert.alert("Error", "Could not save your security preference.");
@@ -68,7 +69,7 @@ export default function Security() {
                 style={[styles.logo, { marginLeft: isLargeScreen ? '75%' : '75%' }]}
             />
 
-            <Text style={[styles.title, { fontSize: isLargeScreen ? 45 : 25, height: isLargeScreen ? 150 : 100 }]}>
+            <Text style={[styles.title, { fontSize: isLargeScreen ? 45 : isMediunScreen ? 35 : 25, height: isLargeScreen ? 150 : isMediunScreen ? 120 : 100 }]}>
                 ACTIVATE YOUR WALLET SECURITY
             </Text>
 
@@ -76,7 +77,7 @@ export default function Security() {
             <Pressable
                 style={[
                     styles.buttonTextSelection,
-                    selected === "pin" && styles.selected, { marginTop: isLargeScreen ? '10%' : '10%', height: isLargeScreen ? 150 : 80, }
+                    selected === "pin" && styles.selected, { marginTop: isLargeScreen ? '10%' : isMediunScreen ? "10%" : "10%", height: isLargeScreen ? 150 : isMediunScreen ? 110 : 80, }
                 ]}
                 onPress={() => setSelected("pin")}
             >
@@ -84,7 +85,7 @@ export default function Security() {
                     name="key-outline"
                     size={35}
                     color="#A0A0A0"
-                    style={[styles.icon, { marginTop: isLargeScreen ? '15%' : '15%', height: isLargeScreen ? 140 : 80, }]}
+                    style={[styles.icon, { marginTop: isLargeScreen ? '15%' : isMediunScreen ? "15%" : "15%", height: isLargeScreen ? 140 : isMediunScreen ? 110 : 80, }]}
                 />
 
                 <Text style={styles.buttonText}>
@@ -96,7 +97,7 @@ export default function Security() {
             <Pressable
                 style={[
                     styles.buttonTextSelection,
-                    selected === "fingerprint" && styles.selected, { height: isLargeScreen ? 150 : 80, }
+                    selected === "fingerprint" && styles.selected, { height: isLargeScreen ? 150 : isMediunScreen ? 110 : 80, }
                 ]}
                 onPress={() => setSelected("fingerprint")}
             >
@@ -104,7 +105,7 @@ export default function Security() {
                     name="finger-print-outline"
                     size={35}
                     color="#A0A0A0"
-                    style={[styles.icon, { marginTop: isLargeScreen ? '15%' : '15%', height: isLargeScreen ? 140 : 80, }]}
+                    style={[styles.icon, { marginTop: isLargeScreen ? '15%' : isMediunScreen ? "15%" : "15%", height: isLargeScreen ? 140 : isMediunScreen ? 110 : 80, }]}
                 />
 
                 <Text style={styles.buttonText}>
@@ -116,7 +117,7 @@ export default function Security() {
             <Pressable
                 style={[
                     styles.buttonTextSelection,
-                    selected === "pattern" && styles.selected, { marginBottom: isLargeScreen ? '10%' : '10%', height: isLargeScreen ? 150 : 80, }
+                    selected === "pattern" && styles.selected, { marginBottom: isLargeScreen ? '10%' : isMediunScreen ? "5%" : "10%", height: isLargeScreen ? 150 : isMediunScreen ? 110 : 80, }
                 ]}
                 onPress={() => setSelected("pattern")}
             >
@@ -124,7 +125,7 @@ export default function Security() {
                     name="grid-outline"
                     size={35}
                     color="#A0A0A0"
-                    style={[styles.icon, { marginTop: isLargeScreen ? '15%' : '15%', height: isLargeScreen ? 140 : 80, }]}
+                    style={[styles.icon, { marginTop: isLargeScreen ? '15%' : isMediunScreen ? "15%" : "15%", height: isLargeScreen ? 140 : isMediunScreen ? 110 : 80, }]}
                 />
 
                 <Text style={styles.buttonText}>

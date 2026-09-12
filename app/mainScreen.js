@@ -1,5 +1,5 @@
 import MapView, { Marker } from 'react-native-maps';
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity, Alert } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { styles } from '../Styles/mainScreen.style';
 import { useRouter } from "expo-router";
@@ -9,6 +9,9 @@ import { doc, onSnapshot } from 'firebase/firestore';
 import { db } from '../firebase/config';
 import { useRef } from 'react';
 import * as Location from 'expo-location';
+import { WebView } from 'react-native-webview';
+
+
 
 
 
@@ -21,6 +24,24 @@ export default function LocationWallet() {
     const mapRef = useRef(null);
 
     const [locationPermission, setLocationPermission] = useState(false);
+    const leafletHTML = `
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <style>#map { height: 100vh; margin:0; }</style>
+</head>
+<body>
+  <div id="map"></div>
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script>
+    const map = L.map('map').setView([${coordinates?.latitude ?? 13.6929}, ${coordinates?.longitude ?? -89.2182}], 15);
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+    L.marker([${coordinates?.latitude ?? 13.6929}, ${coordinates?.longitude ?? -89.2182}]).addTo(map);
+  </script>
+</body>
+</html>
+`;
 
     useEffect(() => {
         const requestLocationPermission = async () => {
@@ -108,28 +129,7 @@ export default function LocationWallet() {
     return (
         <View style={styles.container}>
 
-            <MapView
-                ref={mapRef}
-                style={styles.map}
-                initialRegion={{
-                    latitude: 13.6929,
-                    longitude: -89.2182,
-                    latitudeDelta: 0.03,
-                    longitudeDelta: 0.03,
-                }}
-                showsUserLocation={locationPermission}
-                showsMyLocationButton={locationPermission}
-                onPanDrag={() => setFollowWallet(false)}
-
-            >
-
-                {coordinates && (
-                    <Marker
-                        coordinate={coordinates}
-                        title="Wallet Location"
-                    />
-                )}
-            </MapView>
+            <WebView style={{ flex: 1 }} source={{ html: leafletHTML }} />
 
             <View style={styles.topBar}>
                 <TouchableOpacity

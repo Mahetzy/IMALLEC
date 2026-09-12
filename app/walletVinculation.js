@@ -4,7 +4,9 @@ import {
     Text,
     TextInput,
     Image,
-    Pressable
+    Pressable,
+    useWindowDimensions,
+    ScrollView
 } from 'react-native';
 import { styles } from '../Styles/walletVinculation.style.js';
 import { useRouter } from "expo-router";
@@ -19,6 +21,7 @@ export default function WalletVinculation() {
 
     const { width: windowWidth } = useWindowDimensions();
     const isLargeScreen = windowWidth > 768;
+    const isMediunScreen = windowWidth > 600 && windowWidth < 768;
     const [walletId, setWalletId] = useState('');
     const [user, setUser] = useState(null);
 
@@ -102,13 +105,13 @@ export default function WalletVinculation() {
                     style={[styles.logo, { width: isLargeScreen ? 175 : 140, height: isLargeScreen ? 175 : 140, marginBottom: isLargeScreen ? -10 : 20, marginTop: isLargeScreen ? -40 : -55 }]}
                 />
 
-                <Text style={[styles.title, { fontSize: isLargeScreen ? 75 : 40 }]}>
+                <Text style={[styles.title, { fontSize: isLargeScreen ? 75 : (isMediunScreen ? 55 : 40) }]}>
                     Wallet Vinculation
                 </Text>
 
                 <Image
                     source={require('../assets/WalletVinculation.png')}
-                    style={[styles.image, { width: isLargeScreen ? 575 : 340, height: isLargeScreen ? 675 : 440 }]}
+                    style={[styles.image, { width: isLargeScreen ? 575 : (isMediunScreen ? 420 : 340), height: isLargeScreen ? 675 : (isMediunScreen ? 500 : 440) }]}
                 />
 
                 <Text style={[styles.description, { fontSize: isLargeScreen ? 25 : 16 }]}>

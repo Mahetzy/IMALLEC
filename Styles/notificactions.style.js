@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 export const styles = StyleSheet.create({
   outerContainer: {
     flex: 1,
-    backgroundColor: '#020E1C', // Fondo oscuro exterior de la pantalla
+    backgroundColor: '#020E1C', 
   },
   container: {
     paddingHorizontal: 20,
@@ -45,7 +45,7 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingVertical: 16,
+    paddingVertical: "6%",
     paddingHorizontal: 18,
     borderRadius: 14,
     marginBottom: 20,
@@ -61,11 +61,12 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingVertical: 14,
+    paddingVertical: "5%",
     paddingHorizontal: 18,
     borderRadius: 12,
     marginBottom: 12,
     backgroundColor: '#0f4c81',
+    
   },
   optionText: {
     color: '#ffffff',
@@ -74,12 +75,11 @@ export const styles = StyleSheet.create({
     maxWidth: '70%'
   },
   logo: {
-        width: "35%",
-        height: "35%",
-        alignSelf: "center",
-        resizeMode: "contain",
-        marginBottom: "30%",
-        marginLeft: "auto",
-        marginTop: "-10%",
-    },
+    width: 120, 
+    height: 120,
+    resizeMode: "contain",
+    marginBottom: 150,
+    marginTop: 50, 
+    marginLeft: "70%", 
+  },
 });

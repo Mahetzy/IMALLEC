@@ -18,6 +18,7 @@ export default function signUp() {
     const [isChecked, setIsChecked] = useState(false);
     const { width: windowWidth } = useWindowDimensions();
     const isLargeScreen = windowWidth > 768;
+    const isMediunScreen = windowWidth > 600 && windowWidth < 768;
 
 
     const signUpUsuario = async () => {
@@ -164,15 +165,15 @@ export default function signUp() {
             >
                 <Image
                     source={require("../assets/IMALLEC.png.png")}
-                    style={[styles.logo, { width: isLargeScreen ? '120%' : '60%', marginLeft: isLargeScreen ? '70%' : '55%', height: isLargeScreen ? 110 : 90 }]}
+                    style={[styles.logo, { width: isLargeScreen ? '120%' : '60%', marginLeft: isLargeScreen ? '70%' : '55%', height: isLargeScreen ? 110 : (isMediunScreen ? 90 : 90) }]}
                 />
 
-                <Text style={[styles.title, { fontSize: isLargeScreen ? 130 : 75 }]}>
+                <Text style={[styles.title, { fontSize: isLargeScreen ? 130 : (isMediunScreen ? 100 : 75) }]}>
                     Sign up
                 </Text>
 
 
-                <View style={[styles.inputContainer, { height: isLargeScreen ? 75 : 55, marginBottom: isLargeScreen ? 35 : 15 }]}>
+                <View style={[styles.inputContainer, { height: isLargeScreen ? 75 : (isMediunScreen ? 65 : 55), marginBottom: isLargeScreen ? 35 : 15 }]}>
                     <Ionicons
                         name="person-outline"
                         size={25}
@@ -191,7 +192,7 @@ export default function signUp() {
 
 
 
-                <View style={[styles.inputContainer, { height: isLargeScreen ? 75 : 55, marginBottom: isLargeScreen ? 35 : 15 }]}>
+                <View style={[styles.inputContainer, { height: isLargeScreen ? 75 : (isMediunScreen ? 65 : 55), marginBottom: isLargeScreen ? 35 : 15 }]}>
                     <Ionicons
                         name="person"
                         size={25}
@@ -209,7 +210,7 @@ export default function signUp() {
                 </View>
 
 
-                <View style={[styles.inputContainer, { height: isLargeScreen ? 75 : 55, marginBottom: isLargeScreen ? 35 : 15 }]}>
+                <View style={[styles.inputContainer, { height: isLargeScreen ? 75 : (isMediunScreen ? 65 : 55), marginBottom: isLargeScreen ? 35 : 15 }]}>
                     <Ionicons
                         name="lock-closed"
                         size={25}
@@ -226,7 +227,7 @@ export default function signUp() {
                     />
                 </View>
 
-                <View style={[styles.inputContainer, { height: isLargeScreen ? 75 : 55, marginBottom: isLargeScreen ? 50 : 15 }]}>
+                <View style={[styles.inputContainer, { height: isLargeScreen ? 75 :(isMediunScreen ? 65 : 55), marginBottom: isLargeScreen ? 50 : 15 }]}>
                     <Ionicons
                         name="lock-closed"
                         size={25}
@@ -242,7 +243,7 @@ export default function signUp() {
                         onChangeText={setPassword2}
                     />
                 </View>
-                <View style={[styles.termsRow, { marginLeft: isLargeScreen ? 155 : 15 }]}>
+                <View style={[styles.termsRow, { marginLeft: isLargeScreen ? 155 :(isMediunScreen ? 70 : 15) }]}>
                     <Pressable
                         style={[styles.checkbox, isChecked && styles.checkboxChecked]}
                         onPress={() => setIsChecked(!isChecked)}
@@ -250,31 +251,31 @@ export default function signUp() {
                         {isChecked && <Ionicons name="checkmark" size={20} color="#FFF" />}
                     </Pressable>
 
-                    <Text style={[styles.label, { fontSize: isLargeScreen ? 25 : 15 }]}>I accept the </Text>
+                    <Text style={[styles.label, { fontSize: isLargeScreen ? 25 :(isMediunScreen ? 20 : 15) }]}>I accept the </Text>
 
                     <Pressable onPress={() => router.push('/terminosAndConditions')}>
-                        <Text style={[styles.linkText, { fontSize: isLargeScreen ? 25 : 15 }]}>Terms and Conditions</Text>
+                        <Text style={[styles.linkText, { fontSize: isLargeScreen ? 25 : (isMediunScreen ? 20 : 15) }]}>Terms and Conditions</Text>
                     </Pressable>
                 </View>
 
 
                 <Pressable
-                    style={[styles.button, { height: isLargeScreen ? 75 : 55 }]}
+                    style={[styles.button, { height: isLargeScreen ? 75 :(isMediunScreen ? 60 : 55) }]}
                     onPress={signUpUsuario}
                 >
 
-                    <Text style={[styles.buttonText, { fontSize: isLargeScreen ? 30 : 15 }]}>
+                    <Text style={[styles.buttonText, { fontSize: isLargeScreen ? 30 :(isMediunScreen ? 25 : 20) }]}>
                         Sign up
                     </Text>
 
                 </Pressable>
 
-                <Text style={[styles.subtitle, { fontSize: isLargeScreen ? 35 : 15 }]}>
+                <Text style={[styles.subtitle, { fontSize: isLargeScreen ? 35 :(isMediunScreen ? 20 : 15) }]}>
                     ¿Do you have an account?
                 </Text>
 
                 <Pressable onPress={() => router.push('/logIn')}>
-                    <Text style={[styles.login, { fontSize: isLargeScreen ? 35 : 15 }]}>
+                    <Text style={[styles.login, { fontSize: isLargeScreen ? 35 :(isMediunScreen ? 20 : 15) }]}>
                         log in
                     </Text>
                 </Pressable>

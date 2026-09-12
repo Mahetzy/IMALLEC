@@ -17,6 +17,7 @@ import { getUser, removeUser } from "../utils/storage";
 export default function Settings() {
     const { width: windowWidth } = useWindowDimensions();
     const isLargeScreen = windowWidth > 768;
+    const isMediunScreen = windowWidth > 600 && windowWidth < 768;
     const router = useRouter();
 
     const [user, setUser] = useState(null);
@@ -60,7 +61,7 @@ export default function Settings() {
                         try {
                             await removeUser();
 
-                            router.replace("/logIn");
+                            router.replace("/welcome");
                         } catch (error) {
                             console.error(
                                 "Error al cerrar sesión:",
@@ -80,7 +81,7 @@ export default function Settings() {
 
     return (
         <SafeAreaView style={styles.container}>
-            <Text style={[styles.title, { fontSize: isLargeScreen? 85 : 50 }]}>
+            <Text style={[styles.title, { fontSize: isLargeScreen? 85 : isMediunScreen ? 70 : 50 }]}>
                 Configuración
             </Text>
 
@@ -95,7 +96,7 @@ export default function Settings() {
             <View style={styles.optionsContainer}>
 
                 <Pressable
-                    style={[styles.optionButton, { height: isLargeScreen? '20%' : '20%'  }]}
+                    style={[styles.optionButton, { height: isLargeScreen? '20%' : isMediunScreen ? "20%" : "20%"  }]}
                     onPress={handleVerificationMethod}
                 >
                     <MaterialIcons
@@ -111,7 +112,7 @@ export default function Settings() {
                 </Pressable>
 
                 <Pressable
-                    style={[styles.optionButton, { height: isLargeScreen? '20%' : '20%'  }]}
+                    style={[styles.optionButton, { height: isLargeScreen? '20%' : isMediunScreen ? "20%" : "20%"   }]}
                     onPress={handleNotifications}
                 >
                     <MaterialIcons
@@ -129,10 +130,10 @@ export default function Settings() {
             </View>
 
             <Pressable
-                style={[styles.logoutButton , { height: isLargeScreen? '10%' : '6%' , width: isLargeScreen? '50%' : '50%' , marginTop: isLargeScreen? '-33%' : '-48%' ,  }]}
+                style={[styles.logoutButton , { height: isLargeScreen? '10%' : isMediunScreen ? "8%" : "6%"  , width: isLargeScreen? '50%' : isMediunScreen ? "50%" : "50%" , marginTop: isLargeScreen? '-33%' : isMediunScreen ? "-36%" : "-48%" ,  }]}
                 onPress={handleLogout}
             >
-                <Text style={[styles.logoutText, { fontSize: isLargeScreen? 40 : 20 }]}>
+                <Text style={[styles.logoutText, { fontSize: isLargeScreen? 40 : isMediunScreen ? 30 : 20  }]}>
                     Cerrar sesión
                 </Text>
             </Pressable>
