@@ -1,7 +1,7 @@
  import React from 'react';
 import { View, Text, ScrollView, SafeAreaView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { styles } from '../Styles/WalletTheft.style';
+import { styles } from '../Styles/walletTheft.style';
 
 export default function WalletTheft() {
   return (

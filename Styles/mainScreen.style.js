@@ -59,11 +59,6 @@ export const styles = StyleSheet.create({
         fontWeight: 'bold',
     },
 
-    greenText: {
-        color: '#37D35B',
-        fontSize: 14,
-    },
-
     distanceText: {
         color: 'white',
         fontSize: 9,
