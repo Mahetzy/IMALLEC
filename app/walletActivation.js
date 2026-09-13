@@ -2,7 +2,7 @@ import { Text, View, Image, Pressable, Alert, useWindowDimensions } from "react-
 import { useState } from "react";
 import { doc, updateDoc } from "firebase/firestore";
 import { db } from "../firebase/config";
-import { styles } from "../Styles/walletActivation.style";
+import { styles } from "../Styles/walletActivation.style.js";
 import { useRouter } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import { getUser } from "../utils/storage.js";

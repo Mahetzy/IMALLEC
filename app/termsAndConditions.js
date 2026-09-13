@@ -8,7 +8,7 @@ import {
     useWindowDimensions,
 } from 'react-native';
 import { router } from 'expo-router';
-import styles from '../Styles/terminosAndConditions.style';
+import {styles} from '../Styles/terminosAndConditions.style.js';
 
 export default function TermsConditions() {
     const [showPDF, setShowPDF] = useState(false);

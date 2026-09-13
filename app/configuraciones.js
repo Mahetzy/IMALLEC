@@ -11,7 +11,7 @@ import {
 import { useRouter } from "expo-router";
 import { MaterialIcons } from "@expo/vector-icons";
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { styles } from "../Styles/configuraciones.style";
+import { styles } from "../Styles/configuraciones.style.js";
 import { getUser, removeUser } from "../utils/storage";
 
 export default function Settings() {

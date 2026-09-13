@@ -4,7 +4,10 @@ import {
     Text,
     TextInput,
     Image,
-    Pressable
+    Pressable,
+    useWindowDimensions,
+    ScrollView
+
 } from 'react-native';
 import { styles } from '../Styles/walletVinculation.style.js';
 import { useRouter } from "expo-router";
@@ -12,7 +15,8 @@ import { doc, updateDoc, getDoc } from "firebase/firestore";
 import { db } from "../firebase/config.js";
 import { getUser, saveUser, saveWallet } from "../utils/storage.js";
 import { Alert } from 'react-native';
-import { SafeAreaView } from "react-native-safe-area-context";
+import { SafeAreaView } from 'react-native-safe-area-context';
+
 
 export default function WalletVinculation() {
     const router = useRouter();
