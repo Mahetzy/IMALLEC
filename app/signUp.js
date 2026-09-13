@@ -253,7 +253,7 @@ export default function signUp() {
 
                     <Text style={[styles.label, { fontSize: isLargeScreen ? 25 :(isMediunScreen ? 20 : 15) }]}>I accept the </Text>
 
-                    <Pressable onPress={() => router.push('/terminosAndConditions')}>
+                    <Pressable onPress={() => router.push('/termsAndConditions')}>
                         <Text style={[styles.linkText, { fontSize: isLargeScreen ? 25 : (isMediunScreen ? 20 : 15) }]}>Terms and Conditions</Text>
                     </Pressable>
                 </View>

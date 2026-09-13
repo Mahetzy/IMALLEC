@@ -154,7 +154,7 @@ export const styles = StyleSheet.create({
 
     closeButton: {
         position: 'absolute',
-        top: 10,
+        top: 40,
         left: 10,
         width: 40,
         height: 40,

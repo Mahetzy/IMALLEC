@@ -135,7 +135,7 @@ export default function Welcome() {
 
                 <View style={styles.socialContainer}>
                     <Pressable
-                        style={[styles.socialButton, { height: isLargeScreen ? 100 : (isMediunScreen ? 70 : 60), width: isLargeScreen ? 100 : (isMediunScreen ? 70 : 60), borderRadius: isLargeScreen ? 100 : (isMediunScreen ? 100 : 30) }]}
+                        style={[styles.socialButton, { height: isLargeScreen ? 100 : (isMediunScreen ? 70 : 60), width: isLargeScreen ? 100 : (isMediunScreen ? 70 : 60), borderRadius: isLargeScreen ? 100 : (isMediunScreen ? 100 : 30), opacity: 0.50, }]}
                         onPress={() => setMsModalVisible(true)}
                     >
 
@@ -146,7 +146,7 @@ export default function Welcome() {
                     </Pressable>
 
                     <Pressable
-                        style={[styles.socialButton, { height: isLargeScreen ? 100 : (isMediunScreen ? 70 : 60), width: isLargeScreen ? 100 : (isMediunScreen ? 70 : 60), borderRadius: isLargeScreen ? 100 : (isMediunScreen ? 100 : 30) }]}
+                        style={[styles.socialButton, { height: isLargeScreen ? 100 : (isMediunScreen ? 70 : 60), width: isLargeScreen ? 100 : (isMediunScreen ? 70 : 60), borderRadius: isLargeScreen ? 100 : (isMediunScreen ? 100 : 30),  }]}
                         onPress={() => setGoogleModalVisible(true)}
                     >
                         <Image source={require("../assets/GoogleLogo.png")} style={[styles.logoG, { height: isLargeScreen ? 50 : (isMediunScreen ? 40 : 30), width: isLargeScreen ? 50 : (isMediunScreen ? 40 : 30) }]} />

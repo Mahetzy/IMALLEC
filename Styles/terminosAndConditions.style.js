@@ -1,10 +1,10 @@
 import { StyleSheet } from 'react-native';
 
-const styles = StyleSheet.create({
+export const styles = StyleSheet.create({
 
     container: {
         flex: 1,
-        backgroundColor: '#FFFFFF',
+        backgroundColor: '#020E1C',
         paddingHorizontal: 20,
         paddingTop: 55,
     },
@@ -26,19 +26,19 @@ const styles = StyleSheet.create({
     backText: {
         fontSize: 40,
         fontWeight: '300',
-        color: '#000000',
+        color: '#ffffff',
         lineHeight: 40,
     },
 
     title: {
         fontSize: 24,
         fontWeight: 'bold',
-        color: '#000000',
+        color: '#ffffff',
     },
 
     pdfBox: {
         flex: 1,
-        backgroundColor: '#E5E5E5',
+        backgroundColor: ' #f8f8f8',
         borderRadius: 18,
         padding: 30,
         alignItems: 'center',

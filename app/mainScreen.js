@@ -9,44 +9,47 @@ import { doc, onSnapshot } from 'firebase/firestore';
 import { db } from '../firebase/config';
 import { useRef } from 'react';
 import * as Location from 'expo-location';
-import { WebView } from 'react-native-webview';
-
-
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 
 
 export default function LocationWallet() {
     const [menuVisible, setMenuVisible] = useState(false);
     const router = useRouter();
+
     const [user, setUser] = useState(null);
+    const [userLocation, setUserLocation] = useState(null);
+
     const [coordinates, setCoordinates] = useState(null);
+    const [walletAddress, setWalletAddress] = useState(null);
     const [followWallet, setFollowWallet] = useState(false);
     const mapRef = useRef(null);
+    const [mapRegion, setMapRegion] = useState({
+        latitude: 13.6929,
+        longitude: -89.2182,
+        latitudeDelta: 0.03,
+        longitudeDelta: 0.03,
+    });
+
+    const [remoteness, setRemoteness] = useState(null);
+    const [remotenessColor, setRemotenessColor] = useState(null);
+     const insets = useSafeAreaInsets();
+
+    const [showedDistance, setShowedDistance] = useState(0);
 
     const [locationPermission, setLocationPermission] = useState(false);
-    const leafletHTML = `
-<!DOCTYPE html>
-<html>
-<head>
-  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-  <style>#map { height: 100vh; margin:0; }</style>
-</head>
-<body>
-  <div id="map"></div>
-  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-  <script>
-    const map = L.map('map').setView([${coordinates?.latitude ?? 13.6929}, ${coordinates?.longitude ?? -89.2182}], 15);
-    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
-    L.marker([${coordinates?.latitude ?? 13.6929}, ${coordinates?.longitude ?? -89.2182}]).addTo(map);
-  </script>
-</body>
-</html>
-`;
+
 
     useEffect(() => {
         const requestLocationPermission = async () => {
-            const { status } =
-                await Location.requestForegroundPermissionsAsync();
+            const { status: currentStatus } = await Location.getForegroundPermissionsAsync();
+
+            if (currentStatus === 'granted') {
+                setLocationPermission(true);
+                return;
+            }
+
+            const { status } = await Location.requestForegroundPermissionsAsync();
 
             if (status !== 'granted') {
                 Alert.alert(
@@ -61,6 +64,65 @@ export default function LocationWallet() {
 
         requestLocationPermission();
     }, []);
+
+    useEffect(() => {
+        if (!locationPermission) {
+            return;
+        }
+
+        let subscription;
+
+        const startLocationTracking = async () => {
+            try {
+                const initialLocation = await Location.getCurrentPositionAsync({
+                    accuracy: Location.Accuracy.High,
+                });
+
+                setUserLocation(initialLocation);
+                setMapRegion({
+                    latitude: initialLocation.coords.latitude,
+                    longitude: initialLocation.coords.longitude,
+                    latitudeDelta: 0.03,
+                    longitudeDelta: 0.03,
+                });
+
+                subscription = await Location.watchPositionAsync(
+                    {
+                        accuracy: Location.Accuracy.High,
+                        timeInterval: 2000,
+                        distanceInterval: 10,
+                    },
+                    (location) => {
+                        setUserLocation(location);
+                    }
+                );
+            } catch (error) {
+                console.error('Error watching user location:', error);
+            }
+        };
+
+        startLocationTracking();
+
+        return () => {
+            subscription?.remove();
+        };
+    }, [locationPermission]);
+
+    useEffect(() => {
+        if (!userLocation || followWallet) {
+            return;
+        }
+
+        const nextRegion = {
+            latitude: userLocation.coords.latitude,
+            longitude: userLocation.coords.longitude,
+            latitudeDelta: 0.03,
+            longitudeDelta: 0.03,
+        };
+
+        setMapRegion(nextRegion);
+        mapRef.current?.animateToRegion(nextRegion, 500);
+    }, [userLocation, followWallet]);
 
     useEffect(() => {
         const loadUser = async () => {
@@ -125,11 +187,102 @@ export default function LocationWallet() {
         );
     }, [coordinates, followWallet]);
 
+    useEffect(() => {
+        if (!coordinates) { return; }
+
+        const getAddress = async () => {
+            try {
+                const result = await Location.reverseGeocodeAsync({
+                    latitude: coordinates.latitude,
+                    longitude: coordinates.longitude,
+                });
+
+                if (result && result.length > 0) {
+                    const address = result[0];
+                    const formatted = address.street && address.streetNumber ? `${address.street} ${address.streetNumber}` : address.street || "Calle no disponible"
+                    const city = address.city || "Ciudad no disponible"
+                    const region = address.region || "Region no disponible"
+
+                    setWalletAddress(`${formatted}, ${city}, ${region}`);
+                } else {
+                    setWalletAddress("Direccion no disponible")
+                }
+            } catch (error) {
+                console.error("Error reverse geocode:" + error)
+                setWalletAddress("Direccion no disponible")
+            };
+
+        };
+
+        getAddress();
+
+    }, [coordinates]);
+
+    useEffect(() => {
+        if (!coordinates || !userLocation) {
+            return;
+        }
+
+        const R = 6371000;
+        const userLatitude = userLocation.coords.latitude;
+        const userLongitude = userLocation.coords.longitude;
+        const walletLatitude = coordinates.latitude;
+        const walletLongitude = coordinates.longitude;
+
+        const lat1Rad = userLatitude * (Math.PI / 180);
+        const lon1Rad = userLongitude * (Math.PI / 180);
+        const lat2Rad = walletLatitude * (Math.PI / 180);
+        const lon2Rad = walletLongitude * (Math.PI / 180);
+
+        const deltaLat = lat2Rad - lat1Rad;
+        const deltaLon = lon2Rad - lon1Rad;
+
+        const a =
+            Math.sin(deltaLat / 2) ** 2 +
+            Math.cos(lat1Rad) * Math.cos(lat2Rad) * Math.sin(deltaLon / 2) ** 2;
+
+        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        const calculatedDistance = R * c;
+
+        if (calculatedDistance <= 500) {
+            setRemoteness('Cerca');
+            setRemotenessColor('#37D35B');
+        } else if (calculatedDistance <= 3000) {
+            setRemoteness('Lejos');
+            setRemotenessColor('#FFA500');
+        } else {
+            setRemoteness('Muy Lejos');
+            setRemotenessColor('#FF0000');
+        }
+
+        if (calculatedDistance < 1000) {
+            setShowedDistance(calculatedDistance.toFixed(2) + ' m');
+        } else {
+            setShowedDistance((calculatedDistance / 1000).toFixed(1) + ' km');
+        }
+    }, [coordinates, userLocation]);
+
 
     return (
         <View style={styles.container}>
 
-            <WebView style={{ flex: 1 }} source={{ html: leafletHTML }} />
+            <MapView
+                ref={mapRef}
+                style={styles.map}
+                region={mapRegion}
+                showsUserLocation={locationPermission}
+                showsMyLocationButton={locationPermission}
+                onPanDrag={() => setFollowWallet(false)}
+
+            >
+
+                {coordinates && (
+                    <Marker
+                        coordinate={coordinates}
+                        title="Wallet Location"
+                    />
+                )}
+            </MapView>
 
             <View style={styles.topBar}>
                 <TouchableOpacity
@@ -147,19 +300,21 @@ export default function LocationWallet() {
             <View style={styles.walletCard}>
                 <Text style={styles.walletText}>
                     Billetera:{' '}
-                    <Text style={styles.greenText}>
+                    <Text style={[{ color: remotenessColor }, { fontSize: 14 }]}>
                         ●
                     </Text>{' '}
-                    Cerca
+                    <Text>
+                        {remoteness}
+                    </Text>
                 </Text>
 
                 <Text style={styles.distanceText}>
-                    Aprox. 100 m
+                    {showedDistance}
                 </Text>
             </View>
 
             <TouchableOpacity
-                style={styles.locationButton}
+                style={[styles.locationButton, { bottom: 70 + insets.bottom }]}
                 onPress={() => {
                     setFollowWallet(true);
 
@@ -178,7 +333,7 @@ export default function LocationWallet() {
                 <Ionicons name="locate" size={27} color="white" />
             </TouchableOpacity>
 
-            <View style={styles.addressCard}>
+            <View style={[styles.addressCard, { bottom: 8 + insets.bottom }]}>
                 <View style={styles.addressRow}>
                     <Ionicons
                         name="location-outline"
@@ -192,12 +347,11 @@ export default function LocationWallet() {
                 </View>
 
                 <Text style={styles.addressText}>
-                    Carretera Panamericana a Colón,
-                    La Libertad, El Salvador
+                    {walletAddress}
                 </Text>
             </View>
 
-            <TouchableOpacity style={styles.lockButton}>
+            <TouchableOpacity style={[styles.lockButton, { bottom: 138 + insets.bottom }]}>
                 <Ionicons
                     name="lock-closed"
                     size={25}
