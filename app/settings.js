@@ -11,7 +11,7 @@ import {
 import { useRouter } from "expo-router";
 import { MaterialIcons } from "@expo/vector-icons";
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { styles } from "../Styles/configuraciones.style";
+import { styles } from "../Styles/settings.style";
 import { getUser, removeUser } from "../utils/storage";
 
 export default function Settings() {
@@ -48,15 +48,15 @@ export default function Settings() {
 
     const handleLogout = () => {
         Alert.alert(
-            "Cerrar sesión",
-            "¿Deseas cerrar sesión?",
+            "Log out",
+            "Do you want to log out?",
             [
                 {
-                    text: "Cancelar",
+                    text: "Cancel",
                     style: "cancel"
                 },
                 {
-                    text: "Aceptar",
+                    text: "Accept",
                     onPress: async () => {
                         try {
                             await removeUser();
@@ -64,13 +64,13 @@ export default function Settings() {
                             router.replace("/welcome");
                         } catch (error) {
                             console.error(
-                                "Error al cerrar sesión:",
+                                "Error signing out:",
                                 error
                             );
 
                             Alert.alert(
                                 "Error",
-                                "No fue posible cerrar sesión"
+                                "It wasn't possible to log out"
                             );
                         }
                     }
@@ -82,7 +82,7 @@ export default function Settings() {
     return (
         <SafeAreaView style={styles.container}>
             <Text style={[styles.title, { fontSize: isLargeScreen? 85 : isMediunScreen ? 70 : 50 }]}>
-                Configuración
+                Settings
             </Text>
 
             <Image
@@ -106,7 +106,7 @@ export default function Settings() {
                     />
 
                     <Text style={styles.optionText}>
-                        Método de verificación
+                        Verification method
                     </Text>
 
                 </Pressable>
@@ -122,7 +122,7 @@ export default function Settings() {
                     />
 
                     <Text style={styles.optionText}>
-                        Notificaciones
+                        Notifications
                     </Text>
 
                 </Pressable>
@@ -134,7 +134,7 @@ export default function Settings() {
                 onPress={handleLogout}
             >
                 <Text style={[styles.logoutText, { fontSize: isLargeScreen? 40 : isMediunScreen ? 30 : 20  }]}>
-                    Cerrar sesión
+                    Log out
                 </Text>
             </Pressable>
 

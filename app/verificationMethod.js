@@ -54,7 +54,7 @@ export default function Security() {
                 Alert.alert("Security", "You have selected " + selected.charAt(0).toUpperCase() + selected.slice(1) + " as your security method.");
             }
 
-            router.push('/configuraciones')
+            router.push('/settings')
         } catch (error) {
             console.error("Error updating wallet security:", error);
             Alert.alert("Error", "Could not save your security preference.");

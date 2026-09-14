@@ -42,6 +42,8 @@ export default function Welcome() {
                 photoURL: user.photoURL || "",
                 createdAt: new Date().toISOString()
             }, { merge: true });
+            
+            await saveUser(userData);
 
             router.replace('/linkCheck');
         } catch (error) {

@@ -1,28 +1,39 @@
-import MapView, { Marker } from 'react-native-maps';
 import { View, Text, TouchableOpacity, Alert } from 'react-native';
+import { WebView } from 'react-native-webview';
 import { Ionicons } from '@expo/vector-icons';
 import { styles } from '../Styles/mainScreen.style';
 import { useRouter } from "expo-router";
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef, useMemo } from 'react';
 import { getUser } from '../utils/storage';
 import { doc, onSnapshot } from 'firebase/firestore';
 import { db } from '../firebase/config';
-import { useRef } from 'react';
 import * as Location from 'expo-location';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-
+const DEFAULT_LAT = 13.6929;
+const DEFAULT_LNG = -89.2182;
 
 export default function LocationWallet() {
     const [menuVisible, setMenuVisible] = useState(false);
     const router = useRouter();
-
     const [user, setUser] = useState(null);
+    const [coordinates, setCoordinates] = useState(null); // ubicación de la billetera
+    const [myLocation, setMyLocation] = useState(null);   // mi ubicación (GPS)
+    const [followWallet, setFollowWallet] = useState(false);
+    const [locationPermission, setLocationPermission] = useState(false);
+    const [mapReady, setMapReady] = useState(false);
+    const insets = useSafeAreaInsets();
+    const [showedDistance, setShowedDistance] = useState(0);
     const [userLocation, setUserLocation] = useState(null);
 
-    const [coordinates, setCoordinates] = useState(null);
+    const webviewRef = useRef(null);
+    const locationSubscription = useRef(null);
+
+    const [remoteness, setRemoteness] = useState(null);
+    const [remotenessColor, setRemotenessColor] = useState(null);
     const [walletAddress, setWalletAddress] = useState(null);
-    const [followWallet, setFollowWallet] = useState(false);
+    const hasCenteredOnUser = useRef(false);
+
     const mapRef = useRef(null);
     const [mapRegion, setMapRegion] = useState({
         latitude: 13.6929,
@@ -30,26 +41,23 @@ export default function LocationWallet() {
         latitudeDelta: 0.03,
         longitudeDelta: 0.03,
     });
+    useEffect(() => {
+    if (!mapReady || !myLocation || hasCenteredOnUser.current) {
+        return;
+    }
+    hasCenteredOnUser.current = true;
 
-    const [remoteness, setRemoteness] = useState(null);
-    const [remotenessColor, setRemotenessColor] = useState(null);
-     const insets = useSafeAreaInsets();
-
-    const [showedDistance, setShowedDistance] = useState(0);
-
-    const [locationPermission, setLocationPermission] = useState(false);
+    webviewRef.current?.injectJavaScript(`
+        window.flyTo(${myLocation.latitude}, ${myLocation.longitude});
+        true;
+    `);
+}, [mapReady, myLocation]);
 
 
     useEffect(() => {
         const requestLocationPermission = async () => {
-            const { status: currentStatus } = await Location.getForegroundPermissionsAsync();
-
-            if (currentStatus === 'granted') {
-                setLocationPermission(true);
-                return;
-            }
-
-            const { status } = await Location.requestForegroundPermissionsAsync();
+            const { status } =
+                await Location.requestForegroundPermissionsAsync();
 
             if (status !== 'granted') {
                 Alert.alert(
@@ -65,64 +73,32 @@ export default function LocationWallet() {
         requestLocationPermission();
     }, []);
 
+
     useEffect(() => {
         if (!locationPermission) {
             return;
         }
 
-        let subscription;
-
-        const startLocationTracking = async () => {
-            try {
-                const initialLocation = await Location.getCurrentPositionAsync({
+        const startWatching = async () => {
+            locationSubscription.current = await Location.watchPositionAsync(
+                {
                     accuracy: Location.Accuracy.High,
-                });
-
-                setUserLocation(initialLocation);
-                setMapRegion({
-                    latitude: initialLocation.coords.latitude,
-                    longitude: initialLocation.coords.longitude,
-                    latitudeDelta: 0.03,
-                    longitudeDelta: 0.03,
-                });
-
-                subscription = await Location.watchPositionAsync(
-                    {
-                        accuracy: Location.Accuracy.High,
-                        timeInterval: 2000,
-                        distanceInterval: 10,
-                    },
-                    (location) => {
-                        setUserLocation(location);
-                    }
-                );
-            } catch (error) {
-                console.error('Error watching user location:', error);
-            }
+                    timeInterval: 3000,
+                    distanceInterval: 5,
+                },
+                (location) => {
+                    const { latitude, longitude } = location.coords;
+                    setMyLocation({ latitude, longitude });
+                }
+            );
         };
 
-        startLocationTracking();
+        startWatching();
 
         return () => {
-            subscription?.remove();
+            locationSubscription.current?.remove();
         };
     }, [locationPermission]);
-
-    useEffect(() => {
-        if (!userLocation || followWallet) {
-            return;
-        }
-
-        const nextRegion = {
-            latitude: userLocation.coords.latitude,
-            longitude: userLocation.coords.longitude,
-            latitudeDelta: 0.03,
-            longitudeDelta: 0.03,
-        };
-
-        setMapRegion(nextRegion);
-        mapRef.current?.animateToRegion(nextRegion, 500);
-    }, [userLocation, followWallet]);
 
     useEffect(() => {
         const loadUser = async () => {
@@ -167,25 +143,73 @@ export default function LocationWallet() {
             }
 
             setCoordinates({ latitude, longitude });
+        }, (error) => {
+            console.error('Error en onSnapshot:', error);
         });
 
         return unsubscribe;
     }, [user]);
 
     useEffect(() => {
-        if (!followWallet || !coordinates) {
+        if (!mapReady || !coordinates) {
             return;
         }
 
-        mapRef.current?.animateToRegion(
-            {
-                ...coordinates,
-                latitudeDelta: 0.03,
-                longitudeDelta: 0.03,
-            },
-            500
-        );
-    }, [coordinates, followWallet]);
+        webviewRef.current?.injectJavaScript(`
+            window.updateWalletMarker(${coordinates.latitude}, ${coordinates.longitude});
+            true;
+        `);
+    }, [coordinates, mapReady]);
+
+    useEffect(() => {
+        if (!mapReady || !myLocation) {
+            return;
+        }
+
+        webviewRef.current?.injectJavaScript(`
+            window.updateMyLocationMarker(${myLocation.latitude}, ${myLocation.longitude});
+            true;
+        `);
+    }, [myLocation, mapReady]);
+
+
+    useEffect(() => {
+        if (!followWallet || !coordinates || !mapReady) {
+            return;
+        }
+
+        webviewRef.current?.injectJavaScript(`
+            window.flyTo(${coordinates.latitude}, ${coordinates.longitude});
+            true;
+        `);
+    }, [coordinates, followWallet, mapReady]);
+
+    const handleWebViewMessage = (event) => {
+        try {
+            const data = JSON.parse(event.nativeEvent.data);
+
+            if (data.type === 'MAP_DRAGGED') {
+                setFollowWallet(false);
+            }
+
+            if (data.type === 'MAP_READY') {
+                setMapReady(true);
+            }
+        } catch (error) {
+            console.error('Error parsing WebView message:', error);
+        }
+    };
+
+    const handleCenterPress = () => {
+        setFollowWallet(true);
+
+        if (coordinates) {
+            webviewRef.current?.injectJavaScript(`
+                window.flyTo(${coordinates.latitude}, ${coordinates.longitude});
+                true;
+            `);
+        }
+    };
 
     useEffect(() => {
         if (!coordinates) { return; }
@@ -199,17 +223,17 @@ export default function LocationWallet() {
 
                 if (result && result.length > 0) {
                     const address = result[0];
-                    const formatted = address.street && address.streetNumber ? `${address.street} ${address.streetNumber}` : address.street || "Calle no disponible"
-                    const city = address.city || "Ciudad no disponible"
-                    const region = address.region || "Region no disponible"
+                    const formatted = address.street && address.streetNumber ? `${address.street} ${address.streetNumber}` : address.street || "Street not available"
+                    const city = address.city || "City not available"
+                    const region = address.region || "Region not available"
 
                     setWalletAddress(`${formatted}, ${city}, ${region}`);
                 } else {
-                    setWalletAddress("Direccion no disponible")
+                    setWalletAddress("Address not available")
                 }
             } catch (error) {
                 console.error("Error reverse geocode:" + error)
-                setWalletAddress("Direccion no disponible")
+                setWalletAddress("Address not available")
             };
 
         };
@@ -217,6 +241,48 @@ export default function LocationWallet() {
         getAddress();
 
     }, [coordinates]);
+     useEffect(() => {
+        if (!locationPermission) {
+            return;
+        }
+
+        let subscription;
+
+        const startLocationTracking = async () => {
+            try {
+                const initialLocation = await Location.getCurrentPositionAsync({
+                    accuracy: Location.Accuracy.High,
+                });
+
+                setUserLocation(initialLocation);
+                setMapRegion({
+                    latitude: initialLocation.coords.latitude,
+                    longitude: initialLocation.coords.longitude,
+                    latitudeDelta: 0.03,
+                    longitudeDelta: 0.03,
+                });
+
+                subscription = await Location.watchPositionAsync(
+                    {
+                        accuracy: Location.Accuracy.High,
+                        timeInterval: 2000,
+                        distanceInterval: 10,
+                    },
+                    (location) => {
+                        setUserLocation(location);
+                    }
+                );
+            } catch (error) {
+                console.error('Error watching user location:', error);
+            }
+        };
+
+        startLocationTracking();
+
+        return () => {
+            subscription?.remove();
+        };
+    }, [locationPermission]);
 
     useEffect(() => {
         if (!coordinates || !userLocation) {
@@ -228,6 +294,7 @@ export default function LocationWallet() {
         const userLongitude = userLocation.coords.longitude;
         const walletLatitude = coordinates.latitude;
         const walletLongitude = coordinates.longitude;
+
 
         const lat1Rad = userLatitude * (Math.PI / 180);
         const lon1Rad = userLongitude * (Math.PI / 180);
@@ -245,13 +312,13 @@ export default function LocationWallet() {
         const calculatedDistance = R * c;
 
         if (calculatedDistance <= 500) {
-            setRemoteness('Cerca');
+            setRemoteness('Near');
             setRemotenessColor('#37D35B');
         } else if (calculatedDistance <= 3000) {
-            setRemoteness('Lejos');
+            setRemoteness('Far');
             setRemotenessColor('#FFA500');
         } else {
-            setRemoteness('Muy Lejos');
+            setRemoteness('Very Far');
             setRemotenessColor('#FF0000');
         }
 
@@ -262,27 +329,106 @@ export default function LocationWallet() {
         }
     }, [coordinates, userLocation]);
 
+    const leafletHTML = useMemo(() => `
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <style>
+    html, body, #map { height: 100%; width: 100%; margin: 0; padding: 0; }
+
+    .wallet-icon {
+      background-color: #061B2D;
+      border: 3px solid white;
+      border-radius: 50%;
+      width: 20px;
+      height: 20px;
+      box-shadow: 0 0 4px rgba(0,0,0,0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .my-location-icon {
+      background-color: #2A7FFF;
+      border: 3px solid white;
+      border-radius: 50%;
+      width: 18px;
+      height: 18px;
+      box-shadow: 0 0 4px rgba(0,0,0,0.5);
+    }
+  </style>
+</head>
+<body>
+  <div id="map"></div>
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script>
+    const map = L.map('map', { zoomControl: false }).setView([${DEFAULT_LAT}, ${DEFAULT_LNG}], 15);
+
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+    }).addTo(map);
+
+    const walletIcon = L.divIcon({
+      className: 'wallet-icon',
+      html: \`
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M21 7H3a1 1 0 00-1 1v10a2 2 0 002 2h16a2 2 0 002-2V8a1 1 0 00-1-1z" stroke="white" stroke-width="2"/>
+          <path d="M16 13a1.2 1.2 0 100 2.4 1.2 1.2 0 000-2.4z" fill="white"/>
+          <path d="M2 8l1.5-3A2 2 0 015.3 4h9.4a2 2 0 011.8 1l1.5 3" stroke="white" stroke-width="2" fill="none"/>
+        </svg>
+      \`,
+      iconSize: [20, 20],
+    });
+
+    const myLocationIcon = L.divIcon({ className: 'my-location-icon', iconSize: [18, 18] });
+
+    let walletMarker = null;
+    let myLocationMarker = null;
+
+    window.updateWalletMarker = function(lat, lng) {
+      if (!walletMarker) {
+        walletMarker = L.marker([lat, lng], { icon: walletIcon }).addTo(map);
+      } else {
+        walletMarker.setLatLng([lat, lng]);
+      }
+    };
+
+    window.updateMyLocationMarker = function(lat, lng) {
+      if (!myLocationMarker) {
+        myLocationMarker = L.marker([lat, lng], { icon: myLocationIcon }).addTo(map);
+      } else {
+        myLocationMarker.setLatLng([lat, lng]);
+      }
+    };
+
+    window.flyTo = function(lat, lng) {
+      map.flyTo([lat, lng], map.getZoom(), { duration: 0.5 });
+    };
+
+    map.on('dragstart', function() {
+      window.ReactNativeWebView.postMessage(JSON.stringify({ type: 'MAP_DRAGGED' }));
+    });
+
+    window.ReactNativeWebView.postMessage(JSON.stringify({ type: 'MAP_READY' }));
+  </script>
+</body>
+</html>
+    `, []);
 
     return (
         <View style={styles.container}>
 
-            <MapView
-                ref={mapRef}
+            <WebView
+                ref={webviewRef}
                 style={styles.map}
-                region={mapRegion}
-                showsUserLocation={locationPermission}
-                showsMyLocationButton={locationPermission}
-                onPanDrag={() => setFollowWallet(false)}
-
-            >
-
-                {coordinates && (
-                    <Marker
-                        coordinate={coordinates}
-                        title="Wallet Location"
-                    />
-                )}
-            </MapView>
+                source={{ html: leafletHTML }}
+                onMessage={handleWebViewMessage}
+                javaScriptEnabled={true}
+                domStorageEnabled={true}
+                originWhitelist={['*']}
+            />
 
             <View style={styles.topBar}>
                 <TouchableOpacity
@@ -299,7 +445,7 @@ export default function LocationWallet() {
 
             <View style={styles.walletCard}>
                 <Text style={styles.walletText}>
-                    Billetera:{' '}
+                    Wallet:{' '}
                     <Text style={[{ color: remotenessColor }, { fontSize: 14 }]}>
                         ●
                     </Text>{' '}
@@ -342,7 +488,7 @@ export default function LocationWallet() {
                     />
 
                     <Text style={styles.addressTitle}>
-                        Dirección aproximada
+                       Approximate address
                     </Text>
                 </View>
 
@@ -390,7 +536,7 @@ export default function LocationWallet() {
                         </Text>
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.menuItem} onPress={() => router.push('/configuraciones')}>
+                    <TouchableOpacity style={styles.menuItem} onPress={() => router.push('/settings')}>
                         <Ionicons
                             name="settings"
                             size={22}

@@ -8,16 +8,16 @@ export default function App() {
     const isMediunScreen = windowWidth > 600 && windowWidth < 768;
     const [uiData, setUiData] = useState({
         mainSection: {
-            title: "Notificaciones",
-            options: [{ label: "Recibir notificaciones", active: true, isMain: true }]
+            title: "Notifications",
+            options: [{ label: "Receive notifications", active: true, isMain: true }]
         },
         prefSection: {
-            title: "Preferencias",
+            title: "Preferences",
             options: [
-                { label: "Notificacion de estado", active: false },
-                { label: "Notificacion de alerta", active: false },
-                { label: "Vibración", active: false },
-                { label: "Reproducir sonido", active: false }
+                { label: "Status notification", active: false },
+                { label: "Alert notification", active: false },
+                { label: "Vibration", active: false },
+                { label: "Play sound", active: false }
             ]
         }
     });
