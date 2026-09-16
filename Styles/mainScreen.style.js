@@ -17,8 +17,7 @@ export const styles = StyleSheet.create({
         top: 0,
         left: 0,
         right: 0,
-        
-        height: 55,
+        height: 85,
         backgroundColor: '#061B2D',
         flexDirection: 'row',
         alignItems: 'center',
@@ -43,7 +42,7 @@ export const styles = StyleSheet.create({
 
     walletCard: {
         position: 'absolute',
-        top: 70,
+        top: 95,
         left: 10,
         right: 10,
         backgroundColor: '#061B2D',
@@ -127,7 +126,7 @@ export const styles = StyleSheet.create({
     lockButton: {
         position: 'absolute',
         right: 15,
-        bottom: 18,
+        bottom: 138,
         width: 38,
         height: 38,
         borderRadius: 20,
@@ -150,7 +149,7 @@ export const styles = StyleSheet.create({
 
     closeButton: {
         position: 'absolute',
-        top: 10,
+        top: 40,
         left: 10,
         width: 40,
         height: 40,

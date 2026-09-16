@@ -26,7 +26,7 @@ export const styles = StyleSheet.create({
     walletCard: {
         position: 'absolute',
         top: 70,
-        left: 10,
+        left: 15,
         right: 10,
         backgroundColor: '#ffffff',
         borderRadius: 15,
