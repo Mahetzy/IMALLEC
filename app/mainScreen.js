@@ -16,9 +16,14 @@ const DEFAULT_LNG = -89.2182;
 export default function LocationWallet() {
     const [menuVisible, setMenuVisible] = useState(false);
     const router = useRouter();
+
     const [user, setUser] = useState(null);
     const [coordinates, setCoordinates] = useState(null); // ubicación de la billetera
     const [myLocation, setMyLocation] = useState(null);   // mi ubicación (GPS)
+    const [userLocation, setUserLocation] = useState(null);
+
+    const [coordinates, setCoordinates] = useState(null);
+    const [walletAddress, setWalletAddress] = useState(null);
     const [followWallet, setFollowWallet] = useState(false);
     const [locationPermission, setLocationPermission] = useState(false);
     const [mapReady, setMapReady] = useState(false);
@@ -53,11 +58,23 @@ export default function LocationWallet() {
     `);
 }, [mapReady, myLocation]);
 
+    const [remoteness, setRemoteness] = useState(null);
+    const [remotenessColor, setRemotenessColor] = useState(null);
+
+    const [showedDistance, setShowedDistance] = useState(0);
+
+
 
     useEffect(() => {
         const requestLocationPermission = async () => {
-            const { status } =
-                await Location.requestForegroundPermissionsAsync();
+            const { status: currentStatus } = await Location.getForegroundPermissionsAsync();
+
+            if (currentStatus === 'granted') {
+                setLocationPermission(true);
+                return;
+            }
+
+            const { status } = await Location.requestForegroundPermissionsAsync();
 
             if (status !== 'granted') {
                 Alert.alert(
@@ -99,6 +116,65 @@ export default function LocationWallet() {
             locationSubscription.current?.remove();
         };
     }, [locationPermission]);
+
+    useEffect(() => {
+        if (!locationPermission) {
+            return;
+        }
+
+        let subscription;
+
+        const startLocationTracking = async () => {
+            try {
+                const initialLocation = await Location.getCurrentPositionAsync({
+                    accuracy: Location.Accuracy.High,
+                });
+
+                setUserLocation(initialLocation);
+                setMapRegion({
+                    latitude: initialLocation.coords.latitude,
+                    longitude: initialLocation.coords.longitude,
+                    latitudeDelta: 0.03,
+                    longitudeDelta: 0.03,
+                });
+
+                subscription = await Location.watchPositionAsync(
+                    {
+                        accuracy: Location.Accuracy.High,
+                        timeInterval: 2000,
+                        distanceInterval: 10,
+                    },
+                    (location) => {
+                        setUserLocation(location);
+                    }
+                );
+            } catch (error) {
+                console.error('Error watching user location:', error);
+            }
+        };
+
+        startLocationTracking();
+
+        return () => {
+            subscription?.remove();
+        };
+    }, [locationPermission]);
+
+    useEffect(() => {
+        if (!userLocation || followWallet) {
+            return;
+        }
+
+        const nextRegion = {
+            latitude: userLocation.coords.latitude,
+            longitude: userLocation.coords.longitude,
+            latitudeDelta: 0.03,
+            longitudeDelta: 0.03,
+        };
+
+        setMapRegion(nextRegion);
+        mapRef.current?.animateToRegion(nextRegion, 500);
+    }, [userLocation, followWallet]);
 
     useEffect(() => {
         const loadUser = async () => {
@@ -165,6 +241,80 @@ export default function LocationWallet() {
         if (!mapReady || !myLocation) {
             return;
         }
+        if (!coordinates) { return; }
+
+        const getAddress = async () => {
+            try {
+                const result = await Location.reverseGeocodeAsync({
+                    latitude: coordinates.latitude,
+                    longitude: coordinates.longitude,
+                });
+
+                if (result && result.length > 0) {
+                    const address = result[0];
+                    const formatted = address.street && address.streetNumber ? `${address.street} ${address.streetNumber}` : address.street || "Calle no disponible"
+                    const city = address.city || "Ciudad no disponible"
+                    const region = address.region || "Region no disponible"
+
+                    setWalletAddress(`${formatted}, ${city}, ${region}`);
+                } else {
+                    setWalletAddress("Direccion no disponible")
+                }
+            } catch (error) {
+                console.error("Error reverse geocode:" + error)
+                setWalletAddress("Direccion no disponible")
+            };
+
+        };
+
+        getAddress();
+
+    }, [coordinates]);
+
+    useEffect(() => {
+        if (!coordinates || !userLocation) {
+            return;
+        }
+
+        const R = 6371000;
+        const userLatitude = userLocation.coords.latitude;
+        const userLongitude = userLocation.coords.longitude;
+        const walletLatitude = coordinates.latitude;
+        const walletLongitude = coordinates.longitude;
+
+        const lat1Rad = userLatitude * (Math.PI / 180);
+        const lon1Rad = userLongitude * (Math.PI / 180);
+        const lat2Rad = walletLatitude * (Math.PI / 180);
+        const lon2Rad = walletLongitude * (Math.PI / 180);
+
+        const deltaLat = lat2Rad - lat1Rad;
+        const deltaLon = lon2Rad - lon1Rad;
+
+        const a =
+            Math.sin(deltaLat / 2) ** 2 +
+            Math.cos(lat1Rad) * Math.cos(lat2Rad) * Math.sin(deltaLon / 2) ** 2;
+
+        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        const calculatedDistance = R * c;
+
+        if (calculatedDistance <= 500) {
+            setRemoteness('Cerca');
+            setRemotenessColor('#37D35B');
+        } else if (calculatedDistance <= 3000) {
+            setRemoteness('Lejos');
+            setRemotenessColor('#FFA500');
+        } else {
+            setRemoteness('Muy Lejos');
+            setRemotenessColor('#FF0000');
+        }
+
+        if (calculatedDistance < 1000) {
+            setShowedDistance(calculatedDistance.toFixed(2) + ' m');
+        } else {
+            setShowedDistance((calculatedDistance / 1000).toFixed(1) + ' km');
+        }
+    }, [coordinates, userLocation]);
+
 
         webviewRef.current?.injectJavaScript(`
             window.updateMyLocationMarker(${myLocation.latitude}, ${myLocation.longitude});
