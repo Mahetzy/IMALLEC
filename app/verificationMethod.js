@@ -7,6 +7,7 @@ import { useRouter } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import { getUser } from "../utils/storage.js";
 import { useEffect } from "react";
+import { LinearGradient } from 'expo-linear-gradient';
 
 export default function Security() {
 
@@ -62,8 +63,13 @@ export default function Security() {
     };
 
     return (
-        <View style={styles.container}>
 
+        <LinearGradient
+            colors={['#00162F', '#086bec']}
+            start={{ x: 0, y: 0.2 }}
+            end={{ x: 0, y: 0 }}
+            style={styles.container}
+        >
             <Image
                 source={require("../assets/IMALLEC.png.png")}
                 style={[styles.logo, { marginLeft: isLargeScreen ? '75%' : '75%' }]}
@@ -72,7 +78,7 @@ export default function Security() {
             <Text style={[styles.title, { fontSize: isLargeScreen ? 55 : isMediunScreen ? 45 : 35, height: isLargeScreen ? 150 : isMediunScreen ? 120 : 100 }]}>
                 Verification method
             </Text>
-            <Text style={[styles.subtitle, {color: "white" , fontSize: isLargeScreen ? 39 : isMediunScreen ? 28 : 16, marginTop: isLargeScreen ? -20 : isMediunScreen ? -55 : -18 }]}>
+            <Text style={[styles.subtitle, { color: "white", fontSize: isLargeScreen ? 39 : isMediunScreen ? 28 : 16, marginTop: isLargeScreen ? -20 : isMediunScreen ? -55 : -18 }]}>
                 Choose the verification method you prefer.
             </Text>
 
@@ -153,7 +159,7 @@ export default function Security() {
                     Save
                 </Text>
             </Pressable>
+        </LinearGradient>
 
-        </View>
     );
 }

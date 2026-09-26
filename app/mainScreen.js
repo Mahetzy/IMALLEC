@@ -9,6 +9,7 @@ import { doc, onSnapshot } from 'firebase/firestore';
 import { db } from '../firebase/config';
 import * as Location from 'expo-location';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { LinearGradient } from 'expo-linear-gradient';
 
 const DEFAULT_LAT = 13.6929;
 const DEFAULT_LNG = -89.2182;
@@ -17,8 +18,8 @@ export default function LocationWallet() {
     const [menuVisible, setMenuVisible] = useState(false);
     const router = useRouter();
     const [user, setUser] = useState(null);
-    const [coordinates, setCoordinates] = useState(null); // ubicación de la billetera
-    const [myLocation, setMyLocation] = useState(null);   // mi ubicación (GPS)
+    const [coordinates, setCoordinates] = useState(null);
+    const [myLocation, setMyLocation] = useState(null);
     const [followWallet, setFollowWallet] = useState(false);
     const [locationPermission, setLocationPermission] = useState(false);
     const [mapReady, setMapReady] = useState(false);
@@ -42,16 +43,16 @@ export default function LocationWallet() {
         longitudeDelta: 0.03,
     });
     useEffect(() => {
-    if (!mapReady || !myLocation || hasCenteredOnUser.current) {
-        return;
-    }
-    hasCenteredOnUser.current = true;
+        if (!mapReady || !myLocation || hasCenteredOnUser.current) {
+            return;
+        }
+        hasCenteredOnUser.current = true;
 
-    webviewRef.current?.injectJavaScript(`
+        webviewRef.current?.injectJavaScript(`
         window.flyTo(${myLocation.latitude}, ${myLocation.longitude});
         true;
     `);
-}, [mapReady, myLocation]);
+    }, [mapReady, myLocation]);
 
 
     useEffect(() => {
@@ -241,7 +242,7 @@ export default function LocationWallet() {
         getAddress();
 
     }, [coordinates]);
-     useEffect(() => {
+    useEffect(() => {
         if (!locationPermission) {
             return;
         }
@@ -488,7 +489,7 @@ export default function LocationWallet() {
                     />
 
                     <Text style={styles.addressTitle}>
-                       Approximate address
+                        Approximate address
                     </Text>
                 </View>
 
@@ -507,7 +508,13 @@ export default function LocationWallet() {
             </TouchableOpacity>
 
             {menuVisible && (
-                <View style={styles.menuOverlay}>
+
+                <LinearGradient
+                    colors={['#616060', '#ffffff']}
+                    start={{ x: 0, y: 1.5 }}
+                    end={{ x: 0, y: 0 }}
+                    style={styles.menuOverlay}
+                >
 
                     <TouchableOpacity
                         style={styles.closeButton}
@@ -558,8 +565,8 @@ export default function LocationWallet() {
                         </Text>
 
                     </TouchableOpacity>
+                </LinearGradient>
 
-                </View>
             )}
 
         </View>

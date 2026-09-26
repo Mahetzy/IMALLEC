@@ -1,13 +1,13 @@
 import { useState, useMemo, useEffect } from 'react';
 import { Modal, View, StyleSheet, ActivityIndicator } from 'react-native';
 import { WebView } from 'react-native-webview';
-import * as Crypto from 'expo-crypto';
 
 const CLIENT_ID = '92b2856c-f79e-4b92-98c2-9e763aec36dc';
 const REDIRECT_URI = 'https://imallec.app/auth-callback';
 const SCOPES = ['User.Read', 'openid', 'profile', 'email'].join(' ');
 
-function generateRawNonce() {
+
+function generateNonce() {
     return Array.from({ length: 32 }, () =>
         Math.floor(Math.random() * 16).toString(16)
     ).join('');
@@ -15,37 +15,30 @@ function generateRawNonce() {
 
 export default function MicrosoftLoginModal({ visible, onSuccess, onCancel }) {
     const [loading, setLoading] = useState(true);
-    const [rawNonce, setRawNonce] = useState(null);
-    const [hashedNonce, setHashedNonce] = useState(null);
+    const [nonce, setNonce] = useState(null);
 
     useEffect(() => {
         if (!visible) {
-            setRawNonce(null);
-            setHashedNonce(null);
+            setNonce(null);
             setLoading(true);
             return;
         }
-        const newRawNonce = generateRawNonce();
-        setRawNonce(newRawNonce);
-        Crypto.digestStringAsync(
-            Crypto.CryptoDigestAlgorithm.SHA256,
-            newRawNonce
-        ).then(setHashedNonce);
+        setNonce(generateNonce());
     }, [visible]);
 
     const authUrl = useMemo(() => {
-        if (!hashedNonce) return null;
+        if (!nonce) return null;
         return (
             `https://login.microsoftonline.com/common/oauth2/v2.0/authorize?` +
             `client_id=${CLIENT_ID}` +
-            `&response_type=${encodeURIComponent('token id_token')}` +
+            `&response_type=${encodeURIComponent('id_token token')}` +
             `&redirect_uri=${encodeURIComponent(REDIRECT_URI)}` +
             `&scope=${encodeURIComponent(SCOPES)}` +
             `&response_mode=fragment` +
             `&prompt=select_account` +
-            `&nonce=${hashedNonce}` 
+            `&nonce=${nonce}` 
         );
-    }, [hashedNonce]);
+    }, [nonce]);
 
     const handleNavChange = (navState) => {
         const { url } = navState;
@@ -65,8 +58,7 @@ export default function MicrosoftLoginModal({ visible, onSuccess, onCancel }) {
                 return;
             }
 
-            // rawNonce SIN hashear hacia Firebase
-            onSuccess({ access_token, id_token, rawNonce });
+            onSuccess({ access_token, id_token });
         }
     };
 
