@@ -12,12 +12,12 @@ export default function blockWallet() {
     const router = useRouter();
     const { width: windowWidth } = useWindowDimensions();
     const isLargeScreen = windowWidth > 768;
-    const isMediunScreen = windowWidth > 600 && windowWidth < 768;
-
     const [walletDoc, setWalletDoc] = useState(null)
     const [mainAlertText, setMainAlertText] = useState("Are you sure you want to lock the wallet?")
     const [warningText, setWarningText] = useState("This action will lock your wallet and you won't be able to use it until you unlock it")
     const [user, setUser] = useState(null)
+    const isMediunScreen = windowWidth > 600 && windowWidth < 768;
+
 
     useEffect(() => {
         const getWalletState = async () => {
@@ -112,10 +112,10 @@ export default function blockWallet() {
                     color="#000000"
                     style={[styles.icon, { marginLeft: isLargeScreen ? '30%' : '25%' }]}
                 />
-                <Text style={[styles.title, { fontSize: isLargeScreen ? 60 : 20 }]}>
+                <Text style={[styles.title, { fontSize: isLargeScreen ? 60 : isMediunScreen ? 30 : 20 }]}>
                     {mainAlertText}
                 </Text>
-                <Text style={[styles.subtitle, { fontSize: isLargeScreen ? 30 : 15 }]}>
+                <Text style={[styles.subtitle, { fontSize: isLargeScreen ? 30 : isMediunScreen ? 20 : 15 }]}>
                     {warningText}
                 </Text>
 
