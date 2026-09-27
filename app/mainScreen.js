@@ -9,6 +9,7 @@ import { doc, onSnapshot } from 'firebase/firestore';
 import { db } from '../firebase/config';
 import * as Location from 'expo-location';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { LinearGradient } from 'expo-linear-gradient';
 
 const DEFAULT_LAT = 13.6929;
 const DEFAULT_LNG = -89.2182;
@@ -41,16 +42,16 @@ export default function LocationWallet() {
         longitudeDelta: 0.03,
     });
     useEffect(() => {
-    if (!mapReady || !myLocation || hasCenteredOnUser.current) {
-        return;
-    }
-    hasCenteredOnUser.current = true;
+        if (!mapReady || !myLocation || hasCenteredOnUser.current) {
+            return;
+        }
+        hasCenteredOnUser.current = true;
 
-    webviewRef.current?.injectJavaScript(`
+        webviewRef.current?.injectJavaScript(`
         window.flyTo(${myLocation.latitude}, ${myLocation.longitude});
         true;
     `);
-}, [mapReady, myLocation]);
+    }, [mapReady, myLocation]);
 
     const [remoteness, setRemoteness] = useState(null);
     const [remotenessColor, setRemotenessColor] = useState(null);
@@ -388,7 +389,7 @@ export default function LocationWallet() {
         getAddress();
 
     }, [coordinates]);
-     useEffect(() => {
+    useEffect(() => {
         if (!locationPermission) {
             return;
         }
@@ -635,7 +636,7 @@ export default function LocationWallet() {
                     />
 
                     <Text style={styles.addressTitle}>
-                       Approximate address
+                        Approximate address
                     </Text>
                 </View>
 
@@ -653,7 +654,13 @@ export default function LocationWallet() {
             </TouchableOpacity>
 
             {menuVisible && (
-                <View style={styles.menuOverlay}>
+
+                <LinearGradient
+                    colors={['#616060', '#ffffff']}
+                    start={{ x: 0, y: 1.5 }}
+                    end={{ x: 0, y: 0 }}
+                    style={styles.menuOverlay}
+                >
 
                     <TouchableOpacity
                         style={styles.closeButton}
@@ -704,8 +711,8 @@ export default function LocationWallet() {
                         </Text>
 
                     </TouchableOpacity>
+                </LinearGradient>
 
-                </View>
             )}
 
         </View>

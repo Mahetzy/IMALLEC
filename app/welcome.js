@@ -1,6 +1,6 @@
 import { Text, View, Image, Pressable, Alert, StyleSheet, useWindowDimensions } from "react-native";
 import { useState, useEffect } from "react";
-import { doc, setDoc } from "firebase/firestore";
+import { doc, setDoc, getDoc } from "firebase/firestore";
 import { auth, db } from "../firebase/config";
 import { styles } from "../Styles/welcome.style";
 import Svg, { Circle, Path } from 'react-native-svg';
@@ -9,6 +9,8 @@ import GoogleLoginModal from '../components/GoogleLoginModal';
 import { GoogleAuthProvider, OAuthProvider, signInWithCredential } from 'firebase/auth';
 import { SafeAreaView } from "react-native-safe-area-context";
 import MicrosoftLoginModal from '../components/MicrosoftLoginModal';
+import { saveUser } from '../utils/storage';
+import { signInWithCustomToken } from 'firebase/auth';
 
 
 
@@ -35,14 +37,23 @@ export default function Welcome() {
             const user = result.user;
             console.log("Google Auth OK. UID:", user.uid);
 
-            await setDoc(doc(db, "Usuarios", user.uid), {
+            const userRef = doc(db, "Usuarios", user.uid);
+            const existingSnap = await getDoc(userRef);
+            const existingData = existingSnap.exists() ? existingSnap.data() : {};
+
+            const userData = {
                 uid: user.uid,
                 name: user.displayName || "Sin nombre",
                 email: user.email || "",
                 photoURL: user.photoURL || "",
-                createdAt: new Date().toISOString()
+                walletId: existingData.walletId || null,
+            };
+
+            await setDoc(userRef, {
+                ...userData,
+                createdAt: existingData.createdAt || new Date().toISOString()
             }, { merge: true });
-            
+
             await saveUser(userData);
 
             router.replace('/linkCheck');
@@ -53,9 +64,59 @@ export default function Welcome() {
     };
 
     const handleGoogleCancel = (msg) => {
-    setGoogleModalVisible(false);
-    if (msg) Alert.alert("Aviso", msg);
-};
+        setGoogleModalVisible(false);
+        if (msg) Alert.alert("Aviso", msg);
+    };
+    const handleMicrosoftSuccess = async ({ id_token }) => {
+        setMsModalVisible(false);
+        try {
+            
+            const response = await fetch('https://imallec-auth-bridge.vercel.app/api/microsoft-auth', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id_token }),
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.error || 'Error al verificar el token de Microsoft');
+            }
+
+            
+            const result = await signInWithCustomToken(auth, data.customToken);
+            const user = result.user;
+            console.log("Microsoft Auth OK. UID:", user.uid);
+
+            const userRef = doc(db, "Usuarios", user.uid);
+            const existingSnap = await getDoc(userRef);
+            const existingData = existingSnap.exists() ? existingSnap.data() : {};
+
+            const userData = {
+                uid: user.uid,
+                name: data.name || "Sin nombre",
+                email: data.email || "",
+                photoURL: existingData.photoURL || "",
+                walletId: existingData.walletId || null,
+            };
+
+            await setDoc(userRef, {
+                ...userData,
+                createdAt: existingData.createdAt || new Date().toISOString()
+            }, { merge: true });
+
+            await saveUser(userData);
+            router.replace('/linkCheck');
+        } catch (error) {
+            console.error("Error Auth Microsoft:", error);
+            Alert.alert("Error de inicio de sesión", error.message);
+        }
+    };
+
+    const handleMicrosoftCancel = (msg) => {
+        setMsModalVisible(false);
+        if (msg) Alert.alert("Aviso", msg);
+    };
 
     return (
         <SafeAreaView style={[styles.mainContainer, { height: windowHeight }]}>
@@ -137,7 +198,7 @@ export default function Welcome() {
 
                 <View style={styles.socialContainer}>
                     <Pressable
-                        style={[styles.socialButton, { height: isLargeScreen ? 100 : (isMediunScreen ? 70 : 60), width: isLargeScreen ? 100 : (isMediunScreen ? 70 : 60), borderRadius: isLargeScreen ? 100 : (isMediunScreen ? 100 : 30), opacity: 0.50, }]}
+                        style={[styles.socialButton, { height: isLargeScreen ? 100 : (isMediunScreen ? 70 : 60), width: isLargeScreen ? 100 : (isMediunScreen ? 70 : 60), borderRadius: isLargeScreen ? 100 : (isMediunScreen ? 100 : 30) }]}
                         onPress={() => setMsModalVisible(true)}
                     >
 
@@ -148,7 +209,7 @@ export default function Welcome() {
                     </Pressable>
 
                     <Pressable
-                        style={[styles.socialButton, { height: isLargeScreen ? 100 : (isMediunScreen ? 70 : 60), width: isLargeScreen ? 100 : (isMediunScreen ? 70 : 60), borderRadius: isLargeScreen ? 100 : (isMediunScreen ? 100 : 30),  }]}
+                        style={[styles.socialButton, { height: isLargeScreen ? 100 : (isMediunScreen ? 70 : 60), width: isLargeScreen ? 100 : (isMediunScreen ? 70 : 60), borderRadius: isLargeScreen ? 100 : (isMediunScreen ? 100 : 30), }]}
                         onPress={() => setGoogleModalVisible(true)}
                     >
                         <Image source={require("../assets/GoogleLogo.png")} style={[styles.logoG, { height: isLargeScreen ? 50 : (isMediunScreen ? 40 : 30), width: isLargeScreen ? 50 : (isMediunScreen ? 40 : 30) }]} />
@@ -158,6 +219,12 @@ export default function Welcome() {
                         visible={googleModalVisible}
                         onSuccess={handleGoogleSuccess}
                         onCancel={handleGoogleCancel}
+                    />
+
+                    <MicrosoftLoginModal
+                        visible={msModalVisible}
+                        onSuccess={handleMicrosoftSuccess}
+                        onCancel={handleMicrosoftCancel}
                     />
                 </View>
             </View>

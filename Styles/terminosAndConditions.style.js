@@ -44,6 +44,7 @@ export const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         marginBottom: 25,
+        
     },
 
     pdfIcon: {
@@ -101,6 +102,8 @@ export const styles = StyleSheet.create({
     pdfViewer: {
         flex: 1,
         backgroundColor: '#f2f2f2',
+        borderRadius: 18,
+        
     },
 
     pdfContent: {

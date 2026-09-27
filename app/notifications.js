@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Text, View, Switch, ScrollView, Image, useWindowDimensions } from 'react-native';
 import { styles } from '../Styles/notificactions.style';
+import { LinearGradient } from 'expo-linear-gradient';
 
 export default function App() {
     const { width: windowWidth } = useWindowDimensions();
@@ -41,9 +42,16 @@ export default function App() {
     };
 
     const renderToggleOption = (opt, sectionKey, index) => (
-        <View
+        <LinearGradient
             key={index}
-            style={[opt.isMain ? styles.mainCard : styles.optionCard,]}
+            colors={
+                opt.active
+                    ? ['#020E1C', '#0A2A4D', '#B8C4CE'] 
+                    : ['#0A2A6E', '#0A2A6E', '#B8C4CE'] 
+            }
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1.2, y: 0 }}
+            style={opt.isMain ? styles.mainCard : styles.optionCard}
         >
             <Text style={opt.isMain ? styles.mainCardText : styles.optionText}>{opt.label}</Text>
             <Switch
@@ -52,20 +60,21 @@ export default function App() {
                 trackColor={{ false: '#1b3b6f', true: '#ffffff' }}
                 thumbColor={opt.active ? '#020E1C' : '#f4f3f4'}
             />
-        </View>
+        </LinearGradient>
     );
+
 
     return (
         <View style={styles.outerContainer}>
             <ScrollView contentContainerStyle={styles.container}>
-                
+
                 <Image
                     source={require("../assets/IMALLEC.png.png")}
-                    style={[styles.logo, { width: isLargeScreen ? '30%' : isMediunScreen ? "30%" : "30%", marginTop: isLargeScreen? '-8%' : isMediunScreen ? "-10%" : "-10%" }]}
+                    style={[styles.logo, { width: isLargeScreen ? '30%' : isMediunScreen ? "30%" : "30%", marginTop: isLargeScreen ? '-8%' : isMediunScreen ? "-10%" : "-10%" }]}
                 />
 
-                {/* Tarjeta blanca contenedora principal */}
-                <View style={[styles.card, { marginTop: isLargeScreen? '-10%' : isMediunScreen ? "-16%" : "-20%" ,  }]}>
+                
+                <View style={[styles.card, { marginTop: isLargeScreen ? '-10%' : isMediunScreen ? "-16%" : "-20%", }]}>
                     <Text style={styles.sectionTitle}>{uiData.mainSection.title}</Text>
                     {uiData.mainSection.options.map((opt, index) =>
                         renderToggleOption(opt, 'mainSection', index)

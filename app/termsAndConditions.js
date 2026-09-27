@@ -8,18 +8,25 @@ import {
     useWindowDimensions,
 } from 'react-native';
 import { router } from 'expo-router';
-import {styles} from '../Styles/terminosAndConditions.style.js';
+import { styles } from '../Styles/terminosAndConditions.style.js';
+import { LinearGradient } from 'expo-linear-gradient';
 
 export default function TermsConditions() {
     const [showPDF, setShowPDF] = useState(false);
     const { width: windowWidth, height: windowHeight } = useWindowDimensions();
-    
-    
+
+
     const imageWidth = windowWidth - 0;
-    const imageHeight = windowHeight - 300; 
+    const imageHeight = windowHeight - 300;
 
     return (
-        <View style={styles.container}>
+
+        <LinearGradient
+            colors={['#00162F', '#086bec']}
+            start={{ x: 0, y: 0.2 }}
+            end={{ x: 0, y: 0 }}
+            style={styles.container}
+        >
             <View style={styles.header}>
                 <TouchableOpacity
                     style={styles.backButton}
@@ -40,7 +47,7 @@ export default function TermsConditions() {
             </View>
 
             {!showPDF ? (
-                <View style={[styles.pdfBox, {backgroundColor: "#d8d5d5c5"}]}>
+                <View style={[styles.pdfBox, { backgroundColor: "#d8d5d5c5" }]}>
                     <View style={styles.pdfIcon}>
                         <Text style={styles.pdfIconText}>PDF</Text>
                     </View>
@@ -90,6 +97,7 @@ export default function TermsConditions() {
                     />
                 </ScrollView>
             )}
-        </View>
+        </LinearGradient>
+
     );
 }
