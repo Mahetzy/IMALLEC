@@ -349,12 +349,11 @@ export default function LocationWallet() {
                 </Text>
             </View>
 
-            <TouchableOpacity style={styles.lockButton}>
+            <TouchableOpacity style={styles.lockButton} onPress={() => router.push('/blockWallet')}>
                 <Ionicons
                     name="lock-closed"
                     size={25}
                     color="white"
-                    onPress={() => router.push('/blockWallet')}
                 />
             </TouchableOpacity>
 

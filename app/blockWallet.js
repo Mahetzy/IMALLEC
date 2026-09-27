@@ -1,30 +1,120 @@
-import { Text, View, Pressable, useWindowDimensions } from "react-native";
+import { Text, View, Pressable, useWindowDimensions, Alert } from "react-native";
 import { styles } from "../Styles/confirmacionBloqueo.style";
 import { useRouter } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
+import * as LocalAuthentication from "expo-local-authentication";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
+import { auth, db } from "../firebase/config";
+import { getUser } from "../utils/storage";
+import { useEffect, useState } from "react";
 
-export default function Welcome() {
+export default function blockWallet() {
     const router = useRouter();
     const { width: windowWidth } = useWindowDimensions();
     const isLargeScreen = windowWidth > 768;
+    const [walletDoc, setWalletDoc] = useState(null)
+    const [mainAlertText, setMainAlertText] = useState("Are you sure you want to lock the wallet?")
+    const [warningText, setWarningText] = useState("This action will lock your wallet and you won't be able to use it until you unlock it")
+    const [user, setUser] = useState(null)
 
+    useEffect(() => {
+        const getWalletState = async () => {
+            try {
+                const user = await getUser();
+                setUser(user)
 
-    const circleRadius = 100;
+                if (!auth.currentUser || !user?.walletId) {
+                    Alert.alert("Error", "Log in and link your wallet first.");
+                    return;
+                }
+
+                const walletSnap = await getDoc(doc(db, "Billeteras", user.walletId));
+
+                if (!walletSnap.exists()) {
+                    Alert.alert("Error", "Wallet not found");
+                    return;
+                }
+
+                const walletData = walletSnap.data();
+                setWalletDoc(walletData);
+
+                if (walletData.locked === true) {
+                    setMainAlertText("Are you sure you want to unlock the wallet?");
+                    setWarningText("This action will unlock your wallet and make it unsecure as long as it is unlocked");
+                }
+            } catch (error) {
+                console.error("Error loading user or walletDoc:", error)
+            }
+
+        };
+
+        getWalletState();
+    }, []);
+
+    const handleLockWallet = async () => {
+        try {
+            if (!user || !walletDoc) {
+                Alert.alert("Loading...", "Currently loading lease wait a moment")
+                return;
+            }
+
+            const hasHardware = await LocalAuthentication.hasHardwareAsync();
+            const isEnrolled = await LocalAuthentication.isEnrolledAsync();
+
+            if (!hasHardware || !isEnrolled) {
+                Alert.alert(
+                    "Authentication not avaliable",
+                    "Configure you fingerprint, face ID, PIN or pattern first"
+                );
+                return;
+            }
+
+            const result = await LocalAuthentication.authenticateAsync({
+                promptMessage: "Confirm to unlock your wallet",
+                disableDeviceFallback: false,
+            });
+
+            if (!result.success) {
+                return;
+            }
+
+            const nextLocked = walletDoc.locked !== true;
+
+            await updateDoc(doc(db, "Billeteras", user.walletId), {
+                locked: nextLocked,
+            });
+
+            setWalletDoc((current) => ({ ...current, locked: nextLocked }));
+
+            Alert.alert(
+                nextLocked ? "Wallet locked" : "Wallet unlocked",
+                nextLocked
+                    ? "The wallet was locked successfully."
+                    : "The wallet was unlocked successfully."
+            );
+
+            router.replace('/mainScreen')
+        } catch (error) {
+            console.error("Error al bloquear la billetera:", error);
+            Alert.alert("Error", "No se pudo bloquear la billetera.");
+        }
+    };
+
 
     return (
         <View style={styles.mainContainer}>
             <View style={[styles.walletCard, { height: isLargeScreen ? '90%' : '80%' }]}>
                 <Ionicons
                     name="warning-outline"
-                    size={isLargeScreen ? 300 : 200 }
+                    size={isLargeScreen ? 300 : 200}
                     color="#000000"
                     style={[styles.icon, { marginLeft: isLargeScreen ? '30%' : '25%' }]}
                 />
-                <Text style={[styles.title,{fontSize: isLargeScreen ? 60 : 20 }]}>
-                    Are you sure you want to lock the wallet?
+                <Text style={[styles.title, { fontSize: isLargeScreen ? 60 : 20 }]}>
+                    {mainAlertText}
                 </Text>
-                <Text style={[styles.subtitle, {fontSize: isLargeScreen ? 30 : 15 }]}>
-                    This action will lock your wallet and you won’t be able to use it until you unlock it
+                <Text style={[styles.subtitle, { fontSize: isLargeScreen ? 30 : 15 }]}>
+                    {warningText}
                 </Text>
 
                 <Pressable
@@ -36,12 +126,13 @@ export default function Welcome() {
                         margin: 10,
                         width: "38%",
                         height: "22%",
-                        marginTop: isLargeScreen? 100: 30
-                        
-                        
+                        marginTop: isLargeScreen ? 100 : 30
+
+
                     }}
+                    onPress={() => router.replace('/mainScreen')}
                 >
-                    <Text style={{ color: "white", fontSize: isLargeScreen? 60: 20, fontWeight: "bold", paddingHorizontal: isLargeScreen?  65: 20, }} onPress={() => router.push('/mainScreen')}>
+                    <Text style={{ color: "white", fontSize: isLargeScreen ? 60 : 20, fontWeight: "bold", paddingHorizontal: isLargeScreen ? 65 : 20, }}>
                         No
                     </Text>
                 </Pressable>
@@ -57,10 +148,11 @@ export default function Welcome() {
                         width: "38%",
                         height: "22%",
                         marginLeft: "60%",
-                        marginTop: isLargeScreen? -220: -130,
+                        marginTop: isLargeScreen ? -220 : -130,
                     }}
+                    onPress={handleLockWallet}
                 >
-                    <Text style={{ color: "white", fontSize: isLargeScreen? 60: 20, fontWeight: "bold", paddingHorizontal: isLargeScreen?  60: 20, paddingVertical: isLargeScreen?  20: 4, }} onPress={() => router.push('/mainScreen')}>
+                    <Text style={{ color: "white", fontSize: isLargeScreen ? 60 : 20, fontWeight: "bold", paddingHorizontal: isLargeScreen ? 60 : 20, paddingVertical: isLargeScreen ? 20 : 4, }}>
                         Yes
                     </Text>
                 </Pressable>

@@ -45,7 +45,13 @@
     "plugins": [
       "expo-router",
       "expo-web-browser",
-      "@react-native-google-signin/google-signin"
+      "@react-native-google-signin/google-signin",
+      [
+        "expo-local-authentication",
+        {
+          "faceIDPermission": "IMALLEC usa Face ID para confirmar el bloqueo de tu billetera."
+        }
+      ]
     ],
     "extra": {
       "router": {},
