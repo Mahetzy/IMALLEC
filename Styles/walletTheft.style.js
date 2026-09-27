@@ -28,6 +28,7 @@ export const styles = StyleSheet.create({
     borderRadius: 14,
     padding: 20,
     marginBottom: 20,
+    marginTop: 50,
   },
 
   infoCardTitle: {
@@ -44,14 +45,15 @@ export const styles = StyleSheet.create({
   },
 
   infoIconContainer: {
-    width: 60,
-    height: 60,
+    width: "20%",
+    height: "100%",
     borderRadius: 30,
     borderWidth: 1.5,
     borderColor: '#0a182c',
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 18,
+    
   },
 
   bulletList: {
@@ -71,7 +73,7 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 16,
     paddingHorizontal: 18,
-    marginBottom: 14,
+    marginBottom: "3%",
     elevation: 3,
     shadowColor: '#000',
     shadowOffset: {
@@ -83,11 +85,13 @@ export const styles = StyleSheet.create({
   },
 
   actionIconContainer: {
-    width: 40,
-    height: 40,
+    width: "20%",
+    height: "90%",
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 16,
+
+
   },
 
   actionTextContainer: {
@@ -116,12 +120,13 @@ export const styles = StyleSheet.create({
   },
 
   noteIconContainer: {
-    width: 24,
-    height: 24,
+    width: "20%",
+    height: "90%",
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 12,
     marginTop: 2,
+    
   },
 
   noteTextContainer: {

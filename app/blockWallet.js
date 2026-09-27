@@ -12,6 +12,8 @@ export default function blockWallet() {
     const router = useRouter();
     const { width: windowWidth } = useWindowDimensions();
     const isLargeScreen = windowWidth > 768;
+    const isMediunScreen = windowWidth > 600 && windowWidth < 768;
+
     const [walletDoc, setWalletDoc] = useState(null)
     const [mainAlertText, setMainAlertText] = useState("Are you sure you want to lock the wallet?")
     const [warningText, setWarningText] = useState("This action will lock your wallet and you won't be able to use it until you unlock it")
@@ -103,10 +105,10 @@ export default function blockWallet() {
 
     return (
         <View style={styles.mainContainer}>
-            <View style={[styles.walletCard, { height: isLargeScreen ? '90%' : '80%' }]}>
+            <View style={[styles.walletCard, { height: isLargeScreen ? '90%' : '80%', width : isLargeScreen ? "96%" : "95%", }]}>
                 <Ionicons
                     name="warning-outline"
-                    size={isLargeScreen ? 300 : 200}
+                    size={isLargeScreen ? 300 : isMediunScreen ? 250 : 200}
                     color="#000000"
                     style={[styles.icon, { marginLeft: isLargeScreen ? '30%' : '25%' }]}
                 />
@@ -132,7 +134,7 @@ export default function blockWallet() {
                     }}
                     onPress={() => router.replace('/mainScreen')}
                 >
-                    <Text style={{ color: "white", fontSize: isLargeScreen ? 60 : 20, fontWeight: "bold", paddingHorizontal: isLargeScreen ? 65 : 20, }}>
+                    <Text style={{ color: "white", fontSize: isLargeScreen ? 60 : isMediunScreen ? 30 : 20, fontWeight: "bold", paddingHorizontal: isLargeScreen ? 65 : isMediunScreen ? 50 : 20, paddingVertical: isLargeScreen ? 20 : isMediunScreen ? 5 : "-10%", }}>
                         No
                     </Text>
                 </Pressable>
@@ -148,11 +150,11 @@ export default function blockWallet() {
                         width: "38%",
                         height: "22%",
                         marginLeft: "60%",
-                        marginTop: isLargeScreen ? -220 : -130,
+                        marginTop: isLargeScreen ? -220 : isMediunScreen ? -145 : -130,
                     }}
                     onPress={handleLockWallet}
                 >
-                    <Text style={{ color: "white", fontSize: isLargeScreen ? 60 : 20, fontWeight: "bold", paddingHorizontal: isLargeScreen ? 60 : 20, paddingVertical: isLargeScreen ? 20 : 4, }}>
+                    <Text style={{ color: "white", fontSize: isLargeScreen ? 60 : isMediunScreen ? 30 : 20, fontWeight: "bold", paddingHorizontal: isLargeScreen ? 60 : isMediunScreen ? 48 : 20, paddingVertical: isLargeScreen ? 20 : isMediunScreen ? 5 : 2, }}>
                         Yes
                     </Text>
                 </Pressable>

@@ -16,7 +16,8 @@ export default function LogIn() {
     const [password, setPassword] = useState("");
     const router = useRouter();
     const { width: windowWidth } = useWindowDimensions();
-    const isLargeScreen = windowWidth > 768;
+    const isLargeScreen = windowWidth >= 768;
+    const isMediunScreen = windowWidth > 600 && windowWidth < 768;
 
 
     const logInUsuario = async () => {
@@ -111,11 +112,11 @@ export default function LogIn() {
                 ]}>
                     <Image
                         source={require("../assets/IMALLEC.png.png")}
-                        style={[styles.logo, { height: isLargeScreen ? 250 : 165 }]}
+                        style={[styles.logo, { height: isLargeScreen ? 250 : (isMediunScreen ? 210 : 165) }]}
                         resizeMode="contain"
                     />
 
-                    <Text style={[styles.title, { fontSize: isLargeScreen ? 130 : 75 }]}>
+                    <Text style={[styles.title, { fontSize: isLargeScreen ? 150 : (isMediunScreen ? 100 : 75) }]}>
                         Log in
                     </Text>
 
@@ -144,7 +145,7 @@ export default function LogIn() {
                     </View>
 
                     <Pressable onPress={() => router.push('/forgotPassword')}>
-                        <Text style={[styles.password, { fontSize: isLargeScreen ? 25 : 16 }]}>
+                        <Text style={[styles.password, { fontSize: isLargeScreen ? 25 : (isMediunScreen ? 22 : 16) }]}>
                             ¿Did you forget your password?
                         </Text>
                     </Pressable>
@@ -153,7 +154,7 @@ export default function LogIn() {
                         <Text style={styles.buttonText}>Log in</Text>
                     </Pressable>
 
-                    <Text style={[styles.subtitle, { fontSize: isLargeScreen ? 25 : 16 }]}>
+                    <Text style={[styles.subtitle, { fontSize: isLargeScreen ? 25 : (isMediunScreen ? 22 : 16) }]}>
                         ¿You don't have an account yet?
                     </Text>
 

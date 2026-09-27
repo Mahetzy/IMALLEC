@@ -8,7 +8,7 @@ import {
     useWindowDimensions,
 } from 'react-native';
 import { router } from 'expo-router';
-import styles from '../Styles/terminosAndConditions.style';
+import {styles} from '../Styles/terminosAndConditions.style.js';
 
 export default function TermsConditions() {
     const [showPDF, setShowPDF] = useState(false);
@@ -40,7 +40,7 @@ export default function TermsConditions() {
             </View>
 
             {!showPDF ? (
-                <View style={styles.pdfBox}>
+                <View style={[styles.pdfBox, {backgroundColor: "#d8d5d5c5"}]}>
                     <View style={styles.pdfIcon}>
                         <Text style={styles.pdfIconText}>PDF</Text>
                     </View>

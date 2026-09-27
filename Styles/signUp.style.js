@@ -81,9 +81,10 @@ export const styles = StyleSheet.create({
     },
 
     button: {
-         marginLeft: "8%",
+         marginLeft: "20%",
         marginRight: "8%",
         height: 70,
+        width: '60%',
         backgroundColor: "#004695",
         borderRadius: 75,
         justifyContent: "center",

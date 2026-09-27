@@ -1,11 +1,10 @@
 import { useState, useMemo, useEffect } from 'react';
 import { Modal, View, StyleSheet, ActivityIndicator } from 'react-native';
 import { WebView } from 'react-native-webview';
-import * as Crypto from 'expo-crypto';
 
-const CLIENT_ID = '92b2856c-f79e-4b92-98c2-9e763aec36dc';
+const CLIENT_ID = '754000345577-vp7our0emuag554r6hiq2digimemm9lj.apps.googleusercontent.com';
 const REDIRECT_URI = 'https://imallec.app/auth-callback';
-const SCOPES = ['User.Read', 'openid', 'profile', 'email'].join(' ');
+const SCOPES = ['profile', 'email', 'openid'].join(' ');
 
 function generateRawNonce() {
     return Array.from({ length: 32 }, () =>
@@ -13,39 +12,31 @@ function generateRawNonce() {
     ).join('');
 }
 
-export default function MicrosoftLoginModal({ visible, onSuccess, onCancel }) {
+export default function GoogleLoginModal({ visible, onSuccess, onCancel }) {
     const [loading, setLoading] = useState(true);
-    const [rawNonce, setRawNonce] = useState(null);
-    const [hashedNonce, setHashedNonce] = useState(null);
+    const [nonce, setNonce] = useState(null);
 
     useEffect(() => {
         if (!visible) {
-            setRawNonce(null);
-            setHashedNonce(null);
+            setNonce(null);
             setLoading(true);
             return;
         }
-        const newRawNonce = generateRawNonce();
-        setRawNonce(newRawNonce);
-        Crypto.digestStringAsync(
-            Crypto.CryptoDigestAlgorithm.SHA256,
-            newRawNonce
-        ).then(setHashedNonce);
+        setNonce(generateRawNonce());
     }, [visible]);
 
     const authUrl = useMemo(() => {
-        if (!hashedNonce) return null;
+        if (!nonce) return null;
         return (
-            `https://login.microsoftonline.com/common/oauth2/v2.0/authorize?` +
+            `https://accounts.google.com/o/oauth2/v2/auth?` +
             `client_id=${CLIENT_ID}` +
             `&response_type=${encodeURIComponent('token id_token')}` +
             `&redirect_uri=${encodeURIComponent(REDIRECT_URI)}` +
             `&scope=${encodeURIComponent(SCOPES)}` +
-            `&response_mode=fragment` +
-            `&prompt=select_account` +
-            `&nonce=${hashedNonce}` 
+            `&nonce=${nonce}` +
+            `&prompt=select_account`
         );
-    }, [hashedNonce]);
+    }, [nonce]);
 
     const handleNavChange = (navState) => {
         const { url } = navState;
@@ -58,15 +49,13 @@ export default function MicrosoftLoginModal({ visible, onSuccess, onCancel }) {
             const access_token = params.get('access_token');
             const id_token = params.get('id_token');
             const error = params.get('error');
-            const error_description = params.get('error_description');
 
             if (error) {
-                onCancel(error_description || error);
+                onCancel(error);
                 return;
             }
 
-            // rawNonce SIN hashear hacia Firebase
-            onSuccess({ access_token, id_token, rawNonce });
+            onSuccess({ access_token, id_token });
         }
     };
 
