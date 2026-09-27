@@ -78,11 +78,7 @@ export default function WalletVinculation() {
             await saveUser(userData);
 
             if (walletData !== null) {
-                if (!walletData.verificationMethod || walletData.verificationMethod === null) {
-                    router.push('/walletActivation');
-                } else {
-                    router.push('/mainScreen');
-                }
+                router.push('/mainScreen');
                 Alert.alert("Success", "Wallet linked successfully");
             } else {
                 return Alert.alert("Error", "Wallet not found");
