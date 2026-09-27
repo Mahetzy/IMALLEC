@@ -2,8 +2,8 @@ import { View, Text, TouchableOpacity, Alert } from 'react-native';
 import { WebView } from 'react-native-webview';
 import { Ionicons } from '@expo/vector-icons';
 import { styles } from '../Styles/mainScreen.style';
-import { useRouter } from "expo-router";
-import { useEffect, useState, useRef, useMemo } from 'react';
+import { useRouter, useFocusEffect } from "expo-router";
+import { useEffect, useState, useRef, useMemo, useCallback } from 'react';
 import { getUser } from '../utils/storage';
 import { doc, onSnapshot } from 'firebase/firestore';
 import { db } from '../firebase/config';
@@ -18,24 +18,18 @@ export default function LocationWallet() {
     const router = useRouter();
 
     const [user, setUser] = useState(null);
-    const [coordinates, setCoordinates] = useState(null); // ubicación de la billetera
     const [myLocation, setMyLocation] = useState(null);   // mi ubicación (GPS)
-    const [userLocation, setUserLocation] = useState(null);
 
     const [coordinates, setCoordinates] = useState(null);
-    const [walletAddress, setWalletAddress] = useState(null);
     const [followWallet, setFollowWallet] = useState(false);
     const [locationPermission, setLocationPermission] = useState(false);
     const [mapReady, setMapReady] = useState(false);
     const insets = useSafeAreaInsets();
-    const [showedDistance, setShowedDistance] = useState(0);
     const [userLocation, setUserLocation] = useState(null);
 
     const webviewRef = useRef(null);
     const locationSubscription = useRef(null);
 
-    const [remoteness, setRemoteness] = useState(null);
-    const [remotenessColor, setRemotenessColor] = useState(null);
     const [walletAddress, setWalletAddress] = useState(null);
     const hasCenteredOnUser = useRef(false);
 
@@ -192,7 +186,7 @@ export default function LocationWallet() {
         loadUser();
     }, []);
 
-    useEffect(() => {
+    useFocusEffect(useCallback(() => {
         if (!user?.walletId) {
             return;
         }
@@ -224,7 +218,7 @@ export default function LocationWallet() {
         });
 
         return unsubscribe;
-    }, [user]);
+    }, [user?.walletId]));
 
     useEffect(() => {
         if (!mapReady || !coordinates) {
@@ -315,13 +309,16 @@ export default function LocationWallet() {
         }
     }, [coordinates, userLocation]);
 
+    useEffect(() => {
+        if (!mapReady || !myLocation) {
+            return;
+        }
 
         webviewRef.current?.injectJavaScript(`
             window.updateMyLocationMarker(${myLocation.latitude}, ${myLocation.longitude});
             true;
         `);
     }, [myLocation, mapReady]);
-
 
     useEffect(() => {
         if (!followWallet || !coordinates || !mapReady) {

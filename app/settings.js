@@ -10,9 +10,11 @@ import {
 
 import { useRouter } from "expo-router";
 import { MaterialIcons } from "@expo/vector-icons";
+import { signOut } from "firebase/auth";
+import { auth } from "../firebase/config";
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { styles } from "../Styles/settings.style";
-import { getUser, removeUser } from "../utils/storage";
+import { getUser, removeUser, removeWallet } from "../utils/storage";
 
 export default function Settings() {
     const { width: windowWidth } = useWindowDimensions();
@@ -59,7 +61,9 @@ export default function Settings() {
                     text: "Accept",
                     onPress: async () => {
                         try {
+                                await signOut(auth);
                             await removeUser();
+                                await removeWallet();
 
                             router.replace("/welcome");
                         } catch (error) {
