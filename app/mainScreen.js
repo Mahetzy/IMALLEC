@@ -19,7 +19,7 @@ export default function LocationWallet() {
     const router = useRouter();
 
     const [user, setUser] = useState(null);
-    const [myLocation, setMyLocation] = useState(null);   // mi ubicación (GPS)
+    const [myLocation, setMyLocation] = useState(null);   
 
     const [coordinates, setCoordinates] = useState(null);
     const [followWallet, setFollowWallet] = useState(false);
@@ -33,6 +33,7 @@ export default function LocationWallet() {
 
     const [walletAddress, setWalletAddress] = useState(null);
     const hasCenteredOnUser = useRef(false);
+    const [isBlocked, setIsBlocked] = useState(false);
 
     const mapRef = useRef(null);
     const [mapRegion, setMapRegion] = useState({
@@ -201,6 +202,8 @@ export default function LocationWallet() {
 
             const walletData = walletSnap.data();
             const location = walletData.location;
+
+            setIsBlocked(walletData.blocked || false);
 
             if (!Array.isArray(location) || location.length < 2) {
                 return;
@@ -645,11 +648,19 @@ export default function LocationWallet() {
                 </Text>
             </View>
 
-            <TouchableOpacity style={[styles.lockButton, { bottom: 138 + insets.bottom }]} onPress={() => router.push('/blockWallet')}>
+            <TouchableOpacity style={[
+                styles.lockButton,
+                { bottom: 138 + insets.bottom } 
+            ]}
+                onPress={() => router.push({
+                    pathname: '/blockWallet',
+                    params: { walletId: user?.walletId, isBlocked: isBlocked.toString() }
+                })}
+            >
                 <Ionicons
-                    name="lock-closed"
+                    name={isBlocked ? "lock-closed" : "lock-open-outline"}
                     size={25}
-                    color="white"
+                    color={ isBlocked ? "#D32F2F" : "#ffffff"}
                 />
             </TouchableOpacity>
 
